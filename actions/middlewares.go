@@ -1,9 +1,10 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
 	"net/http"
 	"strings"
+
+	"github.com/gobuffalo/buffalo"
 )
 
 func AuthenticateHandler(next buffalo.Handler) buffalo.Handler {

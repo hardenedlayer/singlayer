@@ -48,8 +48,6 @@ func (s *Single) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: s.Email, Name: "Email"},
 		&validators.StringIsPresent{Field: s.Provider, Name: "Provider"},
 		&validators.StringIsPresent{Field: s.UserID, Name: "UserID"},
-		&validators.StringIsPresent{Field: s.AvatarUrl, Name: "AvatarUrl"},
-		&validators.StringIsPresent{Field: s.Organization, Name: "Organization"},
 		&validators.StringIsPresent{Field: s.Permissions, Name: "Permissions"},
 	), nil
 }

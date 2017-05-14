@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -10,6 +11,9 @@ import (
 	"github.com/markbates/goth/providers/facebook"
 	"github.com/markbates/goth/providers/github"
 	"github.com/markbates/goth/providers/gplus"
+	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 func init() {
@@ -27,17 +31,60 @@ func AuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(401, err)
 	}
+	c.Flash().Add("success", "You have been successfully logged in.")
+
+	singles := &models.Singles{}
+	single := &models.Single{}
+	tx := c.Value("tx").(*pop.Connection)
+	q := tx.Where("provider=?", user.Provider).Where("user_id=?", user.UserID)
+
+	err = q.All(singles)
+	if err != nil {
+		// TODO add error recognition code and check the error page:
+		return c.Error(501, err)
+	}
+
+	if len(*singles) == 1 {
+		// TODO action logging
+		single = &(*singles)[0]
+		c.Flash().Add("info", "Welcome back! I missed you...")
+	} else if len(*singles) == 0 {
+		// TODO action logging
+		single.Provider = user.Provider
+		single.Email = user.Email
+		single.Name = user.Name
+		single.UserID = user.UserID
+		single.AvatarUrl = user.AvatarURL
+		single.Permissions = ":guest:"
+		// TODO mark as admin for v ery first user.
+		verrs, err := tx.ValidateAndCreate(single)
+		if err != nil {
+			fmt.Printf("err: %v\n", err)
+			return c.Error(501, err)
+		}
+		if verrs.HasAny() {
+			fmt.Printf("verrs: %v\n", verrs)
+			return c.Error(501, verrs)
+		}
+
+		err = q.First(single)
+		c.Flash().Add("info", "Nice to meet you! You just become a singler!")
+	} else {
+		// TODO action logging
+		return c.Error(501, errors.New("Somthing went wrong!!!"))
+	}
+	fmt.Printf("final single: %v\n", single)
+
 	session := c.Session()
-	session.Set("user_id", user.UserID)
-	session.Set("user_name", user.Name)
-	session.Set("user_mail", user.Email)
-	session.Set("user_icon", user.AvatarURL)
-	session.Set("permissions", ":guest:")
+	session.Set("user_id", single.ID)
+	session.Set("user_name", single.Name)
+	session.Set("user_mail", single.Email)
+	session.Set("user_icon", single.AvatarUrl)
+	session.Set("permissions", single.Permissions)
 	err = session.Save()
 	if err != nil {
 		return c.Error(401, err)
 	}
-	c.Flash().Add("success", "You have been successfully logged in.")
 	return c.Redirect(307, "/")
 }
 
