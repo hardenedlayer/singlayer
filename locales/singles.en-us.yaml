@@ -1,0 +1,6 @@
+- id: "singles.created.success"
+  translation: "Single was successfully created."
+- id: "singles.updated.success"
+  translation: "Single was successfully updated."
+- id: "singles.destroyed.success"
+  translation: "Single was successfully destroyed."

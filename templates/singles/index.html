@@ -1,0 +1,38 @@
+<h1>Singles</h1>
+
+<p>
+  <a href="<%= newSinglePath() %>" class="btn btn-primary">Create New Single</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+  <th>Name</th>
+    <th>Email</th>
+    <th>Provider</th>
+    <th>UserId</th>
+    <th>AvatarUrl</th>
+    <th>Organization</th>
+    <th>Permissions</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (single) in singles { %>
+      <tr>
+      <td><%= single.Name %></td>
+        <td><%= single.Email %></td>
+        <td><%= single.Provider %></td>
+        <td><%= single.UserId %></td>
+        <td><%= single.AvatarUrl %></td>
+        <td><%= single.Organization %></td>
+        <td><%= single.Permissions %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editSinglePath({ single_id: single.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

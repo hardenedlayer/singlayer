@@ -1,0 +1,6 @@
+<h1>Edit Single</h1>
+
+<%= form_for(single, {action: singlePath({ single_id: single.ID }), method: "PUT", errors: errors}) { %>
+  <%= partial("singles/form.html") %>
+  <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

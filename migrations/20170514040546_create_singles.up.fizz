@@ -1,0 +1,11 @@
+create_table("singles", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("name", "string", {})
+	t.Column("email", "string", {})
+	t.Column("provider", "string", {})
+	t.Column("user_id", "string", {})
+	t.Column("avatar_url", "string", {})
+	t.Column("organization", "string", {})
+	t.Column("note", "text", {"null": true})
+	t.Column("permissions", "string", {})
+})
