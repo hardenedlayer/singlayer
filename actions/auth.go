@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/goth"
@@ -81,6 +82,7 @@ func AuthCallback(c buffalo.Context) error {
 	session.Set("user_mail", single.Email)
 	session.Set("user_icon", single.AvatarUrl)
 	session.Set("permissions", single.Permissions)
+	session.Set("is_admin", strings.Contains(single.Permissions, ":admin:"))
 	err = session.Save()
 	if err != nil {
 		return c.Error(401, err)

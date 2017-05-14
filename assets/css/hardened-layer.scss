@@ -46,8 +46,12 @@ body {
 
 .dropdown-menu {
 	padding: 0;
+	& > li > span,
 	& > li > a {
+		color: #aaa;
+		display: block;
 		padding: 7px 20px 7px 10px;
+		white-space: nowrap;
 		i.fa {
 			padding: 5px 5px 5px 0;
 			text-align: center;
@@ -59,3 +63,7 @@ body {
 	}
 }
 
+.btn {
+	border-radius: 0px;
+	padding: 3px 6px;
+}

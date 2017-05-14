@@ -62,7 +62,11 @@ func App() *buffalo.App {
 		app.Use(AuthenticateHandler)
 		app.Use(SessionInfoHandler)
 
-		app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
+		s := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
+		s.Use(AdminPageKeeper)
+		var sing buffalo.Resource
+		sing = &SinglesResource{&buffalo.BaseResource{}}
+		s.Middleware.Skip(AdminPageKeeper, sing.Show)
 	}
 
 	return app
