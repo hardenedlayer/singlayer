@@ -64,9 +64,11 @@ func App() *buffalo.App {
 
 		s := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
 		s.Use(AdminPageKeeper)
-		var sing buffalo.Resource
-		sing = &SinglesResource{&buffalo.BaseResource{}}
-		s.Middleware.Skip(AdminPageKeeper, sing.Show)
+		// var sing buffalo.Resource
+		// sing = &SinglesResource{&buffalo.BaseResource{}}
+		// s.Middleware.Skip(AdminPageKeeper, sing.Show)
+
+		app.GET("/me", MeHandler)
 	}
 
 	return app

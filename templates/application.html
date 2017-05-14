@@ -10,7 +10,7 @@
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="/">
+				<a class="navbar-brand navbar-logo" href="/">
 					<img class="icon32" alt="Singlayer"
 						src="/assets/images/hardened-circle.png">
 				</a>
@@ -50,7 +50,7 @@
 							<li><span><i aria-hidden="true" class="fa fa-star-o"></i> Administrator</span></li>
 							<% } %>
 							<li role="separator" class="divider"></li>
-							<li><a href="<%= singlePath({ single_id: user_id }) %>" class="navbar-link"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
+							<li><a href="<%= mePath() %>" class="navbar-link"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="/logout" class="navbar-link"><i aria-hidden="true" class="fa fa-sign-out"></i> Logout</a></li>
 						</ul>

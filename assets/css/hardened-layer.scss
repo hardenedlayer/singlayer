@@ -1,8 +1,44 @@
 $nav_height: 50px;
+$font_size: 14px;
+$font_color: #222;
 
 body {
 	padding-top: ($nav_height + 10px);
+	font-size: $font-size;
 }
+h1, .h1 { font-size: ($font_size * 1.6) !important; }
+h2, .h2 { font-size: ($font_size * 1.4) !important; }
+h3, .h3 { font-size: ($font_size * 1.2) !important; }
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	font-size: $font-size;
+	line-height: 1.2;
+	padding: ($font-size / 3);
+}
+
+
+.page-head {
+	& > div {
+		padding: 10px 15px;
+		border-radius: 15px;
+		background-color: #f6f6f6;
+		& > h1 {
+			margin-top: 0;
+		}
+		& > div,
+		& > p {
+		}
+	}
+}
+
+.underline { border-bottom: 1px solid ($font_color + #666); }
+
+
 
 .icon32 {
 	width: 32px; height: 32px;
@@ -17,10 +53,26 @@ body {
 .avatar {
 	float: left;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 754px) {
 	.avatar { display: none; }
+	.navbar-brand.navbar-logo {
+		margin-right: -15px;
+	}
 }
 
+.overlay-flash {
+	left: 50%;
+	opacity: 0.95;
+	position: fixed;
+	width: 100%;
+	z-index: 999;
+	.alert {
+		box-shadow: 2px 2px 4px;
+	}
+}
+
+
+// * customize bootstrap
 .navbar {
 	.navbar-brand .icon32 {
 		margin: ($nav_height - 32px) / 2 - 15px;
