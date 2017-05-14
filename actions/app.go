@@ -48,11 +48,19 @@ func App() *buffalo.App {
 		app.Use(T.Middleware())
 
 		app.GET("/", HomeHandler)
+		app.Middleware.Skip(AuthenticateHandler, HomeHandler)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 		auth := app.Group("/auth")
 		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
 		auth.GET("/{provider}/callback", AuthCallback)
+
+		app.GET("/login", LoginHandler)
+		app.GET("/logout", LogoutHandler)
+		app.Middleware.Skip(AuthenticateHandler, LoginHandler, LogoutHandler)
+
+		app.Use(AuthenticateHandler)
+
 		app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
 	}
 

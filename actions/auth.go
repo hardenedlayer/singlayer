@@ -27,6 +27,24 @@ func AuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(401, err)
 	}
-	// Do something with the user, maybe register them/sign them in
-	return c.Render(200, r.JSON(user))
+	session := c.Session()
+	session.Set("user_id", user.UserID)
+	err = session.Save()
+	if err != nil {
+		return c.Error(401, err)
+	}
+	c.Flash().Add("success", "You have been successfully logged in.")
+	return c.Redirect(307, "/")
+}
+
+func LoginHandler(c buffalo.Context) error {
+	return c.Render(200, r.HTML("login.html"))
+}
+
+func LogoutHandler(c buffalo.Context) error {
+	session := c.Session()
+	session.Clear()
+	session.Save()
+	c.Flash().Add("success", "You have been successfully logged out.")
+	return c.Redirect(307, "/")
 }
