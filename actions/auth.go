@@ -29,6 +29,10 @@ func AuthCallback(c buffalo.Context) error {
 	}
 	session := c.Session()
 	session.Set("user_id", user.UserID)
+	session.Set("user_name", user.Name)
+	session.Set("user_mail", user.Email)
+	session.Set("user_icon", user.AvatarURL)
+	session.Set("permissions", ":guest:")
 	err = session.Save()
 	if err != nil {
 		return c.Error(401, err)

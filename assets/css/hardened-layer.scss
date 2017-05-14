@@ -1,0 +1,61 @@
+$nav_height: 50px;
+
+body {
+	padding-top: ($nav_height + 10px);
+}
+
+.icon32 {
+	width: 32px; height: 32px;
+	&.round { border-radius: 16px; }
+	&.border { border: 1px solid black; }
+}
+.icon24 {
+	width: 24px; height: 24px;
+	&.round { border-radius: 12px; }
+	&.border { border: 1px solid black; }
+}
+.avatar {
+	float: left;
+}
+@media screen and (max-width: 800px) {
+	.avatar { display: none; }
+}
+
+.navbar {
+	.navbar-brand .icon32 {
+		margin: ($nav_height - 32px) / 2 - 15px;
+	}
+	.dropdown .icon32 {
+		margin-top: ($nav_height - 32px -1) / 2 - 15px;
+		margin-bottom: ($nav_height - 32px -1) / 2 - 15px;
+	}
+	.icon32 {
+		margin: ($nav_height - 32px) / 2;
+	}
+}
+.navbar-default {
+	.navbar-nav > li > a:hover,
+	.navbar-nav > li > a:focus {
+		background-color: #f1f1f1;
+	}
+	.navbar-toggle {
+		border: 0;
+	}
+}
+
+
+.dropdown-menu {
+	padding: 0;
+	& > li > a {
+		padding: 7px 20px 7px 10px;
+		i.fa {
+			padding: 5px 5px 5px 0;
+			text-align: center;
+			width: 2em;
+		}
+	}
+	.divider {
+		margin: 0;
+	}
+}
+

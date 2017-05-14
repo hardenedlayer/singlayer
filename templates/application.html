@@ -1,19 +1,62 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Buffalo - Singlayer</title>
-    <link rel="stylesheet" href="/assets/application.css" type="text/css" media="all" />
-    <meta name="csrf-param" content="authenticity_token" />
-    <meta name="csrf-token" content="<%= authenticity_token %>" />
-  </head>
-  <body>
+<head>
+	<meta charset="utf-8">
+	<title>Singlayer, a Hardened Layer Service</title>
+	<link rel="stylesheet" href="/assets/application.css" type="text/css" media="all" />
+	<meta name="csrf-param" content="authenticity_token" />
+	<meta name="csrf-token" content="<%= authenticity_token %>" />
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">
+					<img class="icon32" alt="Singlayer"
+						src="/assets/images/hardened-circle.png">
+				</a>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">Singlayer</a>
+			</div>
+			<div class="collapse navbar-collapse" id="main-navbar-collapse">
+				<%= if (user_id) { %>
+				<ul class="nav navbar-nav">
+					<li><a href="/s" class="navbar-link">Landscape</a></li>
+					<li><a href="/t" class="navbar-link">Ticket</a></li>
+					<li><a href="/l" class="navbar-link">Link</a></li>
+					<%= if (user_is_admin) { %>
+					<li><a href="/n" class="navbar-link">Admin</a></li>
+					<% } %>
+				</ul>
+				<% } %>
+				<ul class="nav navbar-nav navbar-right">
+					<%= if (user_id) { %>
+					<img class="round border icon32 avatar" src="<%= user_icon %>">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user_name %> <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/m" class="navbar-link"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="/logout" class="navbar-link"><i aria-hidden="true" class="fa fa-sign-out"></i> Logout</a></li>
+						</ul>
+					</li>
+					<% } else { %>
+					<li><a href="/login" class="navbar-link">Login</a></li>
+					<% } %>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+<%= partial("flash.html") %>
 
-    <div class="container">
-      <%= partial("flash.html") %>
+<%= yield %>
+	</div>
 
-      <%= yield %>
-    </div>
-
-    <script src="/assets/application.js" type="text/javascript" charset="utf-8"></script>
-  </body>
+	<script src="/assets/application.js" type="text/javascript" charset="utf-8"></script>
+	</body>
 </html>

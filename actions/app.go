@@ -60,6 +60,7 @@ func App() *buffalo.App {
 		app.Middleware.Skip(AuthenticateHandler, LoginHandler, LogoutHandler)
 
 		app.Use(AuthenticateHandler)
+		app.Use(SessionInfoHandler)
 
 		app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
 	}
