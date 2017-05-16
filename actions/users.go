@@ -97,7 +97,7 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "User was created successfully")
 	// and redirect to the users index page
-	return c.Redirect(302, "/users/%s", user.ID)
+	return c.Redirect(302, "/users/%d", user.ID)
 }
 
 // Edit renders a edit formular for a user. This function is
@@ -148,7 +148,7 @@ func (v UsersResource) Update(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "User was updated successfully")
 	// and redirect to the users index page
-	return c.Redirect(302, "/users/%s", user.ID)
+	return c.Redirect(302, "/users/%d", user.ID)
 }
 
 // Destroy deletes a user from the DB. This function is mapped

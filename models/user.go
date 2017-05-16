@@ -12,14 +12,13 @@ import (
 )
 
 type User struct {
-	ID                uuid.UUID    `json:"id" db:"id"`
+	ID                int          `json:"id" db:"id"`
 	CreatedAt         time.Time    `json:"created_at" db:"created_at"`
 	UpdatedAt         time.Time    `json:"updated_at" db:"updated_at"`
-	ID                int          `json:"id" db:"id"`
-	AccountID         int          `json:"account_id" db:"account_id"`
-	ParentID          int          `json:"parent_id" db:"parent_id"`
+	AccountId         int          `json:"account_id" db:"account_id"`
+	ParentId          int          `json:"parent_id" db:"parent_id"`
 	Username          string       `json:"username" db:"username"`
-	ApiKey            string       `json:"api_key" db:"api_key"`
+	APIKey            string       `json:"api_key" db:"api_key"`
 	CompanyName       string       `json:"company_name" db:"company_name"`
 	Email             string       `json:"email" db:"email"`
 	FirstName         string       `json:"first_name" db:"first_name"`
@@ -53,10 +52,10 @@ func (u Users) String() string {
 func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.IntIsPresent{Field: u.ID, Name: "ID"},
-		&validators.IntIsPresent{Field: u.AccountID, Name: "AccountID"},
-		&validators.IntIsPresent{Field: u.ParentID, Name: "ParentID"},
+		&validators.IntIsPresent{Field: u.AccountId, Name: "AccountId"},
+		&validators.IntIsPresent{Field: u.ParentId, Name: "ParentId"},
 		&validators.StringIsPresent{Field: u.Username, Name: "Username"},
-		&validators.StringIsPresent{Field: u.ApiKey, Name: "ApiKey"},
+		&validators.StringIsPresent{Field: u.APIKey, Name: "APIKey"},
 		&validators.StringIsPresent{Field: u.CompanyName, Name: "CompanyName"},
 		&validators.StringIsPresent{Field: u.Email, Name: "Email"},
 		&validators.StringIsPresent{Field: u.FirstName, Name: "FirstName"},
