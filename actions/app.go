@@ -69,6 +69,8 @@ func App() *buffalo.App {
 		// s.Middleware.Skip(AdminPageKeeper, sing.Show)
 
 		app.GET("/me", MeHandler)
+
+		app.Resource("/users", UsersResource{&buffalo.BaseResource{}})
 	}
 
 	return app

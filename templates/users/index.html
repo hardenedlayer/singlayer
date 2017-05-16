@@ -1,0 +1,54 @@
+<h1>Users</h1>
+
+<p>
+  <a href="<%= newUserPath() %>" class="btn btn-primary">Create New User</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+  <th>Id</th>
+    <th>AccountId</th>
+    <th>ParentId</th>
+    <th>Username</th>
+    <th>ApiKey</th>
+    <th>CompanyName</th>
+    <th>Email</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>OpenTicketCount</th>
+    <th>TicketCount</th>
+    <th>HardwareCount</th>
+    <th>VirtualGuestCount</th>
+    <th>SingleId</th>
+    <th>LastBatch</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (user) in users { %>
+      <tr>
+      <td><%= user.Id %></td>
+        <td><%= user.AccountId %></td>
+        <td><%= user.ParentId %></td>
+        <td><%= user.Username %></td>
+        <td><%= user.ApiKey %></td>
+        <td><%= user.CompanyName %></td>
+        <td><%= user.Email %></td>
+        <td><%= user.FirstName %></td>
+        <td><%= user.LastName %></td>
+        <td><%= user.OpenTicketCount %></td>
+        <td><%= user.TicketCount %></td>
+        <td><%= user.HardwareCount %></td>
+        <td><%= user.VirtualGuestCount %></td>
+        <td><%= user.SingleId %></td>
+        <td><%= user.LastBatch %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= userPath({ user_id: user.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editUserPath({ user_id: user.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= userPath({ user_id: user.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
