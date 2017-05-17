@@ -5,6 +5,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/hardenedlayer/singlayer/models"
+	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/satori/go.uuid"
 	"github.com/softlayer/softlayer-go/session"
@@ -133,7 +134,7 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 		return err
 	}
 	c.Flash().Add("success", "User was destroyed successfully")
-	return c.Redirect(302, "/users")
+	return c.Redirect(302, "/me")
 }
 
 
@@ -142,18 +143,15 @@ func setupUser(c buffalo.Context, user *models.User) (err error) {
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 	service := services.GetAccountService(sess)
-	sl_user, err := service.GetCurrentUser()
+	sl_user, err := service.
+		Mask("id;accountId;parentId;companyName;email;firstName;lastName;ticketCount;openTicketCount;hardwareCount;virtualGuestCount").
+		GetCurrentUser()
 	if err != nil {
 		c.Logger().Errorf("cannot get current user from session: %v --", err)
 		return err
 	}
+	copier.Copy(user, sl_user)
 	user.ID = *sl_user.Id
-	user.AccountId = *sl_user.AccountId
-	user.ParentId = *sl_user.ParentId
-	user.CompanyName = *sl_user.CompanyName
-	user.Email = *sl_user.Email
-	user.FirstName = *sl_user.FirstName
-	user.LastName = *sl_user.LastName
 	user.LastBatch = time.Now()
 	c.Logger().Debugf("check user: %v ----", user)
 	return

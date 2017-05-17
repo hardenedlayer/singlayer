@@ -8,7 +8,30 @@
 <div class="row">
 	<div class="col-md-6">
 		<h2 class="underline">My Users</h2>
-		<p>Link your users</p>
+		<p><a href="<%= newUserPath() %>" class="btn btn-primary">New User</a></p>
+		<table class="table table-striped">
+			<thead>
+				<tr text-align="left">
+					<th>Username</th>
+					<th>Tickets</th>
+					<th>VSI/BM</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= for (user) in users { %>
+				<tr>
+					<td><%= user.Username %></td>
+					<td><%= user.OpenTicketCount %>/<%= user.TicketCount %></td>
+					<td><%= user.VirtualGuestCount %>/<%= user.HardwareCount %></td>
+					<td class="pull-right">
+						<a href="<%= userPath({ user_id: user.ID }) %>" class="btn btn-info">Vi</a>
+						<a href="<%= editUserPath({ user_id: user.ID }) %>" class="btn btn-warning">Ed</a>
+						<a href="<%= userPath({ user_id: user.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">De</a>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
 	</div>
 
 	<div class="col-md-6">

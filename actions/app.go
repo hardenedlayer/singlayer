@@ -64,13 +64,15 @@ func App() *buffalo.App {
 
 		s := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
 		s.Use(AdminPageKeeper)
-		// var sing buffalo.Resource
-		// sing = &SinglesResource{&buffalo.BaseResource{}}
-		// s.Middleware.Skip(AdminPageKeeper, sing.Show)
 
 		app.GET("/me", MeHandler)
 
-		app.Resource("/users", UsersResource{&buffalo.BaseResource{}})
+		s = app.Resource("/users", UsersResource{&buffalo.BaseResource{}})
+		s.Use(AdminPageKeeper)
+		var r buffalo.Resource
+		r = &UsersResource{&buffalo.BaseResource{}}
+		s.Middleware.Skip(AdminPageKeeper,
+				r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
 	}
 
 	return app
