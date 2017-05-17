@@ -19,13 +19,14 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 	font-size: $font-size;
 	line-height: 1.2;
 	padding: ($font-size / 3);
+	vertical-align: middle;
 }
 
 
 .page-head {
 	padding: 4px 0 8px;
 	border-bottom: 1px solid #ddd;
-	margin-bottom: 8px;
+	margin-bottom: $font_size;
 	& > h1 {
 		margin-top: 0;
 	}

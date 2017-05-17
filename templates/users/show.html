@@ -1,56 +1,35 @@
-<h1>Users#Show</h1>
+<div class="row page-head">
+	<h1>User "<%= user.Username %>"</h1>
+</div>
+
+<div class="row">
+<div class="col-md-12">
 
 <ul class="list-unstyled list-inline">
   <li><a href="<%= usersPath() %>" class="btn btn-info">Back to all Users</a></li>
   <li><a href="<%= editUserPath({ user_id: user.ID })%>" class="btn btn-warning">Edit</a></li>
-  <li><a href="<%= userPath({ user_id: user.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+  <li><a href="<%= userPath({ user_id: user.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Delete</a>
 </ul>
 
-<p>
-  <strong>ID</strong>: <%= user.ID %>
-</p>
-<p>
-  <strong>AccountId</strong>: <%= user.AccountId %>
-</p>
-<p>
-  <strong>ParentId</strong>: <%= user.ParentId %>
-</p>
-<p>
-  <strong>Username</strong>: <%= user.Username %>
-</p>
-<p>
-  <strong>APIKey</strong>: <%= user.APIKey %>
-</p>
-<p>
-  <strong>CompanyName</strong>: <%= user.CompanyName %>
-</p>
-<p>
-  <strong>Email</strong>: <%= user.Email %>
-</p>
-<p>
-  <strong>FirstName</strong>: <%= user.FirstName %>
-</p>
-<p>
-  <strong>LastName</strong>: <%= user.LastName %>
-</p>
-<p>
-  <strong>OpenTicketCount</strong>: <%= user.OpenTicketCount %>
-</p>
-<p>
-  <strong>TicketCount</strong>: <%= user.TicketCount %>
-</p>
-<p>
-  <strong>HardwareCount</strong>: <%= user.HardwareCount %>
-</p>
-<p>
-  <strong>VirtualGuestCount</strong>: <%= user.VirtualGuestCount %>
-</p>
-<p>
-  <strong>Permissions</strong>: <%= user.Permissions %>
-</p>
-<p>
-  <strong>SingleID</strong>: <%= user.SingleID %>
-</p>
-<p>
-  <strong>LastBatch</strong>: <%= user.LastBatch %>
-</p>
+<table class="table table-striped">
+  <tbody>
+    <tr><td>ID</td><td><%= user.ID %></td></tr>
+    <tr><td>AccountId</td><td><%= user.AccountId %></td></tr>
+    <tr><td>ParentId</td><td><%= user.ParentId %></td></tr>
+    <tr><td>Username</td><td><%= user.Username %></td></tr>
+    <tr><td>APIKey</td><td><%= user.APIKey %></td></tr>
+    <tr><td>Email</td><td><%= user.Email %></td></tr>
+    <tr><td>CompanyName</td><td><%= user.CompanyName %></td></tr>
+    <tr><td>FirstName</td><td><%= user.FirstName %></td></tr>
+    <tr><td>LastName</td><td><%= user.LastName %></td></tr>
+    <tr><td>OpenTicketCount</td><td><%= user.OpenTicketCount %></td></tr>
+    <tr><td>TicketCount</td><td><%= user.TicketCount %></td></tr>
+    <tr><td>VirtualGuestCount</td><td><%= user.VirtualGuestCount %></td></tr>
+    <tr><td>HardwareCount</td><td><%= user.HardwareCount %></td></tr>
+    <tr><td>SingleID</td><td><%= user.SingleID %></td></tr>
+    <tr><td>LastBatch</td><td><%= user.LastBatch %></td></tr>
+  </tbody>
+</table>
+
+</div>
+</div>
