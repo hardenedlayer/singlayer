@@ -23,10 +23,10 @@ type User struct {
 	Email             string       `json:"email" db:"email"`
 	FirstName         string       `json:"first_name" db:"first_name"`
 	LastName          string       `json:"last_name" db:"last_name"`
-	OpenTicketCount   uint         `json:"open_ticket_count" db:"open_ticket_count"`
-	TicketCount       uint         `json:"ticket_count" db:"ticket_count"`
-	HardwareCount     uint         `json:"hardware_count" db:"hardware_count"`
-	VirtualGuestCount uint         `json:"virtual_guest_count" db:"virtual_guest_count"`
+	OpenTicketCount   int          `json:"open_ticket_count" db:"open_ticket_count"`
+	TicketCount       int          `json:"ticket_count" db:"ticket_count"`
+	HardwareCount     int          `json:"hardware_count" db:"hardware_count"`
+	VirtualGuestCount int          `json:"virtual_guest_count" db:"virtual_guest_count"`
 	Permissions       nulls.String `json:"permissions" db:"permissions"`
 	SingleID          uuid.UUID    `json:"single_id" db:"single_id"`
 	LastBatch         time.Time    `json:"last_batch" db:"last_batch"`
