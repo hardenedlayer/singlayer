@@ -6,6 +6,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/middleware"
 	"github.com/gobuffalo/buffalo/middleware/i18n"
+	"github.com/gorilla/sessions"
 
 	"github.com/hardenedlayer/singlayer/models"
 
@@ -27,8 +28,9 @@ var T *i18n.Translator
 func App() *buffalo.App {
 	if app == nil {
 		app = buffalo.Automatic(buffalo.Options{
-			Env:         ENV,
-			SessionName: "_singlayer_session",
+			Env:          ENV,
+			SessionStore: newSessionStore(ENV),
+			SessionName:  "_singlayer_session",
 		})
 		if ENV == "development" {
 			app.Use(middleware.ParameterLogger)
@@ -76,4 +78,14 @@ func App() *buffalo.App {
 	}
 
 	return app
+}
+
+func newSessionStore(env string) (sessions.Store) {
+	secret := envy.Get("SESSION_SECRET", "")
+	if env == "production" && secret == "" {
+		log.Fatal("FATAL! set SESSION_SECRET env variable for your security!")
+	}
+	cookieStore := sessions.NewCookieStore([]byte(secret))
+	cookieStore.MaxAge(60 * 60 * 1)
+	return cookieStore
 }
