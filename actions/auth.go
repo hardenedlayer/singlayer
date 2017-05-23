@@ -33,12 +33,6 @@ func AuthCallback(c buffalo.Context) error {
 		return c.Error(401, err)
 	}
 	c.Logger().Debugf("user: %v ---", user)
-	if user.Email == "" {
-		c.Flash().Add("danger",
-			"Sorry but unacceptable account. (no email provided)")
-		return c.Redirect(307, "/")
-	}
-	c.Flash().Add("success", "You have been successfully logged in.")
 
 	singles := &models.Singles{}
 	single := &models.Single{}
@@ -54,8 +48,13 @@ func AuthCallback(c buffalo.Context) error {
 	if len(*singles) == 1 {
 		// TODO action logging
 		single = &(*singles)[0]
-		c.Flash().Add("info", "Welcome back! I missed you...")
+		c.Flash().Add("success", "Welcome back! I missed you...")
 	} else if len(*singles) == 0 {
+		if user.Email == "" {
+			c.Flash().Add("danger",
+				"Sorry but unacceptable account. (no email provided)")
+			return c.Redirect(307, "/login")
+		}
 		// TODO action logging
 		single.Provider = user.Provider
 		single.Email = user.Email

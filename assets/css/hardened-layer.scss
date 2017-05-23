@@ -12,6 +12,11 @@ $font_color: #222;
 	vertical-align: middle !important;
 }
 
+.icon96 {
+	width: 96px; height: 96px;
+	&.round { border-radius: 48px; }
+	&.border { border: 1px solid black; }
+}
 .icon32 {
 	width: 32px; height: 32px;
 	&.round { border-radius: 16px; }
