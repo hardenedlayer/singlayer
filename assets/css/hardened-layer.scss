@@ -35,7 +35,7 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 }
 
 .underline { border-bottom: 1px solid ($font_color + #999); }
-.pull-right { text-align: right; }
+.text-right { text-align: right; }
 
 
 .icon32 {
@@ -114,6 +114,16 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 }
 
 .btn {
-	border-radius: 0px;
-	padding: 3px 6px;
+	&.btn-w8 {
+		width: 8.2em;
+	}
+	&.btn-w6 {
+		width: 6.2em;
+	}
+	&.btn-w4 {
+		width: 4.2em;
+	}
+	&.btn-w2 {
+		width: 2.2em;
+	}
 }
