@@ -1,15 +1,30 @@
-<h1>Singles</h1>
+<div class="row page-header">
+	<h1>Singles</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			  There is no special registration process for single.
+				The singles are registered automatically by first login via
+				social SSO. (e.g. Google)
+				By register, single will be joined as 'Guest' by default and
+				additional permissions can be given by service administrator.
+				Single can request a permission by email to administrator.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Registered Singles
+	</div>
+</div>
 
-<p>
-  <a href="<%= newSinglePath() %>" class="btn btn-primary">Create New Single</a>
-</p>
+<div class="row">
+<div class="col-md-12">
 
 <table class="table table-striped">
   <thead>
     <th>&nbsp;</th>
     <th>Name</th>
     <th>Email</th>
-    <th>Provider/UserID</th>
+    <th>Provider</th>
     <th>Organization</th>
     <th>Permissions</th>
     <th>&nbsp;</th>
@@ -18,16 +33,16 @@
     <%= for (single) in singles { %>
       <tr>
 				<td><img class="icon24" src="<%= single.AvatarUrl %>"></td>
-        <td><%= single.Name %></td>
+				<td><a href="<%= singlePath({ single_id: single.ID }) %>"><%= single.Name %></a></td>
         <td><%= single.Email %></td>
-        <td><%= single.Provider %>/<%= single.UserID %></td>
+				<td><span data-toggle="tooltip" data-placement="top" title="<%= single.UserID %>"><%= single.Provider %></span></td>
         <td><%= single.Organization %></td>
         <td><%= single.Permissions %></td>
         <td>
           <div class="pull-right">
-            <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editSinglePath({ single_id: single.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+            <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-sm btn-info">View</a>
+            <a href="<%= editSinglePath({ single_id: single.ID }) %>" class="btn btn-sm btn-warning">Edit</a>
+            <a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Delete</a>
           </div>
         </td>
       </tr>

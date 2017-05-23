@@ -1,5 +1,13 @@
-<div class="row page-head">
-	<h1>Edit User Credential</h1>
+<div class="row page-header">
+	<h1>Edit credential for <span class="sing-data"><%= user.Username %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			If you changed the API Key for this user from Bluemix portal,
+			please update API Key on this page. If you submit this form,
+			I will check the credential and update this user.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
 	<div>
 		Enter valid Bluemix ID and API Key and Press "Save" button.
 	</div>

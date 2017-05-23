@@ -1,6 +1,34 @@
-<h1>Edit Single</h1>
+<div class="row page-header">
+	<h1>Edit profile for <span class="sing-data"><%= single.Name %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+				'Permissions' is a list of 'colon surrounded' names of application
+				features. (e.g. :admin:)
+				'Organization' and 'Note' are records (non-functional).
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Edit user's organization, permissions and notes.
+	</div>
+</div>
 
+<div class="row">
+<div class="col-md-8 col-md-offset-2">
+	<table class="table table-striped">
+		<tbody>
+			<tr><td>Name</td><td><%= single.Name %></td>
+				<td rowspan="4" class="text-right"><img
+					src="<%= single.AvatarUrl %>"></td>
+			</tr>
+			<tr><td>Email</td><td><%= single.Email %></td></tr>
+			<tr><td>Provider</td><td><%= single.Provider %></td></tr>
+			<tr><td>UserID</td><td><%= single.UserID %></td></tr>
+		</tbody>
+	</table>
 <%= form_for(single, {action: singlePath({ single_id: single.ID }), method: "PUT", errors: errors}) { %>
-  <%= partial("singles/form.html") %>
-  <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<%= partial("singles/form.html") %>
+	<a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>
+</div>
+</div>

@@ -1,14 +1,6 @@
-$nav_height: 50px;
+$nav_height: 40px;
 $font_size: 14px;
 $font_color: #222;
-
-body {
-	padding-top: ($nav_height + 10px);
-	font-size: $font-size;
-}
-h1, .h1 { font-size: ($font_size * 1.6) !important; }
-h2, .h2 { font-size: ($font_size * 1.4) !important; }
-h3, .h3 { font-size: ($font_size * 1.2) !important; }
 
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -17,26 +9,8 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
 	font-size: $font-size;
-	line-height: 1.2;
-	padding: ($font-size / 3);
-	vertical-align: middle;
+	vertical-align: middle !important;
 }
-
-
-.page-head {
-	padding: 4px 0 8px;
-	border-bottom: 1px solid #ddd;
-	margin-bottom: $font_size;
-	& > h1 {
-		margin-top: 0;
-	}
-	& > div {
-	}
-}
-
-.underline { border-bottom: 1px solid ($font_color + #999); }
-.text-right { text-align: right; }
-
 
 .icon32 {
 	width: 32px; height: 32px;
@@ -51,56 +25,39 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 .avatar {
 	float: left;
 }
+
+.sing-data {
+	color: #f0f0f0;
+}
+
+
 @media screen and (max-width: 754px) {
 	.avatar { display: none; }
 	.navbar-brand.navbar-logo {
 		margin-right: -15px;
 	}
 }
-
-.overlay-flash {
-	left: 50%;
-	opacity: 0.95;
-	position: fixed;
-	width: 100%;
-	z-index: 999;
-	.alert {
-		box-shadow: 2px 2px 4px;
-	}
-}
-
-
-// * customize bootstrap
 .navbar {
 	.navbar-brand .icon32 {
-		margin: ($nav_height - 32px) / 2 - 15px;
-	}
-	.dropdown .icon32 {
-		margin-top: ($nav_height - 32px -1) / 2 - 15px;
-		margin-bottom: ($nav_height - 32px -1) / 2 - 15px;
+		margin: ($nav_height - 32px) / 2 - 10px;
 	}
 	.icon32 {
 		margin: ($nav_height - 32px) / 2;
 	}
 }
 .navbar-default {
-	.navbar-nav > li > a:hover,
-	.navbar-nav > li > a:focus {
-		background-color: #f1f1f1;
-	}
 	.navbar-toggle {
 		border: 0;
 	}
 }
 
-
 .dropdown-menu {
-	padding: 0;
+	padding: 0 !important;
 	& > li > span,
 	& > li > a {
 		color: #aaa;
 		display: block;
-		padding: 7px 20px 7px 10px;
+		padding: 3px 20px 3px 10px !important;
 		white-space: nowrap;
 		i.fa {
 			padding: 5px 5px 5px 0;
@@ -109,21 +66,23 @@ h3, .h3 { font-size: ($font_size * 1.2) !important; }
 		}
 	}
 	.divider {
-		margin: 0;
+		margin: 0 !important;
 	}
 }
 
-.btn {
-	&.btn-w8 {
-		width: 8.2em;
-	}
-	&.btn-w6 {
-		width: 6.2em;
-	}
-	&.btn-w4 {
-		width: 4.2em;
-	}
-	&.btn-w2 {
-		width: 2.2em;
+.page-header {
+	.page-help {
+		float: right;
 	}
 }
+
+.overlay-flash {
+	left: 50%;
+	top: ($nav_height + 10px);
+	opacity: 0.95;
+	position: fixed;
+	width: 100%;
+	z-index: 999;
+}
+
+.jumbotron > h1 > img { width: ($font_size * 4); }
