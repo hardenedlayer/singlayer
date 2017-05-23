@@ -73,7 +73,13 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	if id, ok := c.Session().Get("user_id").(uuid.UUID); ok {
 		user.SingleID = id
 	}
-	setupUser(c, user)
+	err = setupUser(c, user)
+	if err != nil {
+		c.Set("user", user)
+		c.Set("error", err)
+		c.Logger().Errorf("SETUP ERROR: %v --", err)
+		return c.Render(422, r.HTML("users/edit.html"))
+	}
 
 	c.Logger().Debugf("about to create an user: %v ----", user)
 	verrs, err := tx.ValidateAndCreate(user)
@@ -103,6 +109,13 @@ func (v UsersResource) Update(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("cannot bind with new data: %v --", err)
 		return err
+	}
+	err = setupUser(c, user)
+	if err != nil {
+		c.Set("user", user)
+		c.Set("error", err)
+		c.Logger().Errorf("SETUP ERROR: %v --", err)
+		return c.Render(422, r.HTML("users/edit.html"))
 	}
 
 	c.Logger().Debugf("about to update an user: %v ----", user)
@@ -147,7 +160,7 @@ func setupUser(c buffalo.Context, user *models.User) (err error) {
 		Mask("id;accountId;parentId;companyName;email;firstName;lastName;ticketCount;openTicketCount;hardwareCount;virtualGuestCount").
 		GetCurrentUser()
 	if err != nil {
-		c.Logger().Errorf("cannot get current user from session: %v --", err)
+		c.Logger().Errorf("softlayer api exception: %v --", err)
 		return err
 	}
 	copier.Copy(user, sl_user)

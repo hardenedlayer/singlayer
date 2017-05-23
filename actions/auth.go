@@ -32,6 +32,12 @@ func AuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(401, err)
 	}
+	c.Logger().Debugf("user: %v ---", user)
+	if user.Email == "" {
+		c.Flash().Add("danger",
+			"Sorry but unacceptable account. (no email provided)")
+		return c.Redirect(307, "/")
+	}
 	c.Flash().Add("success", "You have been successfully logged in.")
 
 	singles := &models.Singles{}

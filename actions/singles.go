@@ -60,46 +60,6 @@ func (v SinglesResource) Show(c buffalo.Context) error {
 	return c.Render(200, r.HTML("singles/show.html"))
 }
 
-// New renders the formular for creating a new single.
-// This function is mapped to the path GET /singles/new
-func (v SinglesResource) New(c buffalo.Context) error {
-	// Make single available inside the html template
-	c.Set("single", &models.Single{})
-	return c.Render(200, r.HTML("singles/new.html"))
-}
-
-// Create adds a single to the DB. This function is mapped to the
-// path POST /singles
-func (v SinglesResource) Create(c buffalo.Context) error {
-	// Allocate an empty Single
-	single := &models.Single{}
-	// Bind single to the html form elements
-	err := c.Bind(single)
-	if err != nil {
-		return err
-	}
-	// Get the DB connection from the context
-	tx := c.Value("tx").(*pop.Connection)
-	// Validate the data from the html form
-	verrs, err := tx.ValidateAndCreate(single)
-	if err != nil {
-		return err
-	}
-	if verrs.HasAny() {
-		// Make single available inside the html template
-		c.Set("single", single)
-		// Make the errors available inside the html template
-		c.Set("errors", verrs)
-		// Render again the new.html template that the user can
-		// correct the input.
-		return c.Render(422, r.HTML("singles/new.html"))
-	}
-	// If there are no errors set a success message
-	c.Flash().Add("success", "Single was created successfully")
-	// and redirect to the singles index page
-	return c.Redirect(302, "/singles/%s", single.ID)
-}
-
 // Edit renders a edit formular for a single. This function is
 // mapped to the path GET /singles/{single_id}/edit
 func (v SinglesResource) Edit(c buffalo.Context) error {
