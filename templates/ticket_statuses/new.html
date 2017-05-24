@@ -1,0 +1,6 @@
+<h1>New TicketStatuse</h1>
+
+<%= form_for(ticketStatuse, {action: ticketStatusesPath(), method: "POST", errors: errors}) { %>
+  <%= partial("ticket_statuses/form.html") %>
+  <a href="<%= ticketStatusesPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

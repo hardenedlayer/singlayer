@@ -79,6 +79,7 @@ func App() *buffalo.App {
 		app.Resource("/tickets", TicketsResource{&buffalo.BaseResource{}})
 		app.Resource("/ticket_subjects", TicketSubjectsResource{&buffalo.BaseResource{}})
 		app.Resource("/ticket_groups", TicketGroupsResource{&buffalo.BaseResource{}})
+		app.Resource("/ticket_statuses", TicketStatusesResource{&buffalo.BaseResource{}})
 	}
 
 	return app
