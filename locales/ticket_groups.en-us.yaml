@@ -1,0 +1,6 @@
+- id: "ticket_groups.created.success"
+  translation: "TicketGroup was successfully created."
+- id: "ticket_groups.updated.success"
+  translation: "TicketGroup was successfully updated."
+- id: "ticket_groups.destroyed.success"
+  translation: "TicketGroup was successfully destroyed."

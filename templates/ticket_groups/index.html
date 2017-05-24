@@ -1,0 +1,30 @@
+<h1>TicketGroups</h1>
+
+<p>
+  <a href="<%= newTicketGroupPath() %>" class="btn btn-primary">Create New TicketGroup</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+    <th>ID</th>
+    <th>TicketGroupCategoryId</th>
+    <th>Name</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (ticketGroup) in ticketGroups { %>
+      <tr>
+        <td><%= ticketGroup.ID %></td>
+        <td><%= ticketGroup.TicketGroupCategoryId %></td>
+        <td><%= ticketGroup.Name %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= ticketGroupPath({ ticket_group_id: ticketGroup.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editTicketGroupPath({ ticket_group_id: ticketGroup.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= ticketGroupPath({ ticket_group_id: ticketGroup.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
