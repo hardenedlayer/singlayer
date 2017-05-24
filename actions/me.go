@@ -27,5 +27,6 @@ func MeHandler(c buffalo.Context) (err error) {
 
 	c.Set("users", users)
 
+	c.Set("theme", "default")
 	return c.Render(200, r.HTML("me.html"))
 }

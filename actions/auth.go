@@ -38,7 +38,6 @@ func AuthCallback(c buffalo.Context) error {
 	single := &models.Single{}
 	tx := c.Value("tx").(*pop.Connection)
 	q := tx.Where("provider=?", user.Provider).Where("user_id=?", user.UserID)
-
 	err = q.All(singles)
 	if err != nil {
 		// TODO add error recognition code and check the error page:
@@ -96,6 +95,7 @@ func AuthCallback(c buffalo.Context) error {
 }
 
 func LoginHandler(c buffalo.Context) error {
+	c.Set("theme", "default")
 	return c.Render(200, r.HTML("login.html"))
 }
 

@@ -28,6 +28,7 @@ func (v UsersResource) List(c buffalo.Context) error {
 		return err
 	}
 	c.Set("users", users)
+	c.Set("theme", "admin")
 	return c.Render(200, r.HTML("users/index.html"))
 }
 
@@ -39,6 +40,7 @@ func (v UsersResource) Show(c buffalo.Context) error {
 		return err
 	}
 	c.Set("user", user)
+	c.Set("theme", "default")
 	return c.Render(200, r.HTML("users/show.html"))
 }
 
@@ -46,6 +48,7 @@ func (v UsersResource) Show(c buffalo.Context) error {
 // New and Edit: generated a form for create and update
 func (v UsersResource) New(c buffalo.Context) error {
 	c.Set("user", &models.User{})
+	c.Set("theme", "default")
 	return c.Render(200, r.HTML("users/new.html"))
 }
 
@@ -58,6 +61,7 @@ func (v UsersResource) Edit(c buffalo.Context) error {
 		return err
 	}
 	c.Set("user", user)
+	c.Set("theme", "default")
 	return c.Render(200, r.HTML("users/edit.html"))
 }
 
@@ -73,11 +77,23 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	if id, ok := c.Session().Get("user_id").(uuid.UUID); ok {
 		user.SingleID = id
 	}
+
+	users := &models.Users{}
+	err = tx.Where("username=?", user.Username).All(users)
+	if err != nil {
+		return c.Error(501, err)
+	}
+	if len(*users) != 0 {
+		c.Flash().Add("danger", "The user you submit is already exists.")
+		return c.Redirect(302, "/users/new")
+	}
+
 	err = setupUser(c, user)
 	if err != nil {
 		c.Set("user", user)
 		c.Set("error", err)
 		c.Logger().Errorf("SETUP ERROR: %v --", err)
+		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 
@@ -91,6 +107,7 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("errors", verrs)
 		c.Logger().Errorf("validation errors: %v --", verrs)
+		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/new.html"))
 	}
 	c.Flash().Add("success", "User was created successfully")
@@ -115,6 +132,7 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("error", err)
 		c.Logger().Errorf("SETUP ERROR: %v --", err)
+		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 
@@ -128,6 +146,7 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("errors", verrs)
 		c.Logger().Errorf("validation errors: %v --", verrs)
+		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 	c.Flash().Add("success", "User was updated successfully")

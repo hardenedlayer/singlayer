@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 	<title>Singlayer, a Hardened Layer Service</title>
 	<link rel="stylesheet" href="/assets/application.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="/assets/themes/dark/bootstrap-theme.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="/assets/themes/<%= theme %>/theme.css" type="text/css" media="all" />
 	<link rel="shortcut icon" href="/assets/images/favicon.png">
 	<meta name="csrf-param" content="authenticity_token" />
 	<meta name="csrf-token" content="<%= authenticity_token %>" />
@@ -34,8 +34,8 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<%= singlesPath() %>" class="navbar-link"><i aria-hidden="true" class="fa fa-address-card"></i> Singles</a></li>
-							<li><a href="<%= usersPath() %>" class="navbar-link"><i aria-hidden="true" class="fa fa-users"></i> Users</a></li>
+							<li><a href="<%= singlesPath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> Singles</a></li>
+							<li><a href="<%= usersPath() %>"><i aria-hidden="true" class="fa fa-users"></i> Users</a></li>
 						</ul>
 					</li>
 					<% } %>
@@ -53,9 +53,9 @@
 							<li><span><i aria-hidden="true" class="fa fa-star-o"></i> Administrator</span></li>
 							<% } %>
 							<li role="separator" class="divider"></li>
-							<li><a href="<%= mePath() %>" class="navbar-link"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
+							<li><a href="<%= mePath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="/logout" class="navbar-link"><i aria-hidden="true" class="fa fa-sign-out"></i> Logout</a></li>
+							<li><a href="/logout"><i aria-hidden="true" class="fa fa-sign-out"></i> Logout</a></li>
 						</ul>
 					</li>
 					<% } else { %>

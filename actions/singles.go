@@ -40,6 +40,7 @@ func (v SinglesResource) List(c buffalo.Context) error {
 	}
 	// Make singles available inside the html template
 	c.Set("singles", singles)
+	c.Set("theme", "admin")
 	return c.Render(200, r.HTML("singles/index.html"))
 }
 
@@ -57,6 +58,7 @@ func (v SinglesResource) Show(c buffalo.Context) error {
 	}
 	// Make single available inside the html template
 	c.Set("single", single)
+	c.Set("theme", "admin")
 	return c.Render(200, r.HTML("singles/show.html"))
 }
 
@@ -73,6 +75,7 @@ func (v SinglesResource) Edit(c buffalo.Context) error {
 	}
 	// Make single available inside the html template
 	c.Set("single", single)
+	c.Set("theme", "admin")
 	return c.Render(200, r.HTML("singles/edit.html"))
 }
 
@@ -103,6 +106,7 @@ func (v SinglesResource) Update(c buffalo.Context) error {
 		c.Set("errors", verrs)
 		// Render again the edit.html template that the user can
 		// correct the input.
+		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("singles/edit.html"))
 	}
 	// If there are no errors set a success message

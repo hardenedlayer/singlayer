@@ -32,7 +32,7 @@ $font_color: #222;
 }
 
 .sing-data {
-	color: #f0f0f0;
+	text-shadow: 1px 1px 2px #888;
 }
 
 
@@ -60,7 +60,6 @@ $font_color: #222;
 	padding: 0 !important;
 	& > li > span,
 	& > li > a {
-		color: #aaa;
 		display: block;
 		padding: 3px 20px 3px 10px !important;
 		white-space: nowrap;
