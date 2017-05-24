@@ -1,0 +1,6 @@
+- id: "ticket_subjects.created.success"
+  translation: "TicketSubject was successfully created."
+- id: "ticket_subjects.updated.success"
+  translation: "TicketSubject was successfully updated."
+- id: "ticket_subjects.destroyed.success"
+  translation: "TicketSubject was successfully destroyed."

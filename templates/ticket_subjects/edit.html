@@ -1,0 +1,6 @@
+<h1>Edit TicketSubject</h1>
+
+<%= form_for(ticketSubject, {action: ticketSubjectPath({ ticket_subject_id: ticketSubject.ID }), method: "PUT", errors: errors}) { %>
+  <%= partial("ticket_subjects/form.html") %>
+  <a href="<%= ticketSubjectPath({ ticket_subject_id: ticketSubject.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

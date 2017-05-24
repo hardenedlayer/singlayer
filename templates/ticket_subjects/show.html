@@ -1,0 +1,17 @@
+<h1>TicketSubjects#Show</h1>
+
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= ticketSubjectsPath() %>" class="btn btn-info">Back to all TicketSubjects</a></li>
+  <li><a href="<%= editTicketSubjectPath({ ticket_subject_id: ticketSubject.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= ticketSubjectPath({ ticket_subject_id: ticketSubject.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>ID</strong>: <%= ticketSubject.ID %>
+</p>
+<p>
+  <strong>CategoryId</strong>: <%= ticketSubject.CategoryId %>
+</p>
+<p>
+  <strong>Name</strong>: <%= ticketSubject.Name %>
+</p>

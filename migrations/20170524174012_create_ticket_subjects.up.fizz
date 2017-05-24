@@ -1,0 +1,5 @@
+create_table("ticket_subjects", func(t) {
+	t.Column("id", "integer", {"primary": true})
+	t.Column("category_id", "integer", {})
+	t.Column("name", "string", {})
+})
