@@ -1,0 +1,12 @@
+create_table("tickets", func(t) {
+	t.Column("id", "integer", {"primary": true})
+	t.Column("account_id", "integer", {})
+	t.Column("assigned_user_id", "integer", {"null": true})
+	t.Column("subject_id", "integer", {"null": true})
+	t.Column("group_id", "integer", {"null": true})
+	t.Column("status_id", "integer", {})
+	t.Column("title", "string", {})
+	t.Column("create_date", "timestamp", {})
+	t.Column("last_edit_date", "timestamp", {})
+	t.Column("last_edit_type", "string", {})
+})

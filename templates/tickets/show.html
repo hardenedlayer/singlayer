@@ -1,0 +1,38 @@
+<h1>Tickets#Show</h1>
+
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= ticketsPath() %>" class="btn btn-info">Back to all Tickets</a></li>
+  <li><a href="<%= editTicketPath({ ticket_id: ticket.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= ticketPath({ ticket_id: ticket.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>ID</strong>: <%= ticket.ID %>
+</p>
+<p>
+  <strong>AccountId</strong>: <%= ticket.AccountId %>
+</p>
+<p>
+  <strong>AssignedUserId</strong>: <%= ticket.AssignedUserId %>
+</p>
+<p>
+  <strong>SubjectId</strong>: <%= ticket.SubjectId %>
+</p>
+<p>
+  <strong>GroupId</strong>: <%= ticket.GroupId %>
+</p>
+<p>
+  <strong>StatusId</strong>: <%= ticket.StatusId %>
+</p>
+<p>
+  <strong>Title</strong>: <%= ticket.Title %>
+</p>
+<p>
+  <strong>CreateDate</strong>: <%= ticket.CreateDate %>
+</p>
+<p>
+  <strong>LastEditDate</strong>: <%= ticket.LastEditDate %>
+</p>
+<p>
+  <strong>LastEditType</strong>: <%= ticket.LastEditType %>
+</p>

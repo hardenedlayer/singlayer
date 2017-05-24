@@ -76,6 +76,7 @@ func App() *buffalo.App {
 		s.Middleware.Skip(AdminPageKeeper,
 			r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
 		app.Resource("/accounts", AccountsResource{&buffalo.BaseResource{}})
+		app.Resource("/tickets", TicketsResource{&buffalo.BaseResource{}})
 	}
 
 	return app
