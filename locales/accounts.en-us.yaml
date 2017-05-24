@@ -1,0 +1,6 @@
+- id: "accounts.created.success"
+  translation: "Account was successfully created."
+- id: "accounts.updated.success"
+  translation: "Account was successfully updated."
+- id: "accounts.destroyed.success"
+  translation: "Account was successfully destroyed."

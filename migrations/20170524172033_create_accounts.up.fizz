@@ -1,0 +1,9 @@
+create_table("accounts", func(t) {
+	t.Column("id", "integer", {"primary": true})
+	t.Column("brand_id", "integer", {"null": true})
+	t.Column("company_name", "string", {})
+	t.Column("email", "string", {"null": true})
+	t.Column("first_name", "string", {"null": true})
+	t.Column("last_name", "string", {"null": true})
+	t.Column("last_batch", "timestamp", {})
+})

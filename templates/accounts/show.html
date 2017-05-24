@@ -1,0 +1,29 @@
+<h1>Accounts#Show</h1>
+
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= accountsPath() %>" class="btn btn-info">Back to all Accounts</a></li>
+  <li><a href="<%= editAccountPath({ account_id: account.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= accountPath({ account_id: account.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>ID</strong>: <%= account.ID %>
+</p>
+<p>
+  <strong>BrandId</strong>: <%= account.BrandId %>
+</p>
+<p>
+  <strong>CompanyName</strong>: <%= account.CompanyName %>
+</p>
+<p>
+  <strong>Email</strong>: <%= account.Email %>
+</p>
+<p>
+  <strong>FirstName</strong>: <%= account.FirstName %>
+</p>
+<p>
+  <strong>LastName</strong>: <%= account.LastName %>
+</p>
+<p>
+  <strong>LastBatch</strong>: <%= account.LastBatch %>
+</p>

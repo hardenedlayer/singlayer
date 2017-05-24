@@ -74,13 +74,14 @@ func App() *buffalo.App {
 		var r buffalo.Resource
 		r = &UsersResource{&buffalo.BaseResource{}}
 		s.Middleware.Skip(AdminPageKeeper,
-				r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
+			r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
+		app.Resource("/accounts", AccountsResource{&buffalo.BaseResource{}})
 	}
 
 	return app
 }
 
-func newSessionStore(env string) (sessions.Store) {
+func newSessionStore(env string) sessions.Store {
 	secret := envy.Get("SESSION_SECRET", "")
 	if env == "production" && secret == "" {
 		log.Fatal("FATAL! set SESSION_SECRET env variable for your security!")

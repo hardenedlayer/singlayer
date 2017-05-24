@@ -1,0 +1,38 @@
+<h1>Accounts</h1>
+
+<p>
+  <a href="<%= newAccountPath() %>" class="btn btn-primary">Create New Account</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+    <th>ID</th>
+    <th>BrandId</th>
+    <th>CompanyName</th>
+    <th>Email</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>LastBatch</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (account) in accounts { %>
+      <tr>
+        <td><%= account.ID %></td>
+        <td><%= account.BrandId %></td>
+        <td><%= account.CompanyName %></td>
+        <td><%= account.Email %></td>
+        <td><%= account.FirstName %></td>
+        <td><%= account.LastName %></td>
+        <td><%= account.LastBatch %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editAccountPath({ account_id: account.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
