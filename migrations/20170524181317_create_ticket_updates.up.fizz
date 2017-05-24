@@ -1,0 +1,8 @@
+create_table("ticket_updates", func(t) {
+	t.Column("id", "integer", {"primary": true})
+	t.Column("ticket_id", "integer", {})
+	t.Column("editor_id", "integer", {})
+	t.Column("editor_type", "string", {})
+	t.Column("entry", "text", {})
+	t.Column("create_date", "timestamp", {})
+})
