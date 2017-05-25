@@ -71,19 +71,19 @@ func App() *buffalo.App {
 		// resource based routes
 		var r buffalo.Resource
 
-		s := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
-		s.Use(AdminPageKeeper)
+		g := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
+		g.Use(AdminPageKeeper)
 
-		s = app.Resource("/users", UsersResource{&buffalo.BaseResource{}})
-		s.Use(AdminPageKeeper)
 		r = &UsersResource{&buffalo.BaseResource{}}
-		s.Middleware.Skip(AdminPageKeeper,
+		g = app.Resource("/users", r)
+		g.Use(AdminPageKeeper)
+		g.Middleware.Skip(AdminPageKeeper,
 			r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
 
-		s = app.Resource("/accounts", AccountsResource{&buffalo.BaseResource{}})
-		s.Use(AdminPageKeeper)
 		r = &AccountsResource{&buffalo.BaseResource{}}
-		s.Middleware.Skip(AdminPageKeeper, r.Show)
+		g = app.Resource("/accounts", r)
+		g.Use(AdminPageKeeper)
+		g.Middleware.Skip(AdminPageKeeper, r.Show)
 	}
 
 	return app
