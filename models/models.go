@@ -24,6 +24,9 @@ func init() {
 	pop.Debug = env == "development"
 
 	Logger = log.New(os.Stdout, "", log.Ldate|log.Ltime|log.Lshortfile)
+
+	pop.MapTableName("TicketStatus", "ticket_statuses")
+	pop.MapTableName("TicketStatuses", "ticket_statuses")
 }
 
 // Additional functions for my debugging.
