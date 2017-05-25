@@ -8,15 +8,14 @@ import (
 	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/satori/go.uuid"
-	"github.com/softlayer/softlayer-go/session"
 	"github.com/softlayer/softlayer-go/services"
+	"github.com/softlayer/softlayer-go/session"
 )
 
 // UsersResource is the resource for the user model
 type UsersResource struct {
 	buffalo.Resource
 }
-
 
 // Find a single user or list of users to show
 func (v UsersResource) List(c buffalo.Context) error {
@@ -44,7 +43,6 @@ func (v UsersResource) Show(c buffalo.Context) error {
 	return c.Render(200, r.HTML("users/show.html"))
 }
 
-
 // New and Edit: generated a form for create and update
 func (v UsersResource) New(c buffalo.Context) error {
 	c.Set("user", &models.User{})
@@ -64,7 +62,6 @@ func (v UsersResource) Edit(c buffalo.Context) error {
 	c.Set("theme", "default")
 	return c.Render(200, r.HTML("users/edit.html"))
 }
-
 
 // Create and Update: serve user's request for insert and update
 func (v UsersResource) Create(c buffalo.Context) error {
@@ -95,6 +92,12 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		c.Logger().Errorf("SETUP ERROR: %v --", err)
 		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/edit.html"))
+	}
+
+	acc := &models.Account{ID: user.AccountId}
+	err = acc.UpdateAndSave(user)
+	if err != nil {
+		c.Logger().Warnf("cannot save account: %v, %v", err, acc)
 	}
 
 	c.Logger().Debugf("about to create an user: %v ----", user)
@@ -169,8 +172,7 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 	return c.Redirect(302, "/me")
 }
 
-
-
+// Fill up user with response of softlayer api call.
 func setupUser(c buffalo.Context, user *models.User) (err error) {
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"

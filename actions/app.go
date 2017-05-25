@@ -53,6 +53,7 @@ func App() *buffalo.App {
 		app.Middleware.Skip(AuthenticateHandler, HomeHandler)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
+		// route for authentication
 		auth := app.Group("/auth")
 		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
 		auth.GET("/{provider}/callback", AuthCallback)
@@ -64,23 +65,25 @@ func App() *buffalo.App {
 		app.Use(AuthenticateHandler)
 		app.Use(SessionInfoHandler)
 
+		// special routes without resource
+		app.GET("/me", MeHandler)
+
+		// resource based routes
+		var r buffalo.Resource
+
 		s := app.Resource("/singles", SinglesResource{&buffalo.BaseResource{}})
 		s.Use(AdminPageKeeper)
 
-		app.GET("/me", MeHandler)
-
 		s = app.Resource("/users", UsersResource{&buffalo.BaseResource{}})
 		s.Use(AdminPageKeeper)
-		var r buffalo.Resource
 		r = &UsersResource{&buffalo.BaseResource{}}
 		s.Middleware.Skip(AdminPageKeeper,
 			r.Show, r.New, r.Edit, r.Create, r.Update, r.Destroy)
-		app.Resource("/accounts", AccountsResource{&buffalo.BaseResource{}})
-		app.Resource("/tickets", TicketsResource{&buffalo.BaseResource{}})
-		app.Resource("/ticket_subjects", TicketSubjectsResource{&buffalo.BaseResource{}})
-		app.Resource("/ticket_groups", TicketGroupsResource{&buffalo.BaseResource{}})
-		app.Resource("/ticket_statuses", TicketStatusesResource{&buffalo.BaseResource{}})
-		app.Resource("/ticket_updates", TicketUpdatesResource{&buffalo.BaseResource{}})
+
+		s = app.Resource("/accounts", AccountsResource{&buffalo.BaseResource{}})
+		s.Use(AdminPageKeeper)
+		r = &AccountsResource{&buffalo.BaseResource{}}
+		s.Middleware.Skip(AdminPageKeeper, r.Show)
 	}
 
 	return app

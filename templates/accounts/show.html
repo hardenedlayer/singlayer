@@ -1,29 +1,62 @@
-<h1>Accounts#Show</h1>
+<div class="row page-header">
+	<h1>Account <span class="sing-data"><%= account.CompanyName %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			All information related on this account are shown here.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+</div>
 
+<div class="row">
+<div class="col-md-12">
+
+<%= if (user_is_admin) { %>
 <ul class="list-unstyled list-inline">
   <li><a href="<%= accountsPath() %>" class="btn btn-info">Back to all Accounts</a></li>
-  <li><a href="<%= editAccountPath({ account_id: account.ID })%>" class="btn btn-warning">Edit</a></li>
   <li><a href="<%= accountPath({ account_id: account.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
 </ul>
+<% } %>
 
-<p>
-  <strong>ID</strong>: <%= account.ID %>
-</p>
-<p>
-  <strong>BrandId</strong>: <%= account.BrandId %>
-</p>
-<p>
-  <strong>CompanyName</strong>: <%= account.CompanyName %>
-</p>
-<p>
-  <strong>Email</strong>: <%= account.Email %>
-</p>
-<p>
-  <strong>FirstName</strong>: <%= account.FirstName %>
-</p>
-<p>
-  <strong>LastName</strong>: <%= account.LastName %>
-</p>
-<p>
-  <strong>LastBatch</strong>: <%= account.LastBatch %>
-</p>
+<table class="table table-striped">
+  <thead>
+    <th>ID</th>
+    <th>Brand ID</th>
+    <th>Company Name</th>
+    <th>Master User</th>
+    <th>LastBatch</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= account.ID %></td>
+      <td><%= account.BrandId %></td>
+      <td><%= account.CompanyName %></td>
+      <td><%= account.FirstName %> <%= account.LastName %>
+			&lt;<%= account.Email %>&gt;</td>
+      <td><%= account.LastBatch %></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
+	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
+	<div class="panel-body">
+		<p><span class="label label-warning">TODO</span>
+		Add direct link summary for direct link manager or all users.</p>
+		<p><span class="label label-warning">TODO</span>
+		Add user list for administrator.</p>
+		<p><span class="label label-warning">TODO</span>
+		Add instance summary, ticket summary,...</p>
+		<p><span class="label label-warning">TODO</span>
+		Auto cleaning of all related items from this page.</p>
+	</div>
+</div></div>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
+	<div class="panel-body">
+		<p><span class="label label-info">Tip</span>
+		Some tips here!</p>
+	</div>
+</div></div>
+
+</div>

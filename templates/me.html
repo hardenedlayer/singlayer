@@ -28,10 +28,12 @@
 			<tbody>
 				<%= for (user) in users { %>
 				<tr>
-					<td><%= user.Username %></td>
+					<td><span data-toggle="tooltip" data-placement="right" title="<%= user.CompanyName %>"><%= user.Username %></span></td>
 					<td><%= user.OpenTicketCount %>/<%= user.TicketCount %></td>
 					<td><%= user.VirtualGuestCount %>/<%= user.HardwareCount %></td>
 					<td class="text-right">
+						<a href="<%= accountPath({ account_id: user.AccountId }) %>"
+							class="btn btn-xs btn-info">Account</i></a>
 						<div class="btn-group">
 						<a href="<%= userPath({ user_id: user.ID }) %>"
 							class="btn btn-xs btn-info">Vi</i></a>

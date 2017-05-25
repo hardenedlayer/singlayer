@@ -1,6 +1,0 @@
-<h1>Edit Account</h1>
-
-<%= form_for(account, {action: accountPath({ account_id: account.ID }), method: "PUT", errors: errors}) { %>
-  <%= partial("accounts/form.html") %>
-  <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
-<% } %>

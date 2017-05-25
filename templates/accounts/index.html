@@ -1,17 +1,24 @@
-<h1>Accounts</h1>
+<div class="row page-header">
+	<h1>Accounts</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			Accounts are registered automatically when user was registered.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Registered Accounts
+	</div>
+</div>
 
-<p>
-  <a href="<%= newAccountPath() %>" class="btn btn-primary">Create New Account</a>
-</p>
+<div class="row">
+<div class="col-md-12">
 
 <table class="table table-striped">
   <thead>
     <th>ID</th>
-    <th>BrandId</th>
-    <th>CompanyName</th>
-    <th>Email</th>
-    <th>FirstName</th>
-    <th>LastName</th>
+    <th>Company Name</th>
+    <th>Master User</th>
     <th>LastBatch</th>
     <th>&nbsp;</th>
   </thead>
@@ -19,20 +26,39 @@
     <%= for (account) in accounts { %>
       <tr>
         <td><%= account.ID %></td>
-        <td><%= account.BrandId %></td>
         <td><%= account.CompanyName %></td>
-        <td><%= account.Email %></td>
-        <td><%= account.FirstName %></td>
-        <td><%= account.LastName %></td>
+        <td><%= account.FirstName %> <%= account.LastName %>
+					&lt;<%= account.Email %>&gt;</td>
         <td><%= account.LastBatch %></td>
         <td>
           <div class="pull-right">
-            <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editAccountPath({ account_id: account.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+            <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-sm btn-info">View</a>
+            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Destroy</a>
           </div>
         </td>
       </tr>
     <% } %>
   </tbody>
 </table>
+
+</div>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
+	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
+	<div class="panel-body">
+		<p><span class="label label-warning">TODO</span>
+		Add manual sync feature.</p>
+		<p><span class="label label-warning">TODO</span>
+		Hide 'Delete' from normal user mode.</p>
+	</div>
+</div></div>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
+	<div class="panel-heading"><h3 class="panel-title">User Notes</h3></div>
+	<div class="panel-body">
+		<p><span class="label label-info">Tip</span>
+		Oops! This page is not for users.</p>
+	</div>
+</div></div>
+
+</div>
