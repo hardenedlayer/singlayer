@@ -1,18 +1,18 @@
 package actions
 
 import (
+	"errors"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
 )
 
-// AccountsResource is the resource for the account model
 type AccountsResource struct {
 	buffalo.Resource
 }
 
-// List gets all Accounts. This function is mapped to the the path
-// GET /accounts
+// ADMIN PROTECTED
 func (v AccountsResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	accounts := &models.Accounts{}
@@ -26,21 +26,27 @@ func (v AccountsResource) List(c buffalo.Context) error {
 	return c.Render(200, r.HTML("accounts/index.html"))
 }
 
-// Show gets the data for one Account. This function is mapped to
-// the path GET /accounts/{account_id}
 func (v AccountsResource) Show(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	account := &models.Account{}
-	err := tx.Find(account, c.Param("account_id"))
-	if err != nil {
-		return err
+	if c.Session().Get("is_admin").(bool) {
+		err := tx.Find(account, c.Param("account_id"))
+		if err != nil {
+			return err
+		}
+	} else {
+		single := getCurrentSingle(c)
+		account = single.Account(c.Param("account_id"))
+		c.Logger().Debugf("single: %v", account)
+		if account == nil {
+			return c.Error(404, errors.New("Account Not Found"))
+		}
 	}
 	c.Set("account", account)
 	return c.Render(200, r.HTML("accounts/show.html"))
 }
 
-// Destroy deletes a account from the DB. This function is mapped
-// to the path DELETE /accounts/{account_id}
+// ADMIN PROTECTED
 func (v AccountsResource) Destroy(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	account := &models.Account{}

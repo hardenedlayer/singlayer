@@ -74,7 +74,11 @@ func (a *Account) UpdateAndSave(user *User) (err error) {
 		return err
 	}
 	copier.Copy(a, sl_acc)
-	a.LastBatch = time.Now()
+	if t,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00"); e == nil {
+		a.LastBatch = t
+	} else {
+		a.LastBatch = time.Now()
+	}
 
 	inspect("updated account", a)
 	return a.Save()

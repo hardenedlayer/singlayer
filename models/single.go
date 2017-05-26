@@ -63,3 +63,46 @@ func (s *Single) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 func (s *Single) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// Association and Relationship based search for instances.
+// It need instance of Single so more expensive than raw query. FIXME later.
+
+// Users() returns instance of Users struct.
+func (s *Single) Users() (users *Users) {
+	users = &Users{}
+	err := DB.BelongsTo(s).All(users)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// Accounts() returns instance of Accounts struct.
+func (s *Single) Accounts() (accounts *Accounts) {
+	accounts = &Accounts{}
+	err := DB.BelongsToThrough(s, "users").All(accounts)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// User(user_id) returns single instance of User
+func (s *Single) User(user_id interface{}) (user *User) {
+	user = &User{}
+	err := DB.BelongsTo(s).Find(user, user_id)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// Account(account_id) returns single instance of Account.
+func (s *Single) Account(account_id interface{}) (account *Account) {
+	account = &Account{}
+	err := DB.BelongsToThrough(s, "users").Find(account, account_id)
+	if err != nil {
+		return nil
+	}
+	return
+}
