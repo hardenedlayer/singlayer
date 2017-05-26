@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/softlayer/softlayer-go/services"
+	"github.com/softlayer/softlayer-go/session"
 )
 
 type TicketStatus struct {
@@ -50,4 +53,36 @@ func (t *TicketStatus) ValidateSave(tx *pop.Connection) (*validate.Errors, error
 // This method is not required and may be deleted.
 func (t *TicketStatus) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+func (t *TicketStatus) IsNew() bool {
+	return time.Now().Sub(t.CreatedAt) < time.Duration(24 * 14 * time.Hour)
+}
+
+func SyncTicketStatuses(user *User) error {
+	Logger.Printf("sync ticket statuses... (use %v)", user.Username)
+	sess := session.New(user.Username, user.APIKey)
+	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+
+	service := services.GetTicketService(sess)
+	data, err := service.GetAllTicketStatuses()
+	if err != nil {
+		return err
+	}
+	for _, el := range data {
+		ts := &TicketStatus{}
+		copier.Copy(ts, el)
+		ts.ID = *el.Id
+		if ok, _ := DB.Where("id=?", ts.ID).Exists(ts); ok {
+			Logger.Printf("ticket_status %v already exists!", ts.ID)
+		} else {
+			err = DB.Create(ts)
+			if err != nil {
+				Logger.Printf("cannot create ticket_status:%v", err)
+			} else {
+				Logger.Printf("ticket_status %v created.", ts)
+			}
+		}
+	}
+	return nil
 }
