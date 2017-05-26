@@ -67,6 +67,12 @@ func App() *buffalo.App {
 
 		// special routes without resource
 		app.GET("/me", MeHandler)
+		n := app.Group("/n")
+		n.Use(AdminPageKeeper)
+		n.GET("/meta/tickets", TicketsMetaHandler)
+		n.GET("/ticket_statuses/sync", SyncTicketStatuses)
+		n.GET("/ticket_subjects/sync", SyncTicketSubjects)
+		n.GET("/ticket_groups/sync", SyncTicketGroups)
 
 		// resource based routes
 		var r buffalo.Resource

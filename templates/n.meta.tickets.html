@@ -1,0 +1,89 @@
+<div class="row page-header">
+	<h1><%= t("Meta:Tickets") %></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			UPDATE ME
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Current list of meta data for Tickets
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+
+		<h2 class="underline">Ticket Statuses
+			<a href="<%= syncTicketStatusesNPath() %>"
+				class="btn btn-xs btn-default">Sync</a>
+		</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr text-align="left">
+					<th>ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= for (tt) in ticket_statuses { %>
+				<tr>
+					<td><%= tt.ID %></td>
+					<td><%= tt.Name %></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+
+		<h2 class="underline">Ticket Subjects
+			<a href="<%= syncTicketSubjectsNPath() %>"
+				class="btn btn-xs btn-default">Sync</a>
+		</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr text-align="left">
+					<th>ID</th>
+					<th>Name</th>
+					<th>CategoryId</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= for (ts) in ticket_subjects { %>
+				<tr>
+					<td><%= ts.ID %></td>
+					<td><%= ts.Name %></td>
+					<td><%= ts.CategoryId %></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div class="col-md-6">
+
+		<h2 class="underline">Ticket Groups
+			<a href="<%= syncTicketGroupsNPath() %>"
+				class="btn btn-xs btn-default">Sync</a>
+		</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr text-align="left">
+					<th>ID</th>
+					<th>Name</th>
+					<th>CategoryId</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= for (tg) in ticket_groups { %>
+				<tr>
+					<td><%= tg.ID %></td>
+					<td><%= tg.Name %></td>
+					<td><%= tg.TicketGroupCategoryId %></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+
+	</div>
+</div>
