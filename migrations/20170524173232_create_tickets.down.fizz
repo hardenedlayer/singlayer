@@ -1,1 +1,6 @@
+drop_index("tickets", "tickets_account_id_idx")
+drop_index("tickets", "tickets_assigned_user_id_idx")
+drop_index("tickets", "tickets_subject_id_idx")
+drop_index("tickets", "tickets_group_id_idx")
+drop_index("tickets", "tickets_status_id_idx")
 drop_table("tickets")

@@ -10,3 +10,8 @@ create_table("tickets", func(t) {
 	t.Column("last_edit_date", "timestamp", {})
 	t.Column("last_edit_type", "string", {})
 })
+add_index("tickets", "account_id", {})
+add_index("tickets", "assigned_user_id", {})
+add_index("tickets", "subject_id", {})
+add_index("tickets", "group_id", {})
+add_index("tickets", "status_id", {})

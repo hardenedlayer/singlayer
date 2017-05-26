@@ -17,3 +17,4 @@ create_table("users", func(t) {
 	t.Column("last_batch", "timestamp", {})
 })
 add_index("users", "single_id", {})
+add_index("users", "account_id", {})

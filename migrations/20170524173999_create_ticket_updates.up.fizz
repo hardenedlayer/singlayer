@@ -6,3 +6,5 @@ create_table("ticket_updates", func(t) {
 	t.Column("entry", "text", {})
 	t.Column("create_date", "timestamp", {})
 })
+add_index("ticket_updates", "ticket_id", {})
+add_index("ticket_updates", "editor_id", {})
