@@ -21,9 +21,12 @@ func init() {
 	gothic.Store = App().SessionStore
 
 	goth.UseProviders(
-		github.New(os.Getenv("GITHUB_KEY"), os.Getenv("GITHUB_SECRET"), fmt.Sprintf("%s%s", App().Host, "/auth/github/callback")),
-		gplus.New(os.Getenv("GPLUS_KEY"), os.Getenv("GPLUS_SECRET"), fmt.Sprintf("%s%s", App().Host, "/auth/gplus/callback")),
-		facebook.New(os.Getenv("FACEBOOK_KEY"), os.Getenv("FACEBOOK_SECRET"), fmt.Sprintf("%s%s", App().Host, "/auth/facebook/callback")),
+		github.New(os.Getenv("GITHUB_KEY"), os.Getenv("GITHUB_SECRET"),
+			fmt.Sprintf("%s%s", App().Host, "/auth/github/callback")),
+		gplus.New(os.Getenv("GPLUS_KEY"), os.Getenv("GPLUS_SECRET"),
+			fmt.Sprintf("%s%s", App().Host, "/auth/gplus/callback")),
+		facebook.New(os.Getenv("FACEBOOK_KEY"), os.Getenv("FACEBOOK_SECRET"),
+			fmt.Sprintf("%s%s", App().Host, "/auth/facebook/callback")),
 	)
 }
 
@@ -32,20 +35,18 @@ func AuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(401, err)
 	}
-	c.Logger().Debugf("user: %v ---", user)
+	c.Logger().Debugf("raw user: %v ---", user)
 
 	singles := &models.Singles{}
-	single := &models.Single{}
 	tx := c.Value("tx").(*pop.Connection)
 	q := tx.Where("provider=?", user.Provider).Where("user_id=?", user.UserID)
 	err = q.All(singles)
 	if err != nil {
-		// TODO add error recognition code and check the error page:
 		return c.Error(501, err)
 	}
 
+	single := &models.Single{}
 	if len(*singles) == 1 {
-		// TODO action logging
 		single = &(*singles)[0]
 		c.Flash().Add("success", "Welcome back! I missed you...")
 	} else if len(*singles) == 0 {
@@ -54,14 +55,13 @@ func AuthCallback(c buffalo.Context) error {
 				"Sorry but unacceptable account. (no email provided)")
 			return c.Redirect(307, "/login")
 		}
-		// TODO action logging
 		single.Provider = user.Provider
 		single.Email = user.Email
 		single.Name = user.Name
 		single.UserID = user.UserID
 		single.AvatarUrl = user.AvatarURL
 		single.Permissions = ":guest:"
-		// TODO mark as admin for v ery first user.
+		// TODO mark as admin for very first user.
 		verrs, err := tx.ValidateAndCreate(single)
 		if err != nil {
 			fmt.Printf("err: %v\n", err)
@@ -75,10 +75,16 @@ func AuthCallback(c buffalo.Context) error {
 		err = q.First(single)
 		c.Flash().Add("info", "Nice to meet you! You just become a singler!")
 	} else {
-		// TODO action logging
 		return c.Error(501, errors.New("Somthing went wrong!!!"))
 	}
-	fmt.Printf("final single: %v\n", single)
+	c.Logger().Infof("%v <%v> logged in.", single.Name, single.Email)
+
+	var actors []string
+	for _, a := range *single.Users() {
+		actors = append(actors, a.Username)
+	}
+	actors = append(actors, "All")
+	c.Logger().Infof("actors: %v.", actors)
 
 	session := c.Session()
 	session.Set("user_id", single.ID)
@@ -87,6 +93,7 @@ func AuthCallback(c buffalo.Context) error {
 	session.Set("user_icon", single.AvatarUrl)
 	session.Set("permissions", single.Permissions)
 	session.Set("is_admin", strings.Contains(single.Permissions, ":admin:"))
+	session.Set("actors", actors)
 	err = session.Save()
 	if err != nil {
 		return c.Error(401, err)

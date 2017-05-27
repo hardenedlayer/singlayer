@@ -15,6 +15,15 @@ $(document).ready(function(){
 	}, 5000);
 });
 
+$(document).ready(function(){
+	$(".selector").on("click", function() {
+		$("#hl_actor").text($(this).text());
+		$(".selector").parent().removeClass("active");
+		$(this).parent().addClass("active");
+		document.cookie = "_singlayer_actor=" + $(this).text() + "; path=/";
+	});
+});
+
 $(() => {
 
 });

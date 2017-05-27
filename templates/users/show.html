@@ -30,8 +30,10 @@
     <tr><td>TicketCount</td><td><%= user.TicketCount %></td></tr>
     <tr><td>VirtualGuestCount</td><td><%= user.VirtualGuestCount %></td></tr>
     <tr><td>HardwareCount</td><td><%= user.HardwareCount %></td></tr>
+		<%= if (user_is_admin) { %>
     <tr><td>SingleID</td><td><%= user.SingleID %></td></tr>
     <tr><td>LastBatch</td><td><%= user.LastBatch %></td></tr>
+		<% } %>
   </tbody>
 </table>
 

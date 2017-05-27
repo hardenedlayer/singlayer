@@ -12,11 +12,11 @@
 </div>
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-7">
 		<h2 class="underline">My Users</h2>
 		<p><a href="<%= newUserPath() %>"
 			class="btn btn-xs btn-primary">New User</a></p>
-		<table class="table table-striped">
+		<table class="table table-striped table-condensed">
 			<thead>
 				<tr text-align="left">
 					<th>Username</th>
@@ -50,21 +50,23 @@
 		</table>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-5">
 		<h2 class="underline">My Hooks</h2>
 		<p>Configure your notification hooks</p>
-		<table class="table table-striped">
+		<table class="table table-striped table-condensed">
 			<thead>
 				<tr text-align="left">
-					<th>METHOD</th>
-					<th>PATH</th>
+					<th>Name</th>
+					<th>Method</th>
+					<th>Value</th>
 				</tr>
 			</thead>
 			<tbody>
-				<%= for (r) in routes { %>
+				<%= for (h) in hooks { %>
 				<tr>
-					<td><%= r.PathName %></td>
-					<td><code><%= r.Path %></code></td>
+					<td><%= h.Name %></td>
+					<td><%= h.Method %></td>
+					<td><%= h.Value %></td>
 				</tr>
 				<% } %>
 			</tbody>
