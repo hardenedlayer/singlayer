@@ -83,6 +83,9 @@ div > p:last-child {
 		float: right;
 	}
 }
+.popover {
+	z-index: 2000 !important;
+}
 
 .overlay-flash {
 	left: 50%;

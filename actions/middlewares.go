@@ -27,6 +27,7 @@ func AdminPageKeeper(next buffalo.Handler) buffalo.Handler {
 			err := c.Redirect(http.StatusTemporaryRedirect, "/")
 			return err
 		}
+		c.Set("theme", "admin")
 		err := next(c)
 		return err
 	}
@@ -44,10 +45,15 @@ func SessionInfoHandler(next buffalo.Handler) buffalo.Handler {
 			c.Set("user_is_admin", c.Session().Get("is_admin"))
 			c.Set("actors", c.Session().Get("actors"))
 		}
+		c.Set("actor", "All")
 		if k,err := c.Request().Cookie("_singlayer_actor"); err == nil {
-			c.Set("actor", k.Value)
-		} else {
-			c.Set("actor", "All")
+			if actors, ok := c.Session().Get("actors").([]string); ok {
+				for _, v := range actors {
+					if v == k.Value {
+						c.Set("actor", k.Value)
+					}
+				}
+			}
 		}
 		err := next(c)
 		return err
