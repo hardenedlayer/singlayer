@@ -32,23 +32,19 @@ type User struct {
 	LastBatch         time.Time    `json:"last_batch" db:"last_batch"`
 }
 
-// String is not required by pop and may be deleted
 func (u User) String() string {
 	ju, _ := json.Marshal(u)
 	return string(ju)
 }
 
-// Users is not required by pop and may be deleted
 type Users []User
 
-// String is not required by pop and may be deleted
 func (u Users) String() string {
 	ju, _ := json.Marshal(u)
 	return string(ju)
 }
 
 // Validate gets run everytime you call a "pop.Validate" method.
-// This method is not required and may be deleted.
 func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.IntIsPresent{Field: u.ID, Name: "ID"},
@@ -65,13 +61,11 @@ func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 // ValidateSave gets run everytime you call "pop.ValidateSave" method.
-// This method is not required and may be deleted.
 func (u *User) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
-// This method is not required and may be deleted.
 func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }

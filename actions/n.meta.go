@@ -31,7 +31,5 @@ func TicketsMetaHandler(c buffalo.Context) (err error) {
 		return err
 	}
 	c.Set("ticket_statuses", ticket_statuses)
-
-	c.Set("theme", "default")
 	return c.Render(200, r.HTML("n.meta.tickets.html"))
 }

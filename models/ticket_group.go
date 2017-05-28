@@ -55,6 +55,9 @@ func (t *TicketGroup) IsNew() bool {
 	return time.Now().Sub(t.CreatedAt) < time.Duration(24 * 14 * time.Hour)
 }
 
+//// Backend API Calls:
+
+// SyncTicketGroups() creates and updates all Ticket Groups.
 func SyncTicketGroups(user *User) error {
 	Logger.Printf("sync ticket groups...(use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)

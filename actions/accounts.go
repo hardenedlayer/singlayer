@@ -21,8 +21,6 @@ func (v AccountsResource) List(c buffalo.Context) error {
 		return err
 	}
 	c.Set("accounts", accounts)
-
-	c.Set("theme", "admin")
 	return c.Render(200, r.HTML("accounts/index.html"))
 }
 

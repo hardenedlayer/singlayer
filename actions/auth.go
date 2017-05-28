@@ -102,7 +102,6 @@ func AuthCallback(c buffalo.Context) error {
 }
 
 func LoginHandler(c buffalo.Context) error {
-	c.Set("theme", "default")
 	return c.Render(200, r.HTML("login.html"))
 }
 

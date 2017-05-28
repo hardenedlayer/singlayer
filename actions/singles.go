@@ -61,7 +61,6 @@ func (v SinglesResource) Update(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Set("single", single)
 		c.Set("errors", verrs)
-		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("singles/edit.html"))
 	}
 	c.Flash().Add("success", "Single was updated successfully")

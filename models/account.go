@@ -24,23 +24,19 @@ type Account struct {
 	LastBatch   time.Time `json:"last_batch" db:"last_batch"`
 }
 
-// String is not required by pop and may be deleted
 func (a Account) String() string {
 	ja, _ := json.Marshal(a)
 	return string(ja)
 }
 
-// Accounts is not required by pop and may be deleted
 type Accounts []Account
 
-// String is not required by pop and may be deleted
 func (a Accounts) String() string {
 	ja, _ := json.Marshal(a)
 	return string(ja)
 }
 
 // Validate gets run everytime you call a "pop.Validate" method.
-// This method is not required and may be deleted.
 func (a *Account) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.IntIsPresent{Field: a.ID, Name: "ID"},
@@ -50,18 +46,18 @@ func (a *Account) Validate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 // ValidateSave gets run everytime you call "pop.ValidateSave" method.
-// This method is not required and may be deleted.
 func (a *Account) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
-// This method is not required and may be deleted.
 func (a *Account) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
-// UpdateAndSave
+//// Backend API Call:
+
+// UpdateAndSave() fills up Account data from api call result and saves it.
 func (a *Account) UpdateAndSave(user *User) (err error) {
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
@@ -74,16 +70,13 @@ func (a *Account) UpdateAndSave(user *User) (err error) {
 		return err
 	}
 	copier.Copy(a, sl_acc)
-	if t,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00"); e == nil {
-		a.LastBatch = t
-	} else {
-		a.LastBatch = time.Now()
-	}
-
 	inspect("updated account", a)
 	return a.Save()
 }
 
+//// DBMS Functions:
+
+// Save() saves the Account instance. (create or update)
 func (a *Account) Save() (err error) {
 	old := &Account{}
 	err = DB.Find(old, a.ID)
@@ -96,6 +89,13 @@ func (a *Account) Save() (err error) {
 			return verrs
 		}
 	} else {
+		t,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
+		if e == nil {
+			a.LastBatch = t
+		} else {
+			a.LastBatch = time.Now()
+		}
+
 		verrs, err := DB.ValidateAndCreate(a)
 		if err != nil {
 			return err

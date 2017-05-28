@@ -55,6 +55,9 @@ func (t *TicketSubject) IsNew() bool {
 	return time.Now().Sub(t.CreatedAt) < time.Duration(24 * 14 * time.Hour)
 }
 
+//// Backend API Calls:
+
+// SyncTicketSubjects() creates and updates all Ticket Subjects.
 func SyncTicketSubjects(user *User) error {
 	Logger.Printf("sync ticket subjects... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)

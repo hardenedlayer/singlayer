@@ -25,23 +25,19 @@ type Single struct {
 	Permissions  string       `json:"permissions" db:"permissions"`
 }
 
-// String is not required by pop and may be deleted
 func (s Single) String() string {
 	js, _ := json.Marshal(s)
 	return string(js)
 }
 
-// Singles is not required by pop and may be deleted
 type Singles []Single
 
-// String is not required by pop and may be deleted
 func (s Singles) String() string {
 	js, _ := json.Marshal(s)
 	return string(js)
 }
 
 // Validate gets run everytime you call a "pop.Validate" method.
-// This method is not required and may be deleted.
 func (s *Single) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.StringIsPresent{Field: s.Name, Name: "Name"},
@@ -53,19 +49,17 @@ func (s *Single) Validate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 // ValidateSave gets run everytime you call "pop.ValidateSave" method.
-// This method is not required and may be deleted.
 func (s *Single) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
-// This method is not required and may be deleted.
 func (s *Single) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
-// Association and Relationship based search for instances.
-// It need instance of Single so more expensive than raw query. FIXME later.
+//// Association and Relationship based search for instances.
+//// It need instance of Single so more expensive than raw query. FIXME later.
 
 // Users() returns instance of Users struct.
 func (s *Single) Users() (users *Users) {

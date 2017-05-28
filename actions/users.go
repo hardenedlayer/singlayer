@@ -77,10 +77,9 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	err = setupUser(c, user)
 	if err != nil {
 		c.Set("user", user)
-		c.Set("error", err)
 		c.Logger().Errorf("SETUP ERROR: %v --", err)
-		c.Set("theme", "admin")
-		return c.Render(422, r.HTML("users/edit.html"))
+		c.Flash().Add("danger", "Cannot verify credential! Please check your information.")
+		return c.Render(422, r.HTML("users/new.html"))
 	}
 
 	acc := &models.Account{ID: user.AccountId}
@@ -99,7 +98,6 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("errors", verrs)
 		c.Logger().Errorf("validation errors: %v --", verrs)
-		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/new.html"))
 	}
 	c.Flash().Add("success", "User was created successfully")
@@ -121,7 +119,7 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("error", err)
 		c.Logger().Errorf("SETUP ERROR: %v --", err)
-		c.Set("theme", "admin")
+		c.Flash().Add("danger", "Cannot update! Please check your credential.")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 
@@ -136,7 +134,6 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		c.Set("user", user)
 		c.Set("errors", verrs)
 		c.Logger().Errorf("validation errors: %v --", verrs)
-		c.Set("theme", "admin")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 	c.Flash().Add("success", "User was updated successfully")

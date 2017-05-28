@@ -29,8 +29,7 @@ func init() {
 	pop.MapTableName("TicketStatuses", "ticket_statuses")
 }
 
-// Additional functions for my debugging.
-//
+//// Additional functions for my debugging.
 
 // inspect: to check data type and value.
 func inspect(desc string, data interface{}) {
