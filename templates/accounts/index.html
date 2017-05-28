@@ -33,7 +33,7 @@
         <td>
           <div class="pull-right">
             <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-sm btn-info">View</a>
-            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Destroy</a>
+            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Delete</a>
           </div>
         </td>
       </tr>
@@ -47,14 +47,17 @@
 	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
 	<div class="panel-body">
 		<p><span class="label label-warning">TODO</span>
+		Add Alias.....</p>
+		<p><span class="label label-warning">TODO</span>
+		Reset the LastBatch.</p>
+		<p><span class="label label-warning">TODO</span>
 		Add manual sync feature.</p>
 		<p><span class="label label-warning">TODO</span>
-		Hide 'Delete' from normal user mode.</p>
+		Delete Account and all associated thing including users and tickets.</p>
 	</div>
 </div></div>
 
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
-	<div class="panel-heading"><h3 class="panel-title">User Notes</h3></div>
 	<div class="panel-body">
 		<p><span class="label label-info">Tip</span>
 		Oops! This page is not for users.</p>

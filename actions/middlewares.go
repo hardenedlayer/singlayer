@@ -11,8 +11,7 @@ func AuthenticateHandler(next buffalo.Handler) buffalo.Handler {
 		user_id := c.Session().Get("user_id")
 		if user_id == nil {
 			c.Flash().Add("danger", "Sorry, Login required.")
-			err := c.Redirect(http.StatusTemporaryRedirect, "/login")
-			return err
+			return c.Redirect(http.StatusTemporaryRedirect, "/login")
 		}
 		err := next(c)
 		return err
@@ -24,8 +23,7 @@ func AdminPageKeeper(next buffalo.Handler) buffalo.Handler {
 		is_admin := c.Session().Get("is_admin")
 		if is_admin == false {
 			c.Flash().Add("danger", "STAFF ONLY")
-			err := c.Redirect(http.StatusTemporaryRedirect, "/")
-			return err
+			return c.Redirect(http.StatusTemporaryRedirect, "/")
 		}
 		c.Set("theme", "admin")
 		err := next(c)

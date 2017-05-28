@@ -25,7 +25,7 @@ $(document).ready(function(){
 		$(this).parent().addClass("active");
 		document.cookie = "_singlayer_actor=" + $(this).text() + "; path=/";
 		// auto reload is somewhat annoying sometime.
-		//location.reload();
+		location.reload();
 	});
 });
 
