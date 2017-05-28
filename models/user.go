@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/markbates/pop/nulls"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/softlayer/softlayer-go/services"
+	"github.com/softlayer/softlayer-go/session"
 	"github.com/satori/go.uuid"
 )
 
@@ -68,4 +71,24 @@ func (u *User) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
 func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+// Backend API Calls:
+
+// Update() fills up user struct with response of api call.
+func (u *User) Update() (err error) {
+	sess := session.New(u.Username, u.APIKey)
+	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+	service := services.GetAccountService(sess)
+	sl_user, err := service.
+		Mask("id;accountId;parentId;companyName;email;firstName;lastName;ticketCount;openTicketCount;hardwareCount;virtualGuestCount").
+		GetCurrentUser()
+	if err != nil {
+		Logger.Printf("softlayer api exception: %v --", err)
+		return err
+	}
+	copier.Copy(u, sl_user)
+	u.ID = *sl_user.Id
+	inspect("updated user", u)
+	return
 }

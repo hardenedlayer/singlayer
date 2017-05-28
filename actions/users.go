@@ -6,11 +6,8 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/hardenedlayer/singlayer/models"
-	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/satori/go.uuid"
-	"github.com/softlayer/softlayer-go/services"
-	"github.com/softlayer/softlayer-go/session"
 )
 
 type UsersResource struct {
@@ -21,7 +18,6 @@ type UsersResource struct {
 func (v UsersResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	users := &models.Users{}
-	// TODO: order, paging,...
 	err := tx.Order("username asc").All(users)
 	if err != nil {
 		return err
@@ -70,17 +66,18 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return c.Error(501, err)
 	}
 	if len(*users) != 0 {
-		c.Flash().Add("danger", "The user you submit is already exists.")
-		return c.Redirect(302, "/users/new")
-	}
-
-	err = setupUser(c, user)
-	if err != nil {
 		c.Set("user", user)
-		c.Logger().Errorf("SETUP ERROR: %v --", err)
-		c.Flash().Add("danger", "Cannot verify credential! Please check your information.")
+		c.Flash().Add("danger", "The user you submit is already exists.")
 		return c.Render(422, r.HTML("users/new.html"))
 	}
+
+	err = user.Update()
+	if err != nil {
+		c.Set("user", user)
+		c.Flash().Add("danger", "Cannot verify credential!")
+		return c.Render(422, r.HTML("users/new.html"))
+	}
+	user.LastBatch = time.Now()
 
 	acc := &models.Account{ID: user.AccountId}
 	err = acc.UpdateAndSave(user)
@@ -114,11 +111,9 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		c.Logger().Errorf("cannot bind with new data: %v --", err)
 		return err
 	}
-	err = setupUser(c, user)
+	err = user.Update()
 	if err != nil {
 		c.Set("user", user)
-		c.Set("error", err)
-		c.Logger().Errorf("SETUP ERROR: %v --", err)
 		c.Flash().Add("danger", "Cannot update! Please check your credential.")
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
@@ -148,7 +143,9 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	err = tx.Destroy(user)
 	if err != nil {
-		return err
+		c.Logger().Errorf("cannot delete user: %v --", err)
+		c.Flash().Add("danger", "Sorry, cannot delete user. try again later.")
+		return c.Redirect(302, "/me")
 	}
 	c.Flash().Add("success", "User was destroyed successfully")
 	return c.Redirect(302, "/me")
@@ -168,24 +165,5 @@ func setUser(c buffalo.Context) (user *models.User, err error) {
 		}
 	}
 	c.Logger().Debugf("setUser() returns user: %v, err: %v", user, err)
-	return
-}
-
-// Fill up user struct with response of api call.
-func setupUser(c buffalo.Context, user *models.User) (err error) {
-	sess := session.New(user.Username, user.APIKey)
-	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
-	service := services.GetAccountService(sess)
-	sl_user, err := service.
-		Mask("id;accountId;parentId;companyName;email;firstName;lastName;ticketCount;openTicketCount;hardwareCount;virtualGuestCount").
-		GetCurrentUser()
-	if err != nil {
-		c.Logger().Errorf("softlayer api exception: %v --", err)
-		return err
-	}
-	copier.Copy(user, sl_user)
-	user.ID = *sl_user.Id
-	user.LastBatch = time.Now()
-	c.Logger().Debugf("check user: %v ----", user)
 	return
 }
