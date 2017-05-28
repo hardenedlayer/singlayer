@@ -33,7 +33,9 @@
       <td><%= account.CompanyName %></td>
       <td><%= account.FirstName %> <%= account.LastName %>
 			&lt;<%= account.Email %>&gt;</td>
-      <td><%= account.LastBatch %></td>
+      <td><span data-toggle="tooltip" data-placement="top"
+					title="<%= account.LastBatch %>"><%=
+					timeYYMDHMS(account.LastBatch) %></td>
     </tr>
   </tbody>
 </table>

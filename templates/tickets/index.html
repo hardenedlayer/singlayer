@@ -52,11 +52,11 @@ the user's account are shown. (tickets assiciated to the user)
 			<td><span data-toggle="tooltip" data-placement="top"
 					title="<%= ticket.LastEditDate %>"><%=
 					timeYYMDHM(ticket.LastEditDate) %></td>
-			<td><%= ticket.LastEditType %></td>
+			<td><%= iconize(ticket.LastEditType) %></td>
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
-					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-warning">Edit</a>
-					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-xs btn-warning">Ed</a>
+					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">De</a>
 				</div>
 			</td><% } %>
 		</tr><% } %>

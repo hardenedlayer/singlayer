@@ -42,8 +42,8 @@ $(document).ready(function() {
 // string shortener
 $(document).ready(function() {
 	$(".hl-shorten").each(function(index) {
-		if ($(this).text().length > 63) {
-			$(this).text($(this).text().substring(0,60) + "...")
+		if ($(this).text().length > 58) {
+			$(this).text($(this).text().substring(0,55) + "...")
 		}
 	});
 });

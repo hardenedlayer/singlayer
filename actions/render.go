@@ -2,6 +2,7 @@ package actions
 
 import (
 	"time"
+	"html/template"
 
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
@@ -48,6 +49,18 @@ func init() {
 			},
 			"timeHM": func(t time.Time) string {
 				return t.Local().Format("15:04")
+			},
+			"iconize": func(s string) template.HTML {
+				switch s {
+				case "AUTO":
+					return template.HTML(`<i class="fa fa-cog"></i>`)
+				case "EMPLOYEE":
+					return template.HTML(`<i class="fa fa-bars"></i>`)
+				case "USER":
+					return template.HTML(`<i class="fa fa-user-circle-o"></i>`)
+				default:
+					return template.HTML(`<i class="fa fa-` + s + `"></i>`)
+				}
 			},
 		},
 	})
