@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/pop"
 
@@ -44,6 +46,50 @@ func (v TicketsResource) List(c buffalo.Context) error {
 			tickets = ticks
 		}
 	}
+	c.Set("user", func(id int) interface{} {
+		model := &models.User{}
+		err := c.Value("tx").(*pop.Connection).Find(model, id)
+		if err != nil {
+			return id
+		}
+		return model.Username
+	})
+	c.Set("trimSubject", func(s string, id int) interface{} {
+		model := &models.TicketSubject{}
+		err := c.Value("tx").(*pop.Connection).Find(model, id)
+		if err != nil {
+			return s
+		}
+		if ns := strings.TrimPrefix(s, model.Name + " - "); len(ns) > 0 {
+			return "... " + ns
+		} else {
+			return s
+		}
+	})
+	c.Set("subject", func(id int) interface{} {
+		model := &models.TicketSubject{}
+		err := c.Value("tx").(*pop.Connection).Find(model, id)
+		if err != nil {
+			return id
+		}
+		return model.Name
+	})
+	c.Set("group", func(id int) interface{} {
+		model := &models.TicketGroup{}
+		err := c.Value("tx").(*pop.Connection).Find(model, id)
+		if err != nil {
+			return id
+		}
+		return model.Name
+	})
+	c.Set("status", func(id int) interface{} {
+		model := &models.TicketStatus{}
+		err := c.Value("tx").(*pop.Connection).Find(model, id)
+		if err != nil {
+			return id
+		}
+		return model.Name
+	})
 	c.Set("tickets", tickets)
 	return c.Render(200, r.HTML("tickets/index.html"))
 }

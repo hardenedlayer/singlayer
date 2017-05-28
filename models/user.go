@@ -108,7 +108,9 @@ func (u *User) Account() (account *Account) {
 // MyTickets() returns all tickets assigned to me.
 func (u *User) MyTickets() (tickets *Tickets) {
 	tickets = &Tickets{}
-	err := DB.Where("assigned_user_id = ?", u.ID).All(tickets)
+	err := DB.Where("assigned_user_id = ?", u.ID).
+	Order("tickets.last_edit_date desc").
+	All(tickets)
 	if err != nil {
 		return nil
 	}
@@ -118,7 +120,9 @@ func (u *User) MyTickets() (tickets *Tickets) {
 // Tickets() returns all tickets from the user's account.
 func (u *User) Tickets() (tickets *Tickets) {
 	tickets = &Tickets{}
-	err := DB.Where("account_id = ?", u.AccountId).All(tickets)
+	err := DB.Where("account_id = ?", u.AccountId).
+	Order("tickets.last_edit_date desc").
+	All(tickets)
 	if err != nil {
 		return nil
 	}

@@ -25,30 +25,33 @@ the user's account are shown. (tickets assiciated to the user)
 <table class="table table-striped table-condensed">
 	<thead>
 		<tr>
-			<th>ID</th>
-			<th>Account</th>
 			<th>Assignee</th>
-			<th>Subject</th>
-			<th>Group</th>
 			<th>Status</th>
 			<th>Title</th>
 			<th>Created</th>
 			<th>LastEdit</th>
-			<th>LastEditType</th>
+			<th>By</th>
 			<%= if (user_is_admin) { %><th>&nbsp;</th><% } %>
 		</tr>
 	</thead>
 	<tbody>
 		<%= for (ticket) in tickets { %><tr>
-			<td><%= ticket.ID %></td>
-			<td><%= ticket.AccountId %></td>
-			<td><%= ticket.AssignedUserId %></td>
-			<td><%= ticket.SubjectId %></td>
-			<td><%= ticket.GroupId %></td>
-			<td><%= ticket.StatusId %></td>
-			<td><a href="<%= ticketPath({ ticket_id: ticket.ID }) %>"><%= ticket.Title %></a></td>
-			<td><%= ticket.CreateDate %></td>
-			<td><%= ticket.LastEditDate %></td>
+			<td><span data-toggle="tooltip" data-placement="top"
+					title="Account:<%= ticket.AccountId %>"
+					><%= user(ticket.AssignedUserId) %></span></td>
+			<td><%= status(ticket.StatusId) %></td>
+			<td><span data-toggle="tooltip" data-placement="top"
+					title="<%= ticket.Title %>
+(<%= group(ticket.GroupId) %> / <%= subject(ticket.SubjectId) %>)"><a
+					class="hl-shorten"
+					href="<%= ticketPath({ ticket_id: ticket.ID }) %>"
+					><%= trimSubject(ticket.Title, ticket.SubjectId) %></a></span></td>
+			<td><span data-toggle="tooltip" data-placement="top"
+					title="<%= ticket.CreateDate %>"><%=
+					timeYYMD(ticket.CreateDate) %></td>
+			<td><span data-toggle="tooltip" data-placement="top"
+					title="<%= ticket.LastEditDate %>"><%=
+					timeYYMDHM(ticket.LastEditDate) %></td>
 			<td><%= ticket.LastEditType %></td>
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">

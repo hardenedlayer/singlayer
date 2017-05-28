@@ -118,6 +118,7 @@ func (s *Single) MyTickets() (tickets *Tickets) {
 	err := pop.Q(DB).
 		LeftJoin("users", "users.id = tickets.assigned_user_id").
 		Where("users.single_id = ?", s.ID).
+		Order("tickets.last_edit_date desc").
 		All(tickets)
 	if err != nil {
 		Logger.Printf("Err: %v", err)
@@ -133,6 +134,7 @@ func (s *Single) Tickets() (tickets *Tickets) {
 		LeftJoin("accounts", "accounts.id = tickets.account_id").
 		LeftJoin("users", "accounts.id = users.account_id").
 		Where("users.single_id = ?", s.ID).
+		Order("tickets.last_edit_date desc").
 		All(tickets)
 	if err != nil {
 		Logger.Printf("Err: %v", err)

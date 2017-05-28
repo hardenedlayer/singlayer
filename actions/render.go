@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"time"
+
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
 )
@@ -16,6 +18,37 @@ func init() {
 		TemplatesBox: packr.NewBox("../templates"),
 
 		// Add template helpers here:
-		Helpers: render.Helpers{},
+		Helpers: render.Helpers{
+			"timeYYMDHMS": func(t time.Time) string {
+				return t.Local().Format("2006-01-02 15:04:05")
+			},
+			"timeYYMDHM": func(t time.Time) string {
+				return t.Local().Format("2006-01-02 15:04")
+			},
+			"timeYMDHM": func(t time.Time) string {
+				return t.Local().Format("06-01-02 15:04")
+			},
+			"timeMDHMS": func(t time.Time) string {
+				return t.Local().Format("01-02 15:04:05")
+			},
+			"timeMDHM": func(t time.Time) string {
+				return t.Local().Format("01-02 15:04")
+			},
+			"timeYYMD": func(t time.Time) string {
+				return t.Local().Format("2006-01-02")
+			},
+			"timeYMD": func(t time.Time) string {
+				return t.Local().Format("06-01-02")
+			},
+			"timeMD": func(t time.Time) string {
+				return t.Local().Format("01-02")
+			},
+			"timeHMS": func(t time.Time) string {
+				return t.Local().Format("15:04:05")
+			},
+			"timeHM": func(t time.Time) string {
+				return t.Local().Format("15:04")
+			},
+		},
 	})
 }
