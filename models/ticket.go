@@ -70,7 +70,6 @@ func SyncTickets(user *User) (count int, err error) {
 	account := user.Account()
 	Logger.Printf("account: %v", account)
 
-	//date_since := "05/01/2017 00:00:00"
 	date_since := account.LastBatch.Format("01/02/2006 15:04:05")
 	Logger.Printf("try to sync tickets from %v...", date_since)
 
@@ -93,15 +92,11 @@ func SyncTickets(user *User) (count int, err error) {
 		ticket.ID = *el.Id
 		ticket.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
 		ticket.LastEditDate,_ = time.Parse(time.RFC3339, el.LastEditDate.String())
-		Logger.Printf("CD ------ %v ------", *el.CreateDate)
-		Logger.Printf("LED ----- %v ------", *el.LastEditDate)
-
-		//*tickets = append(*tickets, *ticket)
-		Logger.Printf("------ %v ------", ticket)
+		Logger.Printf("ticket %v/%v --", ticket.AccountId, ticket.ID)
 		for _, elu := range el.Updates {
 			ticket_update := &TicketUpdate{}
 			copier.Copy(ticket_update, elu)
-			Logger.Printf("------ %v ------", ticket_update)
+			Logger.Printf("--- %v ---", ticket_update)
 		}
 
 		if ok, _ := DB.Where("id=?", ticket.ID).Exists(ticket); ok {
@@ -113,7 +108,7 @@ func SyncTickets(user *User) (count int, err error) {
 				Logger.Printf("cannot create ticket: %v, %v", err, ticket)
 				errors++
 			} else {
-				Logger.Printf("ticket_subject %v created.", ticket.ID)
+				Logger.Printf("ticket %v created.", ticket.ID)
 				count++
 			}
 		}
@@ -127,4 +122,65 @@ func SyncTickets(user *User) (count int, err error) {
 			exists, count, errors, len(data))
 	}
 	return count, nil
+}
+
+// SyncTicketUpdates() creates and updates all Updates of Ticket instance.
+func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
+	Logger.Printf("sync ticket updates... (use %v)", user.Username)
+	sess := session.New(user.Username, user.APIKey)
+	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+	data, err := services.GetTicketService(sess).
+		Id(t.ID).
+		Mask("id;ticketId;editorId;editorType;entry;createDate;type").
+		GetUpdates()
+	if err != nil {
+		Logger.Printf("slapi error: %v", err)
+		return 0, err
+	}
+
+	count = 0
+	errors := 0
+	exists := 0
+	for _, el := range data {
+		update := &TicketUpdate{}
+		copier.Copy(update, el)
+		update.ID = *el.Id
+		update.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
+		Logger.Printf("%v/%v --", update.TicketId, update.ID)
+		if ok, _ := DB.Where("id=?", update.ID).Exists(update); ok {
+			Logger.Printf("update %v already exists!", update.ID)
+			exists++
+		} else {
+			err = DB.Create(update)
+			if err != nil {
+				Logger.Printf("cannot create update: %v, %v", err, update)
+				errors++
+			} else {
+				Logger.Printf("update %v created.", update.ID)
+				count++
+			}
+		}
+	}
+	if len(data) == count {
+		Logger.Printf("Bingo! all data were inserted to database! (%v)", count)
+	} else {
+		Logger.Printf("Oops! some data not inserted! x:%v, s:%v, e:%vi (%v)",
+			exists, count, errors, len(data))
+	}
+	return count, nil
+}
+
+//// Association and Relationship based search for instances.
+
+// Updates() returns all updates for the ticket.
+func (t *Ticket) Updates() (updates *TicketUpdates) {
+	updates = &TicketUpdates{}
+	err := DB.BelongsTo(t).
+		Order("create_date desc").
+		All(updates)
+	if err != nil {
+		return nil
+	}
+	inspect("updates from dbms", updates)
+	return
 }

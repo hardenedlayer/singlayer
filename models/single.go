@@ -102,6 +102,16 @@ func (s *Single) UserByUsername(username interface{}) (user *User) {
 	return
 }
 
+// UserByAccount(account_id) returns single instance of User
+func (s *Single) UserByAccount(account_id interface{}) (user *User) {
+	user = &User{}
+	err := DB.BelongsTo(s).Where("account_id=?", account_id).First(user)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 // Account(account_id) returns single instance of Account.
 func (s *Single) Account(account_id interface{}) (account *Account) {
 	account = &Account{}
@@ -136,6 +146,21 @@ func (s *Single) Tickets() (tickets *Tickets) {
 		Where("users.single_id = ?", s.ID).
 		Order("tickets.last_edit_date desc").
 		All(tickets)
+	if err != nil {
+		Logger.Printf("Err: %v", err)
+		return nil
+	}
+	return
+}
+
+// Ticket() returns specified ticket associated to the single.
+func (s *Single) Ticket(ticket_id interface{}) (ticket *Ticket) {
+	ticket = &Ticket{}
+	err := pop.Q(DB).
+		LeftJoin("accounts", "accounts.id = tickets.account_id").
+		LeftJoin("users", "accounts.id = users.account_id").
+		Where("users.single_id = ?", s.ID).
+		Find(ticket, ticket_id)
 	if err != nil {
 		Logger.Printf("Err: %v", err)
 		return nil

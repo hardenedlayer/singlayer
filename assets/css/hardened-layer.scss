@@ -34,6 +34,20 @@ $font_color: #222;
 .sing-data {
 	text-shadow: 1px 1px 2px #888;
 }
+.ticket-update {
+	&.well {
+		margin-bottom: 10px;
+		padding: 5px;
+	}
+	&.by-user > pre {
+	}
+	&.by-service > pre {
+	}
+	& > pre {
+		white-space: pre-wrap;
+		margin-bottom: 5px;
+	}
+}
 
 div > p:last-child {
 	margin-bottom: 0px;
