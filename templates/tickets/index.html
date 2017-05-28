@@ -1,44 +1,64 @@
-<h1>Tickets</h1>
+<div class="row page-header">
+	<h1>Tickets for <span class="sing-data"><%= actor %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+This page lists your tickets in two mode.
+In the multi-mode, when the actor is set as 'All', all assigned tickets from
+all registered users are shown. (tickets owned by you)
+In the single-mode, when the actor is set as specific user, all tickets from
+the user's account are shown. (tickets assiciated to the user)
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+		<i class="fa fa-exclamation-circle text-danger"
+			data-toggle="tooltip" data-placement="left"
+			title="This page supports 'Actor mode'.
+			Please check your current actor."></i>
+	</div>
+	<div>
+		Registered Users
+	</div>
+</div>
 
-<p>
-  <a href="<%= newTicketPath() %>" class="btn btn-primary">Create New Ticket</a>
-</p>
+<div class="row">
+<div class="col-md-12">
 
 <table class="table table-striped table-condensed">
-  <thead>
-    <th>ID</th>
-    <th>AccountId</th>
-    <th>AssignedUserId</th>
-    <th>SubjectId</th>
-    <th>GroupId</th>
-    <th>StatusId</th>
-    <th>Title</th>
-    <th>CreateDate</th>
-    <th>LastEditDate</th>
-    <th>LastEditType</th>
-    <th>&nbsp;</th>
-  </thead>
-  <tbody>
-    <%= for (ticket) in tickets { %>
-      <tr>
-        <td><%= ticket.ID %></td>
-        <td><%= ticket.AccountId %></td>
-        <td><%= ticket.AssignedUserId %></td>
-        <td><%= ticket.SubjectId %></td>
-        <td><%= ticket.GroupId %></td>
-        <td><%= ticket.StatusId %></td>
-        <td><%= ticket.Title %></td>
-        <td><%= ticket.CreateDate %></td>
-        <td><%= ticket.LastEditDate %></td>
-        <td><%= ticket.LastEditType %></td>
-        <td>
-          <div class="pull-right">
-            <a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
-          </div>
-        </td>
-      </tr>
-    <% } %>
-  </tbody>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Account</th>
+			<th>Assignee</th>
+			<th>Subject</th>
+			<th>Group</th>
+			<th>Status</th>
+			<th>Title</th>
+			<th>Created</th>
+			<th>LastEdit</th>
+			<th>LastEditType</th>
+			<%= if (user_is_admin) { %><th>&nbsp;</th><% } %>
+		</tr>
+	</thead>
+	<tbody>
+		<%= for (ticket) in tickets { %><tr>
+			<td><%= ticket.ID %></td>
+			<td><%= ticket.AccountId %></td>
+			<td><%= ticket.AssignedUserId %></td>
+			<td><%= ticket.SubjectId %></td>
+			<td><%= ticket.GroupId %></td>
+			<td><%= ticket.StatusId %></td>
+			<td><a href="<%= ticketPath({ ticket_id: ticket.ID }) %>"><%= ticket.Title %></a></td>
+			<td><%= ticket.CreateDate %></td>
+			<td><%= ticket.LastEditDate %></td>
+			<td><%= ticket.LastEditType %></td>
+			<%= if (user_is_admin) { %><td>
+				<div class="pull-right">
+					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-warning">Edit</a>
+					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+				</div>
+			</td><% } %>
+		</tr><% } %>
+	</tbody>
 </table>
+
+</div>
+</div>

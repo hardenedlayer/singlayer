@@ -91,11 +91,51 @@ func (s *Single) User(user_id interface{}) (user *User) {
 	return
 }
 
+// UserByUsername(username) returns single instance of User
+func (s *Single) UserByUsername(username interface{}) (user *User) {
+	user = &User{}
+	err := DB.BelongsTo(s).Where("username=?", username).First(user)
+	//err := DB.BelongsTo(s).Find(user, user_id)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 // Account(account_id) returns single instance of Account.
 func (s *Single) Account(account_id interface{}) (account *Account) {
 	account = &Account{}
 	err := DB.BelongsToThrough(s, "users").Find(account, account_id)
 	if err != nil {
+		return nil
+	}
+	return
+}
+
+// Tickets() returns all tickets associated to the single.
+func (s *Single) MyTickets() (tickets *Tickets) {
+	tickets = &Tickets{}
+	err := pop.Q(DB).
+		LeftJoin("users", "users.id = tickets.assigned_user_id").
+		Where("users.single_id = ?", s.ID).
+		All(tickets)
+	if err != nil {
+		Logger.Printf("Err: %v", err)
+		return nil
+	}
+	return
+}
+
+// Tickets() returns all tickets associated to the single.
+func (s *Single) Tickets() (tickets *Tickets) {
+	tickets = &Tickets{}
+	err := pop.Q(DB).
+		LeftJoin("accounts", "accounts.id = tickets.account_id").
+		LeftJoin("users", "accounts.id = users.account_id").
+		Where("users.single_id = ?", s.ID).
+		All(tickets)
+	if err != nil {
+		Logger.Printf("Err: %v", err)
 		return nil
 	}
 	return

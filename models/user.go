@@ -92,3 +92,35 @@ func (u *User) Update() (err error) {
 	inspect("updated user", u)
 	return
 }
+
+//// Association and Relationship based search for instances.
+
+// Account() returns related single Account instance for the User instance.
+func (u *User) Account() (account *Account) {
+	account = &Account{}
+	err := DB.Find(account, u.AccountId)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// MyTickets() returns all tickets assigned to me.
+func (u *User) MyTickets() (tickets *Tickets) {
+	tickets = &Tickets{}
+	err := DB.Where("assigned_user_id = ?", u.ID).All(tickets)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// Tickets() returns all tickets from the user's account.
+func (u *User) Tickets() (tickets *Tickets) {
+	tickets = &Tickets{}
+	err := DB.Where("account_id = ?", u.AccountId).All(tickets)
+	if err != nil {
+		return nil
+	}
+	return
+}

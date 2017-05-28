@@ -90,6 +90,11 @@ func App() *buffalo.App {
 		g = app.Resource("/accounts", r)
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper, r.Show)
+
+		r = &TicketsResource{&buffalo.BaseResource{}}
+		g = app.Resource("/tickets", r)
+		g.Use(AdminPageKeeper)
+		g.Middleware.Skip(AdminPageKeeper, r.List, r.Show)
 	}
 
 	return app

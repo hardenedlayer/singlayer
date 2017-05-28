@@ -28,7 +28,7 @@
 				<%= if (user_id) { %>
 				<ul class="nav navbar-nav">
 					<li><a href="/s" class="navbar-link">Landscape</a></li>
-					<li><a href="/t" class="navbar-link">Ticket</a></li>
+					<li><a href="/tickets" class="navbar-link">Ticket</a></li>
 					<li><a href="/l" class="navbar-link">Link</a></li>
 					<%= if (user_is_admin) { %>
 					<li class="dropdown">
@@ -37,6 +37,8 @@
 							<li><a href="<%= singlesPath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> Singles</a></li>
 							<li><a href="<%= usersPath() %>"><i aria-hidden="true" class="fa fa-users"></i> Users</a></li>
 							<li><a href="<%= accountsPath() %>"><i aria-hidden="true" class="fa fa-building"></i> Accounts</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="<%= ticketsMetaNPath() %>"><i aria-hidden="true" class="fa fa-ticket"></i> Meta:Tickets</a></li>
 						</ul>
 					</li>
 					<% } %>
