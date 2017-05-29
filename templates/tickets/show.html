@@ -27,7 +27,6 @@
 		<th>Status</th>
 		<th>Created</th>
 		<th>Last Edited</th>
-		<th>By</th>
 	</thead>
 	<tbody>
 		<tr>
@@ -37,13 +36,13 @@
 			<td><%= subject(ticket.SubjectId) %></td>
 			<td><%= group(ticket.GroupId) %></td>
 			<td><%= status(ticket.StatusId) %></td>
-			<td><span data-toggle="tooltip" data-placement="top"
-					title="<%= ticket.CreateDate %>"><%=
+			<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					ticket.CreateDate %>"><%=
 					timeYYMD(ticket.CreateDate) %></td>
-			<td><span data-toggle="tooltip" data-placement="top"
-					title="<%= ticket.LastEditDate %>"><%=
+			<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					ticket.LastEditDate %> by <%= ticket.LastEditType %>"><%=
+					iconize(ticket.LastEditType) %> <%=
 					timeYYMDHM(ticket.LastEditDate) %></td>
-			<td><%= iconize(ticket.LastEditType) %></td>
 		</tr>
 	</tbody>
 </table>

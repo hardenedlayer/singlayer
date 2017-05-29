@@ -20,7 +20,6 @@ the user's account are shown. (tickets assiciated to the user)
 </div>
 
 <div class="row">
-<div class="col-md-12">
 
 <table class="table table-striped table-condensed">
 	<thead>
@@ -30,7 +29,6 @@ the user's account are shown. (tickets assiciated to the user)
 			<th>Title</th>
 			<th>Created</th>
 			<th>LastEdit</th>
-			<th>By</th>
 			<%= if (user_is_admin) { %><th>&nbsp;</th><% } %>
 		</tr>
 	</thead>
@@ -46,13 +44,13 @@ the user's account are shown. (tickets assiciated to the user)
 					class="hl-shorten"
 					href="<%= ticketPath({ ticket_id: ticket.ID }) %>"
 					><%= trimSubject(ticket.Title, ticket.SubjectId) %></a></span></td>
-			<td><span data-toggle="tooltip" data-placement="top"
-					title="<%= ticket.CreateDate %>"><%=
+			<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					ticket.CreateDate %>"><%=
 					timeYYMD(ticket.CreateDate) %></td>
-			<td><span data-toggle="tooltip" data-placement="top"
-					title="<%= ticket.LastEditDate %>"><%=
+			<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					ticket.LastEditDate %> by <%= ticket.LastEditType %>"><%=
+					iconize(ticket.LastEditType) %> <%=
 					timeYYMDHM(ticket.LastEditDate) %></td>
-			<td><%= iconize(ticket.LastEditType) %></td>
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
 					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-xs btn-warning">Ed</a>
@@ -63,5 +61,4 @@ the user's account are shown. (tickets assiciated to the user)
 	</tbody>
 </table>
 
-</div>
 </div>
