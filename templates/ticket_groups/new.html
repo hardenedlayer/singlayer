@@ -1,6 +1,0 @@
-<h1>New TicketGroup</h1>
-
-<%= form_for(ticketGroup, {action: ticketGroupsPath(), method: "POST", errors: errors}) { %>
-  <%= partial("ticket_groups/form.html") %>
-  <a href="<%= ticketGroupsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
-<% } %>
