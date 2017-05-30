@@ -76,6 +76,9 @@ $bg-danger: #ea9590;
 div > p:last-child {
 	margin-bottom: 0px;
 }
+.pagination > li > a {
+	width: 2.5em;
+}
 
 
 @media screen and (max-width: 754px) {

@@ -106,25 +106,27 @@ func (u *User) Account() (account *Account) {
 }
 
 // MyTickets() returns all tickets assigned to me.
-func (u *User) MyTickets() (tickets *Tickets) {
-	tickets = &Tickets{}
-	err := DB.Where("assigned_user_id = ?", u.ID).
-	Order("tickets.last_edit_date desc").
-	All(tickets)
+func (u *User) MyTickets(page, pp int) (*Tickets, *pop.Paginator) {
+	tickets := &Tickets{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.Where("assigned_user_id = ?", u.ID).
+		Order("tickets.last_edit_date desc").
+		All(tickets)
 	if err != nil {
-		return nil
+		return nil, nil
 	}
-	return
+	return tickets, q.Paginator
 }
 
 // Tickets() returns all tickets from the user's account.
-func (u *User) Tickets() (tickets *Tickets) {
-	tickets = &Tickets{}
-	err := DB.Where("account_id = ?", u.AccountId).
-	Order("tickets.last_edit_date desc").
-	All(tickets)
+func (u *User) Tickets(page, pp int) (*Tickets, *pop.Paginator) {
+	tickets := &Tickets{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.Where("account_id = ?", u.AccountId).
+		Order("tickets.last_edit_date desc").
+		All(tickets)
 	if err != nil {
-		return nil
+		return nil, nil
 	}
-	return
+	return tickets, q.Paginator
 }

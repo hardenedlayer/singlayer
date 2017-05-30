@@ -2,6 +2,7 @@ package actions
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 
@@ -17,9 +18,25 @@ type TicketsResource struct {
 
 func (v TicketsResource) List(c buffalo.Context) error {
 	tickets := &models.Tickets{}
+
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
 	if c.Session().Get("is_admin").(bool) {
 		tx := c.Value("tx").(*pop.Connection)
-		err := tx.Order("last_edit_date desc").All(tickets)
+		q := tx.Paginate(page, pp)
+		err := q.Order("last_edit_date desc").All(tickets)
+		pager = q.Paginator
 		if err != nil {
 			return err
 		}
@@ -29,7 +46,7 @@ func (v TicketsResource) List(c buffalo.Context) error {
 		actor := c.Value("actor").(string)
 		if actor == "All" {
 			c.Logger().Debugf("multi mode for single!")
-			ticks = single.MyTickets()
+			ticks, pager = single.MyTickets(page, pp)
 		} else {
 			user := single.UserByUsername(c.Value("actor"))
 			if user == nil {
@@ -42,7 +59,7 @@ func (v TicketsResource) List(c buffalo.Context) error {
 					return err
 				}
 				c.Logger().Debugf("%v new tickets synced", count)
-				ticks = user.Tickets()
+				ticks, pager = user.Tickets(page, pp)
 			}
 		}
 		if ticks == nil {
@@ -52,6 +69,7 @@ func (v TicketsResource) List(c buffalo.Context) error {
 		}
 	}
 	addTicketHelpers(c)
+	c.Set("pager", pager)
 	c.Set("tickets", tickets)
 	return c.Render(200, r.HTML("tickets/index.html"))
 }

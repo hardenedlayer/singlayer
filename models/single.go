@@ -123,24 +123,26 @@ func (s *Single) Account(account_id interface{}) (account *Account) {
 }
 
 // Tickets() returns all tickets associated to the single.
-func (s *Single) MyTickets() (tickets *Tickets) {
-	tickets = &Tickets{}
-	err := pop.Q(DB).
+func (s *Single) MyTickets(page, pp int) (*Tickets, *pop.Paginator) {
+	tickets := &Tickets{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.
 		LeftJoin("users", "users.id = tickets.assigned_user_id").
 		Where("users.single_id = ?", s.ID).
 		Order("tickets.last_edit_date desc").
 		All(tickets)
 	if err != nil {
 		log.Errorf("Err: %v", err)
-		return nil
+		return nil, nil
 	}
-	return
+	return tickets, q.Paginator
 }
 
 // Tickets() returns all tickets associated to the single.
-func (s *Single) Tickets() (tickets *Tickets) {
-	tickets = &Tickets{}
-	err := pop.Q(DB).
+func (s *Single) Tickets(page, pp int) (*Tickets, *pop.Paginator) {
+	tickets := &Tickets{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.
 		LeftJoin("accounts", "accounts.id = tickets.account_id").
 		LeftJoin("users", "accounts.id = users.account_id").
 		Where("users.single_id = ?", s.ID).
@@ -148,9 +150,9 @@ func (s *Single) Tickets() (tickets *Tickets) {
 		All(tickets)
 	if err != nil {
 		log.Errorf("Err: %v", err)
-		return nil
+		return nil, nil
 	}
-	return
+	return tickets, q.Paginator
 }
 
 // Ticket() returns specified ticket associated to the single.
