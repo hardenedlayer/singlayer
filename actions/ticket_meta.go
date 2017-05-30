@@ -13,7 +13,7 @@ func SyncTicketGroups(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("TX error: %v", err)
 	}
-	c.Logger().Infof("using %v:%v", user.Username, user.APIKey)
+	c.Logger().Infof("using %v", user.Username)
 	err = models.SyncTicketGroups(user)
 	if err == nil {
 		c.Flash().Add("success", "TicketGroups were synced successfully")
@@ -30,7 +30,7 @@ func SyncTicketStatuses(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("TX error: %v", err)
 	}
-	c.Logger().Infof("using %v:%v", user.Username, user.APIKey)
+	c.Logger().Infof("using %v", user.Username)
 	err = models.SyncTicketStatuses(user)
 	if err == nil {
 		c.Flash().Add("success", "TicketStatuses were synced successfully")
@@ -47,7 +47,7 @@ func SyncTicketSubjects(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("TX error: %v", err)
 	}
-	c.Logger().Infof("using %v:%v", user.Username, user.APIKey)
+	c.Logger().Infof("using %v", user.Username)
 	err = models.SyncTicketSubjects(user)
 	if err == nil {
 		c.Flash().Add("success", "TicketSubjects were synced successfully")

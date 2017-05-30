@@ -57,7 +57,7 @@ func (t *TicketStatus) IsNew() bool {
 
 // SyncTicketStatuses() creates and updates all Ticket Statuses.
 func SyncTicketStatuses(user *User) error {
-	Logger.Printf("sync ticket statuses... (use %v)", user.Username)
+	log.Infof("sync ticket statuses... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
@@ -71,13 +71,13 @@ func SyncTicketStatuses(user *User) error {
 		copier.Copy(ts, el)
 		ts.ID = *el.Id
 		if ok, _ := DB.Where("id=?", ts.ID).Exists(ts); ok {
-			Logger.Printf("ticket_status %v already exists!", ts.ID)
+			log.Debugf("ticket_status %v already exists!", ts.ID)
 		} else {
 			err = DB.Create(ts)
 			if err != nil {
-				Logger.Printf("cannot create ticket_status:%v", err)
+				log.Errorf("cannot create ticket_status:%v", err)
 			} else {
-				Logger.Printf("ticket_status %v created.", ts)
+				log.Debugf("ticket_status %v created.", ts)
 			}
 		}
 	}

@@ -97,8 +97,9 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		c.Logger().Errorf("validation errors: %v --", verrs)
 		return c.Render(422, r.HTML("users/new.html"))
 	}
+	updateActors(c, tx)
 	c.Flash().Add("success", "User was created successfully")
-	return c.Redirect(302, "/users/%d", user.ID)
+	return c.Redirect(302, "/me")
 }
 
 func (v UsersResource) Update(c buffalo.Context) error {
@@ -118,6 +119,12 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 
+	acc := &models.Account{ID: user.AccountId}
+	err = acc.UpdateAndSave(user)
+	if err != nil {
+		c.Logger().Warnf("cannot save account: %v, %v", err, acc)
+	}
+
 	c.Logger().Debugf("about to update an user: %v ----", user)
 	tx := c.Value("tx").(*pop.Connection)
 	verrs, err := tx.ValidateAndUpdate(user)
@@ -132,7 +139,7 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 	c.Flash().Add("success", "User was updated successfully")
-	return c.Redirect(302, "/users/%d", user.ID)
+	return c.Redirect(302, "/me")
 }
 
 func (v UsersResource) Destroy(c buffalo.Context) error {
@@ -147,6 +154,7 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 		c.Flash().Add("danger", "Sorry, cannot delete user. try again later.")
 		return c.Redirect(302, "/me")
 	}
+	updateActors(c, tx)
 	c.Flash().Add("success", "User was destroyed successfully")
 	return c.Redirect(302, "/me")
 }
@@ -166,4 +174,18 @@ func setUser(c buffalo.Context) (user *models.User, err error) {
 	}
 	c.Logger().Debugf("setUser() returns user: %v, err: %v", user, err)
 	return
+}
+
+// update session variable actors after add/delete users.
+func updateActors(c buffalo.Context, tx *pop.Connection) {
+	var actors []string
+	users := &models.Users{}
+	_ = tx.Where("single_id=?", getCurrentSingle(c).ID).All(users)
+	for _, u := range *users {
+		actors = append(actors, u.Username)
+	}
+	actors = append(actors, "All")
+	c.Session().Set("actors", actors)
+	c.Session().Save()
+	c.Logger().Infof("store actors %v into session.", actors)
 }

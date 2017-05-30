@@ -10,6 +10,7 @@ type SinglesResource struct {
 	buffalo.Resource
 }
 
+// ADMIN PROTECTED
 func (v SinglesResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	singles := &models.Singles{}
@@ -21,6 +22,7 @@ func (v SinglesResource) List(c buffalo.Context) error {
 	return c.Render(200, r.HTML("singles/index.html"))
 }
 
+// ADMIN PROTECTED
 func (v SinglesResource) Show(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	single := &models.Single{}
@@ -32,6 +34,7 @@ func (v SinglesResource) Show(c buffalo.Context) error {
 	return c.Render(200, r.HTML("singles/show.html"))
 }
 
+// ADMIN PROTECTED
 func (v SinglesResource) Edit(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	single := &models.Single{}
@@ -43,6 +46,7 @@ func (v SinglesResource) Edit(c buffalo.Context) error {
 	return c.Render(200, r.HTML("singles/edit.html"))
 }
 
+// ADMIN PROTECTED
 func (v SinglesResource) Update(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	single := &models.Single{}
@@ -67,6 +71,7 @@ func (v SinglesResource) Update(c buffalo.Context) error {
 	return c.Redirect(302, "/singles/%s", single.ID)
 }
 
+// ADMIN PROTECTED
 func (v SinglesResource) Destroy(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	single := &models.Single{}

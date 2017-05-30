@@ -2,29 +2,33 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/softlayer/softlayer-go/filter"
 	"github.com/softlayer/softlayer-go/services"
 	"github.com/softlayer/softlayer-go/session"
 )
 
 type Ticket struct {
-	ID             int       `json:"id" db:"id"`
-	CreatedAt      time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at" db:"updated_at"`
-	AccountId      int       `json:"account_id" db:"account_id"`
-	AssignedUserId int       `json:"assigned_user_id" db:"assigned_user_id"`
-	SubjectId      int       `json:"subject_id" db:"subject_id"`
-	GroupId        int       `json:"group_id" db:"group_id"`
-	StatusId       int       `json:"status_id" db:"status_id"`
-	Title          string    `json:"title" db:"title"`
-	CreateDate     time.Time `json:"create_date" db:"create_date"`
-	LastEditDate   time.Time `json:"last_edit_date" db:"last_edit_date"`
-	LastEditType   string    `json:"last_edit_type" db:"last_edit_type"`
+	ID               int       `json:"id" db:"id"`
+	CreatedAt        time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at" db:"updated_at"`
+	AccountId        int       `json:"account_id" db:"account_id"`
+	AssignedUserId   int       `json:"assigned_user_id" db:"assigned_user_id"`
+	SubjectId        int       `json:"subject_id" db:"subject_id"`
+	GroupId          int       `json:"group_id" db:"group_id"`
+	StatusId         int       `json:"status_id" db:"status_id"`
+	Title            string    `json:"title" db:"title"`
+	TotalUpdateCount int       `json:"total_update_count" db:"total_update_count"`
+	CreateDate       time.Time `json:"create_date" db:"create_date"`
+	LastEditDate     time.Time `json:"last_edit_date" db:"last_edit_date"`
+	LastEditType     string    `json:"last_edit_type" db:"last_edit_type"`
+	LastSync         time.Time `json:"last_sync" db:"last_sync"`
 }
 
 func (t Ticket) String() string {
@@ -63,78 +67,89 @@ func (t *Ticket) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 
 // SyncTickets() creates and updates all Tickets of given user's account.
 func SyncTickets(user *User) (count int, err error) {
-	Logger.Printf("sync tickets... (use %v)", user.Username)
+	log.Infof("sync tickets... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
 	account := user.Account()
-	Logger.Printf("account: %v", account)
+	if account == nil {
+		log.Errorf("account link broken! %v of %v", user.ID, user.AccountId)
+		return 0, errors.New("account link broken!")
+	}
+	log.Debugf("account: %v", account)
 
-	date_since := account.LastBatch.Format("01/02/2006 15:04:05")
-	Logger.Printf("try to sync tickets from %v...", date_since)
+	date_since := account.LastBatch.AddDate(0,0,-1).Format("01/02/2006 15:04:05")
+	log.Infof("try to sync tickets from %v...", date_since)
 
 	service := services.GetAccountService(sess)
 	data, err := service.
-		Mask("id;accountId;assignedUserId;subjectId;groupId;statusId,title;totalUpdateCount;createDate;lastEditDate;lastEditType;updates.id;updates.ticketId;updates.editorType;updates.editorId").
-		Filter(`{"tickets":{"lastEditDate":{"operation":"greaterThanDate","options":[{"name":"date","value":["` + date_since + `"]}]}}}`).
+		Mask("id;accountId;assignedUserId;subjectId;groupId;statusId;title;totalUpdateCount;createDate;lastEditDate;lastEditType").
+		Filter(filter.Build(
+			filter.Path("tickets.lastEditDate").DateAfter(date_since),
+		)).
 		GetTickets()
 	if err != nil {
-		Logger.Printf("slapi error: %v", err)
+		log.Errorf("slapi error: %v", err)
 		return 0, err
 	}
 
 	count = 0
-	errors := 0
-	exists := 0
 	for _, el := range data {
 		ticket := &Ticket{}
 		copier.Copy(ticket, el)
 		ticket.ID = *el.Id
 		ticket.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
 		ticket.LastEditDate,_ = time.Parse(time.RFC3339, el.LastEditDate.String())
-		Logger.Printf("ticket %v/%v --", ticket.AccountId, ticket.ID)
+		log.Debugf("ticket %v/%v --", ticket.AccountId, ticket.ID)
 		for _, elu := range el.Updates {
 			ticket_update := &TicketUpdate{}
 			copier.Copy(ticket_update, elu)
-			Logger.Printf("--- %v ---", ticket_update)
+			log.Debugf("--- %v ---", ticket_update)
 		}
 
-		if ok, _ := DB.Where("id=?", ticket.ID).Exists(ticket); ok {
-			Logger.Printf("ticket %v already exists!", ticket.ID)
-			exists++
+		err = ticket.Save()
+		if err != nil {
+			log.Errorf("cannot create ticket: %v, %v", err, ticket)
 		} else {
-			err = DB.Create(ticket)
-			if err != nil {
-				Logger.Printf("cannot create ticket: %v, %v", err, ticket)
-				errors++
-			} else {
-				Logger.Printf("ticket %v created.", ticket.ID)
-				count++
-			}
+			count++
 		}
 	}
 	if len(data) == count {
-		Logger.Printf("Bingo! all data were inserted to database! (%v)", count)
+		log.Infof("Bingo! all data were inserted to database! (%v)", count)
 		account.LastBatch = time.Now()
 		account.Save()
 	} else {
-		Logger.Printf("Oops! some data not inserted! x:%v, s:%v, e:%vi (%v)",
-			exists, count, errors, len(data))
+		log.Errorf("Oops! some data not inserted! %v of %v saved.",
+			count, len(data))
 	}
 	return count, nil
 }
 
 // SyncTicketUpdates() creates and updates all Updates of Ticket instance.
 func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
-	Logger.Printf("sync ticket updates... (use %v)", user.Username)
+	log.Infof("sync ticket updates... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+
+	/*
+	log.Debugf("update count: %v, %v",t.TotalUpdateCount,len(*(t.Updates())))
+	if t.TotalUpdateCount == len(*(t.Updates())) {
+		return 0, nil
+	}
+	*/
+
+	date_since := t.LastSync.AddDate(0,0,-1).Format("01/02/2006 15:04:05")
+	log.Debugf("try to sync updates from %v...", date_since)
+
 	data, err := services.GetTicketService(sess).
 		Id(t.ID).
 		Mask("id;ticketId;editorId;editorType;entry;createDate;type").
+		Filter(filter.Build(
+			filter.Path("updates.createDate").DateAfter(date_since),
+		)).
 		GetUpdates()
 	if err != nil {
-		Logger.Printf("slapi error: %v", err)
+		log.Errorf("slapi error: %v", err)
 		return 0, err
 	}
 
@@ -146,25 +161,30 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 		copier.Copy(update, el)
 		update.ID = *el.Id
 		update.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
-		Logger.Printf("%v/%v --", update.TicketId, update.ID)
+		log.Debugf("%v/%v --", update.TicketId, update.ID)
 		if ok, _ := DB.Where("id=?", update.ID).Exists(update); ok {
-			Logger.Printf("update %v already exists!", update.ID)
+			log.Debugf("update %v already exists!", update.ID)
 			exists++
 		} else {
 			err = DB.Create(update)
 			if err != nil {
-				Logger.Printf("cannot create update: %v, %v", err, update)
+				log.Errorf("cannot create update: %v, %v", err, update)
 				errors++
 			} else {
-				Logger.Printf("update %v created.", update.ID)
+				log.Debugf("update %v created.", update.ID)
 				count++
 			}
 		}
 	}
 	if len(data) == count {
-		Logger.Printf("Bingo! all data were inserted to database! (%v)", count)
+		log.Infof("Bingo! all data were inserted to database! (%v)", count)
+		t.LastSync = time.Now()
+		err = t.Save()
+		if err != nil {
+			log.Errorf("cannot save ticket: %v", err)
+		}
 	} else {
-		Logger.Printf("Oops! some data not inserted! x:%v, s:%v, e:%vi (%v)",
+		log.Errorf("Oops! some data not inserted! x:%v, s:%v, e:%vi (%v)",
 			exists, count, errors, len(data))
 	}
 	return count, nil
@@ -183,4 +203,42 @@ func (t *Ticket) Updates() (updates *TicketUpdates) {
 	}
 	inspect("updates from dbms", updates)
 	return
+}
+
+//// DBMS Functions:
+
+// Save() saves the Ticket instance. (create or update)
+func (t *Ticket) Save() (err error) {
+	old := &Ticket{}
+	err = DB.Find(old, t.ID)
+	origin,_ := time.Parse("2006-01-02", "1977-05-25")
+	if err == nil {
+		if t.LastSync.Before(origin) {
+			log.Debugf("preserve old timestamp!")
+			t.LastSync = old.LastSync
+		}
+		verrs, err := DB.ValidateAndUpdate(t)
+		if err != nil {
+			return err
+		}
+		if verrs.HasAny() {
+			return verrs
+		}
+	} else {
+		lst,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
+		if e == nil {
+			t.LastSync = lst
+		} else {
+			t.LastSync = time.Now()
+		}
+
+		verrs, err := DB.ValidateAndCreate(t)
+		if err != nil {
+			return err
+		}
+		if verrs.HasAny() {
+			return verrs
+		}
+	}
+	return nil
 }

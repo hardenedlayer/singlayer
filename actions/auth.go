@@ -84,7 +84,7 @@ func AuthCallback(c buffalo.Context) error {
 		actors = append(actors, a.Username)
 	}
 	actors = append(actors, "All")
-	c.Logger().Infof("actors: %v.", actors)
+	c.Logger().Debugf("actors: %v.", actors)
 
 	session := c.Session()
 	session.Set("user_id", single.ID)

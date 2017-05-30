@@ -131,7 +131,7 @@ func (s *Single) MyTickets() (tickets *Tickets) {
 		Order("tickets.last_edit_date desc").
 		All(tickets)
 	if err != nil {
-		Logger.Printf("Err: %v", err)
+		log.Errorf("Err: %v", err)
 		return nil
 	}
 	return
@@ -147,7 +147,7 @@ func (s *Single) Tickets() (tickets *Tickets) {
 		Order("tickets.last_edit_date desc").
 		All(tickets)
 	if err != nil {
-		Logger.Printf("Err: %v", err)
+		log.Errorf("Err: %v", err)
 		return nil
 	}
 	return
@@ -162,7 +162,7 @@ func (s *Single) Ticket(ticket_id interface{}) (ticket *Ticket) {
 		Where("users.single_id = ?", s.ID).
 		Find(ticket, ticket_id)
 	if err != nil {
-		Logger.Printf("Err: %v", err)
+		log.Errorf("Err: %v", err)
 		return nil
 	}
 	return

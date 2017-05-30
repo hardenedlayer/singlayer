@@ -33,24 +33,29 @@ the user's account are shown. (tickets assiciated to the user)
 		</tr>
 	</thead>
 	<tbody>
-		<%= for (ticket) in tickets { %><tr>
-			<td><span data-toggle="tooltip" data-placement="top"
+		<%= for (ticket) in tickets { %><tr class="ticket-status-<%=
+			status(ticket.StatusId) %> <%= ticketTag(ticket)
+			%>">
+			<td class="ticket-owner"><span data-toggle="tooltip" data-placement="top"
 					title="Account:<%= ticket.AccountId %>"
 					><%= user(ticket.AssignedUserId) %></span></td>
-			<td><%= status(ticket.StatusId) %></td>
-			<td><span data-toggle="tooltip" data-placement="top"
-					title="<%= ticket.Title %>
-(<%= group(ticket.GroupId) %> / <%= subject(ticket.SubjectId) %>)"><a
+			<td class="ticket-status"><%= status(ticket.StatusId) %></td>
+			<td class="ticket-title"><span data-toggle="tooltip" data-placement="top"
+					title="<%= ticket.Title %> (<%=
+					group(ticket.GroupId) %> / <%=
+					subject(ticket.SubjectId) %>)"><a
 					class="hl-shorten"
 					href="<%= ticketPath({ ticket_id: ticket.ID }) %>"
 					><%= trimSubject(ticket.Title, ticket.SubjectId) %></a></span></td>
-			<td><span data-toggle="tooltip" data-placement="top" title="<%=
-					ticket.CreateDate %>"><%=
+			<td class="create-date"><span data-toggle="tooltip" title="<%=
+					ticket.CreateDate %>" data-placement="top"><%=
 					timeYYMD(ticket.CreateDate) %></td>
-			<td><span data-toggle="tooltip" data-placement="top" title="<%=
-					ticket.LastEditDate %> by <%= ticket.LastEditType %>"><%=
+			<td class="update-date"><span data-toggle="tooltip" title="<%=
+					ticket.LastEditDate %> by <%=
+					ticket.LastEditType %>" data-placement="top"><%=
 					iconize(ticket.LastEditType) %> <%=
 					timeYYMDHM(ticket.LastEditDate) %></td>
+			<!-- sync time: <%= timeYYMDHM(ticket.LastSync) %> -->
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
 					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-xs btn-warning">Ed</a>

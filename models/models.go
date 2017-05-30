@@ -2,17 +2,17 @@ package models
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 
 	"github.com/gobuffalo/envy"
 	"github.com/markbates/pop"
+	"github.com/Sirupsen/logrus"
 )
 
 // DB is a connection to your database to be used
 // throughout your application.
 var DB *pop.Connection
-var Logger *log.Logger
+var log = logrus.New()
 
 func init() {
 	var err error
@@ -23,7 +23,11 @@ func init() {
 	}
 	pop.Debug = env == "development"
 
-	Logger = log.New(os.Stdout, "", log.Ldate|log.Ltime|log.Lshortfile)
+	if env == "development" {
+		log.Formatter = &logrus.TextFormatter{}
+		log.Out = os.Stdout
+		log.Level = logrus.DebugLevel
+	}
 
 	pop.MapTableName("TicketStatus", "ticket_statuses")
 	pop.MapTableName("TicketStatuses", "ticket_statuses")
@@ -33,7 +37,7 @@ func init() {
 
 // inspect: to check data type and value.
 func inspect(desc string, data interface{}) {
-	Logger.Printf("{\"description\":\"%s\", \"datatype\":\"%T\", \"data\":%v}",
+	log.Debugf("{\"description\":\"%s\", \"datatype\":\"%T\", \"data\":%v}",
 		desc, data, toJSON(data))
 }
 

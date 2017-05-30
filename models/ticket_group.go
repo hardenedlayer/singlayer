@@ -59,7 +59,7 @@ func (t *TicketGroup) IsNew() bool {
 
 // SyncTicketGroups() creates and updates all Ticket Groups.
 func SyncTicketGroups(user *User) error {
-	Logger.Printf("sync ticket groups...(use %v)", user.Username)
+	log.Infof("sync ticket groups...(use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
@@ -73,13 +73,13 @@ func SyncTicketGroups(user *User) error {
 		copier.Copy(ts, el)
 		ts.ID = *el.Id
 		if ok, _ := DB.Where("id=?", ts.ID).Exists(ts); ok {
-			Logger.Printf("ticket_group %v already exists!", ts.ID)
+			log.Debugf("ticket_group %v already exists!", ts.ID)
 		} else {
 			err = DB.Create(ts)
 			if err != nil {
-				Logger.Printf("cannot create ticket_group:%v", err)
+				log.Errorf("cannot create ticket_group:%v", err)
 			} else {
-				Logger.Printf("ticket_group %v created.", ts)
+				log.Debugf("ticket_group %v created.", ts)
 			}
 		}
 	}

@@ -59,7 +59,7 @@ func (t *TicketSubject) IsNew() bool {
 
 // SyncTicketSubjects() creates and updates all Ticket Subjects.
 func SyncTicketSubjects(user *User) error {
-	Logger.Printf("sync ticket subjects... (use %v)", user.Username)
+	log.Infof("sync ticket subjects... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
@@ -73,13 +73,13 @@ func SyncTicketSubjects(user *User) error {
 		copier.Copy(ts, el)
 		ts.ID = *el.Id
 		if ok, _ := DB.Where("id=?", ts.ID).Exists(ts); ok {
-			Logger.Printf("ticket_subject %v already exists!", ts.ID)
+			log.Debugf("ticket_subject %v already exists!", ts.ID)
 		} else {
 			err = DB.Create(ts)
 			if err != nil {
-				Logger.Printf("cannot create ticket_subject:%v", err)
+				log.Errorf("cannot create ticket_subject:%v", err)
 			} else {
-				Logger.Printf("ticket_subject %v created.", ts)
+				log.Debugf("ticket_subject %v created.", ts)
 			}
 		}
 	}

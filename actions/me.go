@@ -4,8 +4,6 @@ import (
 	"github.com/gobuffalo/buffalo"
 )
 
-// HomeHandler is a default handler to serve up
-// a home page.
 func MeHandler(c buffalo.Context) (err error) {
 	single := getCurrentSingle(c)
 	users := single.Users()

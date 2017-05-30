@@ -3,6 +3,7 @@ package actions
 import (
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/pop"
@@ -18,7 +19,7 @@ func (v TicketsResource) List(c buffalo.Context) error {
 	tickets := &models.Tickets{}
 	if c.Session().Get("is_admin").(bool) {
 		tx := c.Value("tx").(*pop.Connection)
-		err := tx.All(tickets)
+		err := tx.Order("last_edit_date desc").All(tickets)
 		if err != nil {
 			return err
 		}
@@ -35,11 +36,14 @@ func (v TicketsResource) List(c buffalo.Context) error {
 				c.Logger().Errorf("SECURITY: cannot found user for %v", actor)
 				c.Flash().Add("warning", "Oops! Who are you?")
 			} else {
-				c.Logger().Debugf("single mode for %v, %v.", actor, user)
-				models.SyncTickets(user)
+				c.Logger().Debugf("single mode for %v. full-sync", actor)
+				count, err := models.SyncTickets(user)
+				if err != nil {
+					return err
+				}
+				c.Logger().Debugf("%v new tickets synced", count)
 				ticks = user.Tickets()
 			}
-			//c.Logger().Debugf("ticks: %v --", ticks)
 		}
 		if ticks == nil {
 			c.Flash().Add("danger", "Oops! cannot search on tickets!")
@@ -58,18 +62,24 @@ func (v TicketsResource) Show(c buffalo.Context) error {
 		return err
 	}
 
-	c.Logger().Debugf("Oops! where is total updates count?????")
-	user := getCurrentSingle(c).UserByAccount(ticket.AccountId)
-	if user == nil {
-		return err
-	}
-	count, err := ticket.SyncTicketUpdates(user)
-	if err != nil {
-		return err
-	}
-	c.Logger().Debugf("updates: %v", count)
-
 	updates := ticket.Updates()
+	if c.Session().Get("is_admin").(bool) == false {
+		// do not update updates with admin priviledge.
+		if ticket.TotalUpdateCount != len(*updates) {
+			c.Logger().Debugf("updates mismatch. resync... has %v of %v",
+				len(*updates), ticket.TotalUpdateCount)
+			user := getCurrentSingle(c).UserByAccount(ticket.AccountId)
+			if user == nil {
+				return err
+			}
+			count, err := ticket.SyncTicketUpdates(user)
+			if err != nil {
+				return err
+			}
+			c.Logger().Debugf("%v new updates synced.", count)
+			updates = ticket.Updates()
+		}
+	}
 
 	addTicketHelpers(c)
 	c.Set("ticket", ticket)
@@ -201,5 +211,12 @@ func addTicketHelpers(c buffalo.Context) {
 			return id
 		}
 		return model.Name
+	})
+	c.Set("ticketTag", func(t models.Ticket) interface{} {
+		tag := "ticket-item"
+		if time.Now().Sub(t.LastEditDate).Hours() < (14*24) {
+			tag += " ticket-new"
+		}
+		return tag
 	})
 }

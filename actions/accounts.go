@@ -35,7 +35,6 @@ func (v AccountsResource) Show(c buffalo.Context) error {
 	} else {
 		single := getCurrentSingle(c)
 		account = single.Account(c.Param("account_id"))
-		c.Logger().Debugf("single: %v", account)
 		if account == nil {
 			return c.Error(404, errors.New("Account Not Found"))
 		}

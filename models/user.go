@@ -84,7 +84,7 @@ func (u *User) Update() (err error) {
 		Mask("id;accountId;parentId;companyName;email;firstName;lastName;ticketCount;openTicketCount;hardwareCount;virtualGuestCount").
 		GetCurrentUser()
 	if err != nil {
-		Logger.Printf("softlayer api exception: %v --", err)
+		log.Errorf("softlayer api exception: %v --", err)
 		return err
 	}
 	copier.Copy(u, sl_user)

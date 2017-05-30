@@ -66,7 +66,7 @@ func (a *Account) UpdateAndSave(user *User) (err error) {
 		Mask("id;brandId;companyName;email;firstName;lastName").
 		GetObject()
 	if err != nil {
-		Logger.Printf("softlayer api exception: %v --", err)
+		log.Errorf("softlayer api exception: %v --", err)
 		return err
 	}
 	copier.Copy(a, sl_acc)
@@ -80,7 +80,12 @@ func (a *Account) UpdateAndSave(user *User) (err error) {
 func (a *Account) Save() (err error) {
 	old := &Account{}
 	err = DB.Find(old, a.ID)
+	origin,_ := time.Parse("2006-01-02", "1977-05-25")
 	if err == nil {
+		if a.LastBatch.Before(origin) {
+			log.Debugf("preserve old timestamp!")
+			a.LastBatch = old.LastBatch
+		}
 		verrs, err := DB.ValidateAndUpdate(a)
 		if err != nil {
 			return err

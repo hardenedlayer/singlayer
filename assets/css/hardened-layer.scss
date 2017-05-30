@@ -2,6 +2,18 @@ $nav_height: 40px;
 $font_size: 14px;
 $font_color: #222;
 
+$color-muted: #999;
+$color-primary: #141414;
+$color-success: #467864;
+$color-info: #3c648c;
+$color-warning: #af6437;
+$color-danger: #be2d23;
+$bg-primary: #141414;
+$bg-success: #96c1b0;
+$bg-info: #91b0d0;
+$bg-warning: #e1b79e;
+$bg-danger: #ea9590;
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
@@ -33,6 +45,18 @@ $font_color: #222;
 
 .sing-data {
 	text-shadow: 1px 1px 2px #888;
+}
+.ticket-item {
+	&.ticket-status {
+		&-Closed, &-Closed a {
+			color: $color-muted;
+		}
+	}
+	&.ticket-new {
+		.update-date {
+			font-weight: bold;
+		}
+	}
 }
 .ticket-update {
 	&.well {
