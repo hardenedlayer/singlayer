@@ -1,1 +1,7 @@
+drop_index("direct_links", "direct_links_single_id_idx")
+drop_index("direct_links", "direct_links_user_id_idx")
+drop_index("direct_links", "direct_links_account_id_idx")
+drop_index("direct_links", "direct_links_sibling_id_idx")
+drop_index("direct_links", "direct_links_vlan_id_idx")
+drop_index("direct_links", "direct_links_ticket_id_idx")
 drop_table("direct_links")

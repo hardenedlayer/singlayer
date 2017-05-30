@@ -95,6 +95,12 @@ func App() *buffalo.App {
 		g = app.Resource("/tickets", r)
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper, r.List, r.Show)
+
+		r = &DirectLinksResource{&buffalo.BaseResource{}}
+		g = app.Resource("/directlinks", r)
+		g.Use(AdminPageKeeper)
+		g.Middleware.Skip(AdminPageKeeper,
+			r.List, r.Show, r.New, r.Create, r.Edit, r.Update)
 	}
 
 	return app
