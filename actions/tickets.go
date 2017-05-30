@@ -200,7 +200,7 @@ func addTicketHelpers(c buffalo.Context) {
 		if err != nil {
 			return s
 		}
-		if ns := strings.TrimPrefix(s, model.Name + " - "); len(ns) > 0 {
+		if ns := strings.TrimPrefix(s, model.Name+" - "); len(ns) > 0 {
 			return "... " + ns
 		} else {
 			return s
@@ -232,7 +232,7 @@ func addTicketHelpers(c buffalo.Context) {
 	})
 	c.Set("ticketTag", func(t models.Ticket) interface{} {
 		tag := "ticket-item"
-		if time.Now().Sub(t.LastEditDate).Hours() < (14*24) {
+		if time.Now().Sub(t.LastEditDate).Hours() < (14 * 24) {
 			tag += " ticket-new"
 		}
 		return tag

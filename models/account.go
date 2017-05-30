@@ -80,7 +80,7 @@ func (a *Account) UpdateAndSave(user *User) (err error) {
 func (a *Account) Save() (err error) {
 	old := &Account{}
 	err = DB.Find(old, a.ID)
-	origin,_ := time.Parse("2006-01-02", "1977-05-25")
+	origin, _ := time.Parse("2006-01-02", "1977-05-25")
 	if err == nil {
 		if a.LastBatch.Before(origin) {
 			log.Debugf("preserve old timestamp!")
@@ -94,7 +94,7 @@ func (a *Account) Save() (err error) {
 			return verrs
 		}
 	} else {
-		t,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
+		t, e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
 		if e == nil {
 			a.LastBatch = t
 		} else {

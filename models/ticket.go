@@ -78,7 +78,8 @@ func SyncTickets(user *User) (count int, err error) {
 	}
 	log.Debugf("account: %v", account)
 
-	date_since := account.LastBatch.AddDate(0,0,-1).Format("01/02/2006 15:04:05")
+	date_since := account.LastBatch.AddDate(0, 0, -1).
+		Format("01/02/2006 15:04:05")
 	log.Infof("try to sync tickets from %v...", date_since)
 
 	service := services.GetAccountService(sess)
@@ -98,8 +99,8 @@ func SyncTickets(user *User) (count int, err error) {
 		ticket := &Ticket{}
 		copier.Copy(ticket, el)
 		ticket.ID = *el.Id
-		ticket.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
-		ticket.LastEditDate,_ = time.Parse(time.RFC3339, el.LastEditDate.String())
+		ticket.CreateDate, _ = time.Parse(time.RFC3339, el.CreateDate.String())
+		ticket.LastEditDate, _ = time.Parse(time.RFC3339, el.LastEditDate.String())
 		log.Debugf("ticket %v/%v --", ticket.AccountId, ticket.ID)
 		for _, elu := range el.Updates {
 			ticket_update := &TicketUpdate{}
@@ -131,14 +132,7 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
-	/*
-	log.Debugf("update count: %v, %v",t.TotalUpdateCount,len(*(t.Updates())))
-	if t.TotalUpdateCount == len(*(t.Updates())) {
-		return 0, nil
-	}
-	*/
-
-	date_since := t.LastSync.AddDate(0,0,-1).Format("01/02/2006 15:04:05")
+	date_since := t.LastSync.AddDate(0, 0, -1).Format("01/02/2006 15:04:05")
 	log.Debugf("try to sync updates from %v...", date_since)
 
 	data, err := services.GetTicketService(sess).
@@ -160,7 +154,7 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 		update := &TicketUpdate{}
 		copier.Copy(update, el)
 		update.ID = *el.Id
-		update.CreateDate,_ = time.Parse(time.RFC3339, el.CreateDate.String())
+		update.CreateDate, _ = time.Parse(time.RFC3339, el.CreateDate.String())
 		log.Debugf("%v/%v --", update.TicketId, update.ID)
 		if ok, _ := DB.Where("id=?", update.ID).Exists(update); ok {
 			log.Debugf("update %v already exists!", update.ID)
@@ -211,7 +205,7 @@ func (t *Ticket) Updates() (updates *TicketUpdates) {
 func (t *Ticket) Save() (err error) {
 	old := &Ticket{}
 	err = DB.Find(old, t.ID)
-	origin,_ := time.Parse("2006-01-02", "1977-05-25")
+	origin, _ := time.Parse("2006-01-02", "1977-05-25")
 	if err == nil {
 		if t.LastSync.Before(origin) {
 			log.Debugf("preserve old timestamp!")
@@ -225,7 +219,7 @@ func (t *Ticket) Save() (err error) {
 			return verrs
 		}
 	} else {
-		lst,e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
+		lst, e := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
 		if e == nil {
 			t.LastSync = lst
 		} else {

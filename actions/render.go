@@ -2,8 +2,8 @@ package actions
 
 import (
 	"fmt"
-	"time"
 	"html/template"
+	"time"
 
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
@@ -71,28 +71,28 @@ func init() {
 func pagerHelper(pos, pp, end int) template.HTML {
 	var str string
 	pager_len := 11
-	center := pager_len / 2 + 1
-	arm := pager_len / 2 - 2
+	center := pager_len/2 + 1
+	arm := pager_len/2 - 2
 
 	loop_start := 1
 	loop_end := end
 	fmt.Printf("pager: %v %v %v", pager_len, arm, center)
 
-	if (end > pager_len) {
+	if end > pager_len {
 		loop_end = pager_len - 2
-		if (pos > center) {
+		if pos > center {
 			loop_start = pos - arm
 			loop_end = pos + arm
 			str += fmt.Sprintf(`<li><a href="?page=1&pp=%v">1</a></li>`,
 				pp)
 			str += `<li><a>...</a></li>`
 		}
-		if (pos > (end - arm - 3)) {
+		if pos > (end - arm - 3) {
 			loop_end = end
 			loop_start = end - pager_len + 3
 		}
 	}
-	for  i := loop_start; i <= loop_end; i++ {
+	for i := loop_start; i <= loop_end; i++ {
 		attr := ""
 		if i == pos {
 			attr = ` class="active"`
@@ -100,7 +100,7 @@ func pagerHelper(pos, pp, end int) template.HTML {
 		str += fmt.Sprintf(`<li%v><a href="?page=%v&pp=%v">%v</a></li>`,
 			attr, i, pp, i)
 	}
-	if (end > loop_end) {
+	if end > loop_end {
 		str += `<li><a>...</a></li>`
 		str += fmt.Sprintf(`<li><a href="?page=%v&pp=%v">%v</a></li>`,
 			end, pp, end)
@@ -113,7 +113,7 @@ func pagerHelper(pos, pp, end int) template.HTML {
 			</a>
 		</li>
 ` + str +
-`		<li>
+		`		<li>
 			<a href="#" aria-label="Next">
 				<span aria-hidden="true">&raquo;</span>
 			</a>

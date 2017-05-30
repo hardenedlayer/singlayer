@@ -1,8 +1,8 @@
 package actions
 
 import (
-	"time"
 	"errors"
+	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/hardenedlayer/singlayer/models"

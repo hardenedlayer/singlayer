@@ -2,8 +2,9 @@ package grifts
 
 import (
 	"github.com/markbates/grift/grift"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 var _ = grift.Add("db:meta:ticket", func(c *grift.Context) error {

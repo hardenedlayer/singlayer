@@ -9,9 +9,9 @@ import (
 	"github.com/markbates/pop/nulls"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/satori/go.uuid"
 	"github.com/softlayer/softlayer-go/services"
 	"github.com/softlayer/softlayer-go/session"
-	"github.com/satori/go.uuid"
 )
 
 type User struct {

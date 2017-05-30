@@ -50,7 +50,7 @@ func (t *TicketStatus) ValidateUpdate(tx *pop.Connection) (*validate.Errors, err
 }
 
 func (t *TicketStatus) IsNew() bool {
-	return time.Now().Sub(t.CreatedAt) < time.Duration(24 * 14 * time.Hour)
+	return time.Now().Sub(t.CreatedAt) < time.Duration(24*14*time.Hour)
 }
 
 //// Backend API Calls:

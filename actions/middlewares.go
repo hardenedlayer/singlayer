@@ -44,7 +44,7 @@ func SessionInfoHandler(next buffalo.Handler) buffalo.Handler {
 			c.Set("actors", c.Session().Get("actors"))
 		}
 		c.Set("actor", "All")
-		if k,err := c.Request().Cookie("_singlayer_actor"); err == nil {
+		if k, err := c.Request().Cookie("_singlayer_actor"); err == nil {
 			if actors, ok := c.Session().Get("actors").([]string); ok {
 				for _, v := range actors {
 					if v == k.Value {

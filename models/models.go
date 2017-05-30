@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"os"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/gobuffalo/envy"
 	"github.com/markbates/pop"
-	"github.com/Sirupsen/logrus"
 )
 
 // DB is a connection to your database to be used
