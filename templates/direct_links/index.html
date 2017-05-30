@@ -1,0 +1,66 @@
+<h1>DirectLinks</h1>
+
+<p>
+  <a href="<%= newDirectLinkPath() %>" class="btn btn-primary">Create New DirectLink</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+  <th>SingleId</th>
+    <th>UserId</th>
+    <th>AccountId</th>
+    <th>SiblingId</th>
+    <th>VlanId</th>
+    <th>TicketId</th>
+    <th>Type</th>
+    <th>Location</th>
+    <th>LinuNumber</th>
+    <th>Port</th>
+    <th>Router</th>
+    <th>Speed</th>
+    <th>RoutingOption</th>
+    <th>MultiPath</th>
+    <th>Asn</th>
+    <th>Prefix</th>
+    <th>Migration</th>
+    <th>Signature</th>
+    <th>XcrIp</th>
+    <th>CerIp</th>
+    <th>Status</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (directLink) in directLinks { %>
+      <tr>
+      <td><%= directLink.SingleId %></td>
+        <td><%= directLink.UserId %></td>
+        <td><%= directLink.AccountId %></td>
+        <td><%= directLink.SiblingId %></td>
+        <td><%= directLink.VlanId %></td>
+        <td><%= directLink.TicketId %></td>
+        <td><%= directLink.Type %></td>
+        <td><%= directLink.Location %></td>
+        <td><%= directLink.LinuNumber %></td>
+        <td><%= directLink.Port %></td>
+        <td><%= directLink.Router %></td>
+        <td><%= directLink.Speed %></td>
+        <td><%= directLink.RoutingOption %></td>
+        <td><%= directLink.MultiPath %></td>
+        <td><%= directLink.Asn %></td>
+        <td><%= directLink.Prefix %></td>
+        <td><%= directLink.Migration %></td>
+        <td><%= directLink.Signature %></td>
+        <td><%= directLink.XcrIp %></td>
+        <td><%= directLink.CerIp %></td>
+        <td><%= directLink.Status %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= directLinkPath({ direct_link_id: directLink.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editDirectLinkPath({ direct_link_id: directLink.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= directLinkPath({ direct_link_id: directLink.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

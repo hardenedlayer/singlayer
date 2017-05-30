@@ -1,0 +1,77 @@
+<h1>DirectLinks#Show</h1>
+
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= directLinksPath() %>" class="btn btn-info">Back to all DirectLinks</a></li>
+  <li><a href="<%= editDirectLinkPath({ direct_link_id: directLink.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= directLinkPath({ direct_link_id: directLink.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>SingleId</strong>: <%= directLink.SingleId %>
+</p>
+<p>
+  <strong>UserId</strong>: <%= directLink.UserId %>
+</p>
+<p>
+  <strong>AccountId</strong>: <%= directLink.AccountId %>
+</p>
+<p>
+  <strong>SiblingId</strong>: <%= directLink.SiblingId %>
+</p>
+<p>
+  <strong>VlanId</strong>: <%= directLink.VlanId %>
+</p>
+<p>
+  <strong>TicketId</strong>: <%= directLink.TicketId %>
+</p>
+<p>
+  <strong>Type</strong>: <%= directLink.Type %>
+</p>
+<p>
+  <strong>Location</strong>: <%= directLink.Location %>
+</p>
+<p>
+  <strong>LinuNumber</strong>: <%= directLink.LinuNumber %>
+</p>
+<p>
+  <strong>Port</strong>: <%= directLink.Port %>
+</p>
+<p>
+  <strong>Router</strong>: <%= directLink.Router %>
+</p>
+<p>
+  <strong>Speed</strong>: <%= directLink.Speed %>
+</p>
+<p>
+  <strong>RoutingOption</strong>: <%= directLink.RoutingOption %>
+</p>
+<p>
+  <strong>MultiPath</strong>: <%= directLink.MultiPath %>
+</p>
+<p>
+  <strong>Asn</strong>: <%= directLink.Asn %>
+</p>
+<p>
+  <strong>Prefix</strong>: <%= directLink.Prefix %>
+</p>
+<p>
+  <strong>Migration</strong>: <%= directLink.Migration %>
+</p>
+<p>
+  <strong>Comments</strong>: <%= directLink.Comments %>
+</p>
+<p>
+  <strong>Signature</strong>: <%= directLink.Signature %>
+</p>
+<p>
+  <strong>XcrIp</strong>: <%= directLink.XcrIp %>
+</p>
+<p>
+  <strong>CerIp</strong>: <%= directLink.CerIp %>
+</p>
+<p>
+  <strong>Status</strong>: <%= directLink.Status %>
+</p>
+<p>
+  <strong>Notes</strong>: <%= directLink.Notes %>
+</p>

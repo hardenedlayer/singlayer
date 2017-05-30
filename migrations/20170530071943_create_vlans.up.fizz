@@ -1,0 +1,4 @@
+create_table("vlans", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("id", "integer", {"primary": true})
+})

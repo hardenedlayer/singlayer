@@ -1,0 +1,6 @@
+<h1>Edit DirectLink</h1>
+
+<%= form_for(directLink, {action: directLinkPath({ direct_link_id: directLink.ID }), method: "PUT", errors: errors}) { %>
+  <%= partial("direct_links/form.html") %>
+  <a href="<%= directLinkPath({ direct_link_id: directLink.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

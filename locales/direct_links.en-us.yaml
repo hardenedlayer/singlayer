@@ -1,0 +1,6 @@
+- id: "direct_links.created.success"
+  translation: "DirectLink was successfully created."
+- id: "direct_links.updated.success"
+  translation: "DirectLink was successfully updated."
+- id: "direct_links.destroyed.success"
+  translation: "DirectLink was successfully destroyed."
