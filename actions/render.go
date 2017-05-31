@@ -63,9 +63,18 @@ func init() {
 					return template.HTML(`<i class="fa fa-` + s + `"></i>`)
 				}
 			},
+			"shorten": shortenHelper,
 			"paginate": pagerHelper,
 		},
 	})
+}
+
+func shortenHelper(s string, l int) string {
+	if len(s) > l {
+		return s[0:l-3] + "..."
+	} else {
+		return s
+	}
 }
 
 func pagerHelper(pos, pp, end int) template.HTML {

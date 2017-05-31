@@ -56,6 +56,24 @@ $(document).ready(function() {
 	});
 });
 
+// folding...
+$(document).ready(function() {
+	$(".folder-header").on("click", function() {
+		var target = $(this).parent().children(".folder-body");
+		if (target.css("display") == "none") {
+			target.css("display", "inherit");
+		} else {
+			target.css("display", "none");
+		}
+	});
+});
+
+$(document).ready(function() {
+	$('tr').click(function() {
+		window.location = $(this).find('a#link').attr('href');
+	});
+});
+
 $(() => {
 
 });

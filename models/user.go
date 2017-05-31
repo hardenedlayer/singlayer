@@ -131,6 +131,18 @@ func (u *User) Tickets(page, pp int) (*Tickets, *pop.Paginator) {
 	return tickets, q.Paginator
 }
 
+// DirectLinks() returns all directlinks from the user's account.
+func (u *User) DirectLinks() (dlinks *DirectLinks) {
+	dlinks = &DirectLinks{}
+	err := DB.Where("account_id = ?", u.AccountId).
+		Order("direct_links.created_at desc").
+		All(dlinks)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 //// search functions
 
 // Find a user with user_id.

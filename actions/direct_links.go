@@ -13,11 +13,35 @@ type DirectLinksResource struct {
 }
 
 func (v DirectLinksResource) List(c buffalo.Context) error {
-	tx := c.Value("tx").(*pop.Connection)
 	dlinks := &models.DirectLinks{}
-	err := tx.All(dlinks)
-	if err != nil {
-		return err
+	if c.Session().Get("is_admin").(bool) {
+		tx := c.Value("tx").(*pop.Connection)
+		err := tx.Order("created_at desc").All(dlinks)
+		if err != nil {
+			return err
+		}
+	} else {
+		ticks := &models.DirectLinks{}
+		single := getCurrentSingle(c)
+		actor := c.Value("actor").(string)
+		if actor == "All" {
+			c.Logger().Debugf("multi mode for single!")
+			ticks = single.MyDirectLinks()
+		} else {
+			user := single.UserByUsername(c.Value("actor"))
+			if user == nil {
+				c.Logger().Errorf("SECURITY: cannot found user for %v", actor)
+				c.Flash().Add("warning", "Oops! Who are you?")
+			} else {
+				c.Logger().Debugf("single mode for %v.", actor)
+				ticks = user.DirectLinks()
+			}
+		}
+		if ticks == nil {
+			c.Flash().Add("danger", "Oops! cannot search on directlinks!")
+		} else {
+			dlinks = ticks
+		}
 	}
 	c.Set("dlinks", dlinks)
 	return c.Render(200, r.HTML("direct_links/index.html"))
@@ -28,8 +52,6 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	user, _ := models.FindUser(dlink.UserId)
-	single, _ := models.FindSingle(dlink.SingleID)
 	c.Set("statuses", []string{
 		"note",
 		"accepted",
@@ -37,8 +59,6 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 		"confirmed",
 		"canceled",
 	})
-	c.Set("username", user.Username)
-	c.Set("singlename", single.Name)
 	c.Set("dlink", dlink)
 	c.Set("progresses", dlink.Progresses())
 	c.Set("updates", dlink.Updates())

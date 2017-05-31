@@ -59,3 +59,18 @@ func (t *TicketUpdate) ValidateSave(tx *pop.Connection) (*validate.Errors, error
 func (t *TicketUpdate) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+//// display helpers:
+
+// EditorName
+func (t TicketUpdate) EditorName() interface{} {
+	if t.EditorId == 0 {
+		return "Employee"
+	}
+	ins := &User{}
+	err := DB.Find(ins, t.EditorId)
+	if err != nil {
+		return t.EditorId
+	}
+	return ins.Username
+}

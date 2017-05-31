@@ -170,6 +170,32 @@ func (s *Single) Ticket(ticket_id interface{}) (ticket *Ticket) {
 	return
 }
 
+// DirectLinks() returns all directlinks associated to the single's accounts.
+func (s *Single) DirectLinks() (*DirectLinks) {
+	dlinks := &DirectLinks{}
+	err := pop.Q(DB).
+		LeftJoin("accounts", "accounts.id = direct_links.account_id").
+		LeftJoin("users", "accounts.id = users.account_id").
+		Where("users.single_id = ?", s.ID).
+		Order("direct_links.created_at desc").
+		All(dlinks)
+	if err != nil {
+		log.Errorf("Err: %v", err)
+		return nil
+	}
+	return dlinks
+}
+
+// MyDirectLinks() returns all directlinks associated to the single directly.
+func (s *Single) MyDirectLinks() (dlinks *DirectLinks) {
+	dlinks = &DirectLinks{}
+	err := DB.BelongsTo(s).All(dlinks)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 //// search functions
 
 // Find and a single with single_id

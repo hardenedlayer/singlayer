@@ -23,6 +23,14 @@ $bg-danger: #ea9590;
 	font-size: $font-size;
 	vertical-align: middle !important;
 }
+.table-hover {
+	& > tbody > tr {
+		cursor: pointer;
+	}
+	& a:hover {
+		text-decoration: none;
+	}
+}
 
 .icon96 {
 	width: 96px; height: 96px;
@@ -79,7 +87,7 @@ $bg-danger: #ea9590;
 
 .progress-item {
 	background-color: #fafafa;
-	border: 1px solid #669;
+	border: 1px solid lighten($color-primary, 40%);
 	border-bottom-width: 0;
 	border-radius: 10px 10px 0 0;
 	border-left-width: 5px;

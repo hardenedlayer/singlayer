@@ -128,3 +128,33 @@ func (d *DirectLink) Updates() (updates *TicketUpdates) {
 	}
 	return
 }
+
+func (d *DirectLink) Account() (account *Account) {
+	account = &Account{}
+	err := DB.Find(account, d.AccountId)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+//// display helpers:
+func (d DirectLink) AccountName() interface{} {
+	return d.Account().CompanyName
+}
+
+func (d DirectLink) UserName() interface{} {
+	user, err := FindUser(d.UserId)
+	if err != nil {
+		return d.UserId
+	}
+	return user.Username
+}
+
+func (d DirectLink) SingleName() interface{} {
+	single, err := FindSingle(d.SingleID)
+	if err != nil {
+		return "Unknown!!!"
+	}
+	return single.Name
+}

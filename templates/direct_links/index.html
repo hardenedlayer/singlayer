@@ -3,8 +3,13 @@
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
-			All users registered by singles are shown here.
+			All Direct Link configurations are shown here.
+			You can order new link, manage existing orders and view the links.
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+		<i class="fa fa-exclamation-circle text-danger"
+			data-toggle="tooltip" data-placement="left"
+			title="This page supports 'Actor mode'.
+			Please check your current actor."></i>
 	</div>
 	<div>
 		Direct Links
@@ -17,7 +22,7 @@
 	<a href="<%= newDirectlinkPath() %>" class="btn btn-primary">Create New Direct Link</a>
 </p>
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed table-hover">
 	<thead>
 		<tr>
 			<th>Account</th>
@@ -32,23 +37,14 @@
 	<tbody>
 		<%= for (dlink) in dlinks { %>
 		<tr>
-			<td><a href="<%= accountPath({ account_id: dlink.AccountId }) %>"><%=
-					dlink.AccountId %></a></td>
-			<td><span data-toggle="tooltip" data-placement="top" title="Location:<%=
-					dlink.Location %>, Port:<%=
-					dlink.Port
-					%>"><a href="<%=
+			<td><%= shorten(dlink.AccountName(), 25) %></td>
+			<td><a id="link" href="<%=
 					directlinkPath({ directlink_id: dlink.ID }) %>"><%=
-					dlink.Type %> <%=
-					dlink.Speed %>Gbps <%=
-					dlink.RoutingOption %> Line#<%=
-					dlink.LineNumber %></a></span></td>
+					dlink %></a></td>
 			<td>XCR<%=
 					dlink.Router %>.v<%=
-					dlink.VlanId %> (<%=
-					dlink.ASN %>)</td>
-			<td><%= dlink.XCRIP %>/<%= dlink.Prefix %>
-					<%= dlink.CERIP %>/<%= dlink.Prefix %></td>
+					dlink.VlanId %></td>
+			<td><%= dlink.XCRIP %> <%= dlink.CERIP %></td>
 			<td><%= if (dlink.MultiPath) { %><a href="<%=
 					directlinkPath({ directlink_id: dlink.SiblingID })
 					%>">Sibling</a><% } else { %><% } %></td>
