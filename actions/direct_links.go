@@ -30,9 +30,18 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	}
 	user, _ := models.FindUser(dlink.UserId)
 	single, _ := models.FindSingle(dlink.SingleID)
+	c.Set("statuses", []string{
+		"note",
+		"accepted",
+		"configured",
+		"confirmed",
+		"canceled",
+	})
 	c.Set("username", user.Username)
 	c.Set("singlename", single.Name)
 	c.Set("dlink", dlink)
+	c.Set("progresses", dlink.Progresses())
+	c.Set("updates", dlink.Updates())
 	return c.Render(200, r.HTML("direct_links/show.html"))
 }
 
@@ -150,8 +159,66 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 }
 
 func (v DirectLinksResource) Order(c buffalo.Context) error {
-	c.Logger().Debugf("context: %v", c)
-	return v.Update(c)
+	dlink, err := setDirectLink(c)
+	if err != nil {
+		return err
+	}
+
+	// create ticket
+
+	ticket, err := models.FindTicket(41345215)
+	if err != nil {
+		return err
+	}
+	progress := models.NewProgress(dlink.ID, "order")
+	progress.SingleID = getCurrentSingle(c).ID
+	progress.UpdateId = ticket.FirstUpdate().ID
+	progress.Save()
+	c.Logger().Debugf("progress: %v", progress)
+
+	dlink.TicketId = ticket.ID
+	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
+	if err != nil {
+		c.Logger().Errorf("database error: %v", err)
+		return err
+	}
+	if verrs.HasAny() {
+		c.Logger().Errorf("validation error: %v", verrs)
+		return verrs
+	}
+	c.Flash().Add("success", "DirectLink was ordered successfully")
+	return c.Redirect(302, "/directlinks/%s", dlink.ID)
+}
+
+func (v DirectLinksResource) Proceed(c buffalo.Context) error {
+	dlink, err := setDirectLink(c)
+	if err != nil {
+		return err
+	}
+	progress := models.NewProgress(dlink.ID, "")
+	err = c.Bind(progress)
+	if err != nil {
+		return err
+	}
+	progress.SingleID = getCurrentSingle(c).ID
+	c.Logger().Debugf("progress: %v", progress)
+
+	// add ticket update...
+
+	progress.Save()
+
+	dlink.Status = progress.Action
+	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
+	if err != nil {
+		c.Logger().Errorf("database error: %v", err)
+		return err
+	}
+	if verrs.HasAny() {
+		c.Logger().Errorf("validation error: %v", verrs)
+		return verrs
+	}
+	c.Flash().Add("success", "DirectLink was ordered successfully")
+	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
 
 // ADMIN PROTECTED

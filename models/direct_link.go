@@ -96,5 +96,35 @@ func (d *DirectLink) ValidateSave(tx *pop.Connection) (*validate.Errors, error) 
 
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
 func (d *DirectLink) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
+	if d.Status == "draft" && d.TicketId > 0 {
+		log.Infof("status is draft but has ticket. upgrading to ordered...")
+		d.Status = "ordered"
+	}
 	return validate.NewErrors(), nil
+}
+
+//// Association and Relationship based search for instances.
+//// It need instance of Single so more expensive than raw query. FIXME later.
+
+// Progresses() returns instance of Progresses struct.
+func (d *DirectLink) Progresses() (progresses *Progresses) {
+	progresses = &Progresses{}
+	err := DB.BelongsTo(d).
+		Order("created_at").
+		All(progresses)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+func (d *DirectLink) Updates() (updates *TicketUpdates) {
+	updates = &TicketUpdates{}
+	err := DB.Where("ticket_id = ?", d.TicketId).
+		Order("create_date desc").
+		All(updates)
+	if err != nil {
+		return
+	}
+	return
 }

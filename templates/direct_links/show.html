@@ -64,6 +64,7 @@
 
 <div class="row">
 	<div class="col-md-6">
+		<h4>Order Details</h4>
 		<div>Ordered by <%= singlename
 			%> for Account <%= dlink.AccountId
 			%> as <%= username %></div>
@@ -72,10 +73,69 @@
 		<h5>Comments:</h5>
 		<div class="well" style="white-space: pre-wrap"><%=
 			dlink.Comments %></div>
-	</div>
-	<div class="col-md-6">
 		<div>Notes:</div>
 		<div class="well" style="white-space: pre-wrap"><%=
 			dlink.Notes %></div>
+	</div>
+	<div class="col-md-6">
+		<h4>Progress</h4>
+		<%= for (pr) in progresses { %>
+		<div class="progress-item">
+			<div>
+				<div class="pull-right"><a href="#update-<%=
+						pr.UpdateId %>"><i class="fa fa-chevron-down"></i> Update</a></div>
+				<%= timeYYMDHM(pr.CreatedAt) %> <strong><%=
+					capitalize(pr.Action) %></strong>
+			</div>
+			<div><%= pr.Note %></div>
+		</div>
+		<% } %>
+	</div>
+</div>
+
+<div class="row">
+	<hr/>
+	<h4 class="col-md-12">Associated Ticket Updates</h4>
+	<div class="" id="ticket-updates">
+	<%= for (update) in updates { %>
+		<div id="update-<%= update.ID %>" class="ticket-update well col-md-9 <%= if (update.EditorType == "USER") { %>by-user col-md-offset-2<% } else { %>by-service col-md-offset-1<% } %>">
+			<pre><%= update.Entry %></pre>
+			<div class="ticket-update-footer <%= if (update.EditorType == "USER") { %>text-right<% } else { %>text-left<% } %>">
+				<span><%= iconize(update.EditorType) %></span>
+				<span><%= timeYYMDHM(update.CreateDate) %></span>
+			</div>
+		</div>
+		<%= if (update.EditorType != "USER") { %>
+		<div class="col-md-2">
+			<a data-toggle="modal" class="btn btn-xs btn-info setter" value="<%=
+				update.ID %>" data-target="#addProgress"><i class="fa fa-chevron-circle-up"></i> Add Progress</a>
+		</div>
+		<% } %>
+	<% } %>
+	</div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="addProgress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Update Progress</h4>
+			</div>
+<%= form_for(dlink, {action: directlinkProceedPath({ directlink_id: dlink.ID }), method: "PUT", errors: errors}) { %>
+			<div class="modal-body">
+<%= f.InputTag("UpdateId") %>
+<%= f.SelectTag("Action", {options: actions, label:"Status"}) %>
+<%= f.TextArea("Note", {rows: 2}) %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">Close</button>
+				<button class="btn btn-success" style="width: 120px" role="submit">Add</button>
+			</div>
+<% } %>
+		</div>
 	</div>
 </div>

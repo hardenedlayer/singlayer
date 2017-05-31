@@ -5,6 +5,7 @@ create_table("progresses", func(t) {
 	t.Column("update_id", "integer", {"null": true})
 	t.Column("single_id", "uuid", {})
 	t.Column("action", "string", {})
+	t.Column("note", "string", {})
 })
 add_index("progresses", "prev_id", {})
 add_index("progresses", "direct_link_id", {})

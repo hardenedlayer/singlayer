@@ -48,6 +48,14 @@ $(document).ready(function() {
 	});
 });
 
+// form setter
+$(document).ready(function() {
+	$(".setter").on("click", function() {
+		var update_id = $(this).attr("value");
+		$("#direct-link-UpdateId").val(update_id);
+	});
+});
+
 $(() => {
 
 });

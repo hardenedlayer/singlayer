@@ -19,6 +19,7 @@ type Progress struct {
 	UpdateId     int       `json:"update_id" db:"update_id"`
 	SingleID     uuid.UUID `json:"single_id" db:"single_id"`
 	Action       string    `json:"action" db:"action"`
+	Note         string    `json:"note" db:"note"`
 }
 
 func (p Progress) String() string {
@@ -48,4 +49,44 @@ func (p *Progress) ValidateSave(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateUpdate gets run everytime you call "pop.ValidateUpdate" method.
 func (p *Progress) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+// NewProgress()
+func NewProgress(parent_id uuid.UUID, action string) (progress *Progress) {
+	progress = &Progress{}
+	progress.DirectLinkID = parent_id
+	progress.Action = action
+	return progress
+}
+
+func (p *Progress) NextProgress(action string) (progress *Progress) {
+	progress = &Progress{}
+	progress.DirectLinkID = p.DirectLinkID
+	progress.PrevID = p.ID
+	progress.Action = action
+	return progress
+}
+
+// Save() saves the Progress instance. (create or update)
+func (p *Progress) Save() (err error) {
+	old := &Progress{}
+	err = DB.Find(old, p.ID)
+	if err == nil {
+		verrs, err := DB.ValidateAndUpdate(p)
+		if err != nil {
+			return err
+		}
+		if verrs.HasAny() {
+			return verrs
+		}
+	} else {
+		verrs, err := DB.ValidateAndCreate(p)
+		if err != nil {
+			return err
+		}
+		if verrs.HasAny() {
+			return verrs
+		}
+	}
+	return nil
 }

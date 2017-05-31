@@ -184,6 +184,15 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 	return count, nil
 }
 
+//// search functions:
+
+// Find a Ticket with ticket_id.
+func FindTicket(ticket_id int) (ticket *Ticket, err error) {
+	ticket = &Ticket{}
+	err = DB.Find(ticket, ticket_id)
+	return
+}
+
 //// Association and Relationship based search for instances.
 
 // Updates() returns all updates for the ticket.
@@ -195,7 +204,19 @@ func (t *Ticket) Updates() (updates *TicketUpdates) {
 	if err != nil {
 		return nil
 	}
-	inspect("updates from dbms", updates)
+	inspect("'updates' from dbms", updates)
+	return
+}
+
+func (t *Ticket) FirstUpdate() (update *TicketUpdate) {
+	update = &TicketUpdate{}
+	err := DB.BelongsTo(t).
+		Order("create_date").
+		First(update)
+	if err != nil {
+		return nil
+	}
+	inspect("'update' from dbms", update)
 	return
 }
 
