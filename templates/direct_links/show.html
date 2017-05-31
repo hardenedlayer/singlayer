@@ -49,7 +49,7 @@
 			<td><%= capitalize(dlink.Status) %></td>
 			<td>
 				<div class="pull-right">
-					<%= if (dlink.Status == "draft") { %><a href="<%= directlinkPath({ directlink_id: dlink.ID }) %>" data-method="PUT" data-confirm="Are you sure?" class="btn btn-xs btn-primary">Submit</a><% } %>
+					<%= if (dlink.Status == "draft") { %><a href="<%= directlinkOrderPath({ directlink_id: dlink.ID }) %>" data-method="PUT" data-confirm="Are you sure?" class="btn btn-xs btn-primary">Order</a><% } %>
 					<%= if (dlink.TicketId > 0) { %><a href="<%= ticketPath({ ticket_id: dlink.TicketId }) %>" class="btn btn-xs btn-primary">Ticket</a><% } %>
 					<div class="btn-group">
 					<a href="<%= editDirectlinkPath({ directlink_id: dlink.ID }) %>" class="btn btn-xs btn-warning">Ed</a>

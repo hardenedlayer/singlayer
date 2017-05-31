@@ -101,6 +101,8 @@ func App() *buffalo.App {
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper,
 			r.List, r.Show, r.New, r.Create, r.Edit, r.Update)
+		g.PUT("/{directlink_id}/order", DirectLinksResource{}.Order)
+		g.Middleware.Skip(AdminPageKeeper, DirectLinksResource{}.Order)
 	}
 
 	return app

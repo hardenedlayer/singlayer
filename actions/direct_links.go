@@ -149,6 +149,11 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
 
+func (v DirectLinksResource) Order(c buffalo.Context) error {
+	c.Logger().Debugf("context: %v", c)
+	return v.Update(c)
+}
+
 // ADMIN PROTECTED
 func (v DirectLinksResource) Destroy(c buffalo.Context) error {
 	dlink, err := setDirectLink(c)
