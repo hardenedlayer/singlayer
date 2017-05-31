@@ -26,7 +26,7 @@ type DirectLink struct {
 	Location      string    `json:"location" db:"location"`
 	LineNumber    int       `json:"line_number" db:"line_number"`
 	Port          string    `json:"port" db:"port"`
-	Router        string    `json:"router" db:"router"`
+	Router        int       `json:"router" db:"router"`
 	Speed         int       `json:"speed" db:"speed"`
 	RoutingOption string    `json:"routing_option" db:"routing_option"`
 	MultiPath     bool      `json:"multi_path" db:"multi_path"`
@@ -79,7 +79,7 @@ func (d *DirectLink) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: d.Location, Name: "Location"},
 		&validators.IntIsPresent{Field: d.LineNumber, Name: "LineNumber"},
 		&validators.StringIsPresent{Field: d.Port, Name: "Port"},
-		&validators.StringIsPresent{Field: d.Router, Name: "Router"},
+		&validators.IntIsPresent{Field: d.Router, Name: "Router"},
 		&validators.IntIsPresent{Field: d.Speed, Name: "Speed"},
 		&validators.StringIsPresent{Field: d.RoutingOption, Name: "RoutingOption"},
 		&validators.IntIsPresent{Field: d.Prefix, Name: "Prefix"},

@@ -10,7 +10,7 @@ create_table("direct_links", func(t) {
 	t.Column("location", "string", {"default": "SEO01"})
 	t.Column("line_number", "integer", {"default": 1})
 	t.Column("port", "string", {"default": "N/A"})
-	t.Column("router", "string", {"default": "#1"})
+	t.Column("router", "int", {})
 	t.Column("speed", "integer", {"default": 1})
 	t.Column("routing_option", "string", {"default": "Local"})
 	t.Column("multi_path", "bool", {"default": false})

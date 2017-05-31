@@ -1,3 +1,7 @@
 create_table("vlans", func(t) {
 	t.Column("id", "integer", {"primary": true})
+	t.Column("r1_link_id", "uuid", {"null": true})
+	t.Column("r2_link_id", "uuid", {"null": true})
+	t.Column("account_id", "integer", {"default": 0})
+	t.Column("booked", "bool", {"default": false})
 })

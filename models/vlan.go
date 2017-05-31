@@ -7,12 +7,17 @@ import (
 	"github.com/markbates/pop"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/satori/go.uuid"
 )
 
 type Vlan struct {
 	ID        int       `json:"id" db:"id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	R1LinkID  uuid.UUID `json:"r1_link_id" db:"r1_link_id"`
+	R2LinkID  uuid.UUID `json:"r2_link_id" db:"r2_link_id"`
+	AccountId int       `json:"account_id" db:"account_id"`
+	Booked    bool      `json:"booked" db:"booked"`
 }
 
 func (v Vlan) String() string {

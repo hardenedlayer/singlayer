@@ -1,6 +1,8 @@
 package grifts
 
 import (
+	"fmt"
+
 	"github.com/markbates/grift/grift"
 	"github.com/markbates/pop"
 
@@ -9,7 +11,7 @@ import (
 
 var _ = grift.Add("db:meta:ticket", func(c *grift.Context) error {
 	return models.DB.Transaction(func(tx *pop.Connection) error {
-		p := models.Logger.Printf
+		p := fmt.Printf
 		user := &models.User{}
 		err := tx.First(user)
 		p("using %v:%v", user.Username, user.APIKey)
