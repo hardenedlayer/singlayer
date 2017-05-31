@@ -111,3 +111,16 @@ func (a *Account) Save() (err error) {
 	}
 	return nil
 }
+
+//// Association and Relationship based search for instances.
+//// It need instance of Single so more expensive than raw query. FIXME later.
+
+// DirectLinks() returns all directlinks associated to the account.
+func (a *Account) DirectLinks() (dlinks *DirectLinks) {
+	dlinks = &DirectLinks{}
+	err := DB.BelongsTo(a).All(dlinks)
+	if err != nil {
+		return nil
+	}
+	return
+}

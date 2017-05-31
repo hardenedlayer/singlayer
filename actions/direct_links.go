@@ -59,6 +59,9 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 		"confirmed",
 		"canceled",
 	})
+
+	c.Set("vlan", models.VLAN(dlink.VlanId))
+
 	c.Set("dlink", dlink)
 	c.Set("progresses", dlink.Progresses())
 	c.Set("updates", dlink.Updates())
@@ -73,18 +76,16 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 	}
 	user := getCurrentSingle(c).UserByUsername(c.Value("actor"))
 	c.Set("order_for", user.CompanyName)
+	account := user.Account()
 
 	dlink := &models.DirectLink{}
-
+	// TODO check parameter
 	dlink.MultiPath = false
-	//plink := &models.DirectLink{}
-	plink := "No"
 
 	// account information and fixed values
 	dlink.UserId = user.ID
 	dlink.AccountId = user.AccountId
 	dlink.Location = "SEO01"
-	dlink.Port = "TBU"
 
 	// default
 	dlink.Type = "CX"
@@ -94,18 +95,26 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 	dlink.Migration = "ANYDAY 00:00 ~ 06:00 KST"
 
 	// auto assignment
-	dlink.LineNumber = 1
+	dlink.LineNumber = len(*account.DirectLinks()) + 1
+	if dlink.MultiPath == true {
+		plink := &models.DirectLink{}
+		c.Set("plink", plink)
+		dlink.VlanId = plink.VlanId
+		dlink.Router = (plink.Router + 2) % 2 + 1
+	} else {
+		plink := "No"
+		c.Set("plink", plink)
+		dlink.VlanId = models.NextVLAN(dlink.AccountId).ID
+		dlink.Router = models.NextRouter()
+	}
+	dlink.ASN = 4204200000 + dlink.VlanId
 	dlink.Port = "N/A"
-	dlink.Router = "#1"
-	dlink.VlanId = 999
-	dlink.ASN = 4204200999
 
 	c.Set("types", []string{"CX", "NSP"})
 	c.Set("speeds", []int{1, 10})
 	c.Set("routing_options", []string{"Local", "Global"})
 	c.Set("prefixes", []int{31, 30})
 
-	c.Set("plink", plink)
 	c.Set("dlink", dlink)
 	return c.Render(200, r.HTML("direct_links/new.html"))
 }
@@ -133,6 +142,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 	verrs, err := tx.ValidateAndCreate(dlink)
+	c.Logger().Debugf("saved dlink: %v", dlink.Marshal())
 	if err != nil {
 		return err
 	}
@@ -142,6 +152,27 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 		c.Logger().Printf("errors %v", verrs)
 		return c.Render(422, r.HTML("direct_links/new.html"))
 	}
+
+	vlan := models.VLAN(dlink.VlanId)
+	if vlan.AccountId != dlink.AccountId {
+		return c.Error(404, errors.New("DirectLink Not Found"))
+	}
+	vlan.AccountId = dlink.AccountId
+	vlan.Booked = false
+	switch dlink.Router {
+	case 1:
+		vlan.R1LinkID = dlink.ID
+	case 2:
+		vlan.R2LinkID = dlink.ID
+	default:
+		c.Logger().Errorf("oops! why am I here???")
+	}
+	err = tx.Save(vlan)
+	if err != nil {
+		c.Logger().Errorf("oops! cannot save vlan: %v", err)
+		return err
+	}
+
 	c.Flash().Add("success", "DirectLink was created successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
