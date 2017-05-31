@@ -1,6 +1,7 @@
 package models
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -44,8 +45,21 @@ func (d DirectLink) String() string {
 	str := fmt.Sprintf("%v %vGbps %v Line#%v",
 		d.Type, d.Speed, d.RoutingOption, d.LineNumber)
 	return str
+}
+
+func (d DirectLink) Marshal() string {
 	jd, _ := json.Marshal(d)
 	return string(jd)
+}
+
+func (d DirectLink) Hash() string {
+	str := fmt.Sprintf("%v-%v-%v-%v",
+		d.SingleID, d.AccountId, d.UserId, d.String())
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(str)))
+}
+
+func (d DirectLink) HashShort() string {
+	return d.Signature[0:10]
 }
 
 type DirectLinks []DirectLink

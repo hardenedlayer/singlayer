@@ -1,6 +1,25 @@
-<h1>Edit Direct Link</h1>
+<div class="row page-header">
+	<h1>Edit <span class="sing-data"><%= dlink %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="You can edit user's notes only.
+If you need to fix missing or incorrect information,
+please contact service administrator.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+</div>
+
+<div class="row">
+<div class="col-md-8 col-md-offset-2 <%= if (user_is_admin) { %>admode<% } %>">
 
 <%= form_for(dlink, {action: directlinkPath({ directlink_id: dlink.ID }), method: "PUT", errors: errors}) { %>
+<%= if (user_is_admin) { %>
   <%= partial("direct_links/form.html") %>
+<% } else { %>
+  <%= partial("direct_links/edit.html") %>
+<% } %>
   <a href="<%= directlinkPath({ directlink_id: dlink.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>
+
+</div>
+</div>

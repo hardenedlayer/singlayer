@@ -130,3 +130,12 @@ func (u *User) Tickets(page, pp int) (*Tickets, *pop.Paginator) {
 	}
 	return tickets, q.Paginator
 }
+
+//// search functions
+
+// Find a user with user_id.
+func FindUser(user_id int) (user *User, err error) {
+	user = &User{}
+	err = DB.Find(user, user_id)
+	return
+}

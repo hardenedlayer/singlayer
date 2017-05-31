@@ -1,0 +1,17 @@
+<%= f.InputTag("AccountId", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("UserId", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("Location", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("LineNumber", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("Port", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("Router", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("VlanId", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("ASN", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("MultiPath", {type: "hidden", hide_label: true}) %>
+<%= f.InputTag("SiblingID", {type: "hidden", hide_label: true}) %>
+<%= f.SelectTag("Type", {options: types, label:"Link Type"}) %>
+<%= f.SelectTag("Speed", {options: speeds, label:"Bandwidth in Gbps"}) %>
+<%= f.SelectTag("RoutingOption", {options: routing_options}) %>
+<%= f.SelectTag("Prefix", {options: prefixes, label:"CIDR Prefix"}) %>
+<%= f.InputTag("Migration", {label:"Migration Time Window"}) %>
+<%= f.TextArea("Comments", {rows: 3}) %>
+<button class="btn btn-success" role="submit">Save</button>

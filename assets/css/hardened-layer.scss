@@ -72,8 +72,12 @@ $bg-danger: #ea9590;
 		margin-bottom: 5px;
 	}
 }
+.admode {
+	border: 1px dashed $color-danger;
+	border-radius: 5px;
+}
 
-div > p:last-child {
+.panel-body > *:last-child {
 	margin-bottom: 0px;
 }
 .pagination > li > a {

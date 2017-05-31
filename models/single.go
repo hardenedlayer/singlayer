@@ -169,3 +169,12 @@ func (s *Single) Ticket(ticket_id interface{}) (ticket *Ticket) {
 	}
 	return
 }
+
+//// search functions
+
+// Find and a single with single_id
+func FindSingle(single_id uuid.UUID) (single *Single, err error) {
+	single = &Single{}
+	err = DB.Find(single, single_id)
+	return
+}

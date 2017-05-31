@@ -1,6 +1,106 @@
-<h1>New Direct Link</h1>
+<div class="row page-header">
+	<h1>Order Direct Link for <span class="sing-data"><%=
+		order_for %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			You can order a Direct Link service here.
+			Please read 'Important Notice' for more information.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+</div>
 
+<div class="row">
+	<div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
+		<div class="panel-heading"><h3 class="panel-title">Important!</h3></div>
+		<div class="panel-body">
+			<p class="text-warning">
+			Please read the '<strong><a data-toggle="modal" class="text-danger"
+				data-target="#directLinkNotice">Important Notice</a></strong>'
+			carefully before order.<br/>
+			Direct Link order takes 5 working days or less after order.
+			</p>
+
+			<table class="table table-condensed text-center">
+				<thead>
+					<tr>
+						<td>Location</td>
+						<td>Account ID</td>
+						<td>User ID</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong><%= dlink.Location %></strong></td>
+						<td><strong><%= dlink.AccountId %></strong></td>
+						<td><strong><%= dlink.UserId %></strong></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table class="table table-condensed text-center">
+				<thead>
+					<tr>
+						<td>Link Number</td>
+						<td>Router</td>
+						<td>VLAN</td>
+						<td>ASN</td>
+						<td>MultiPath Pair</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%= dlink.LineNumber %></td>
+						<td><%= dlink.Router %></td>
+						<td><%= dlink.VlanId %></td>
+						<td><%= dlink.ASN %></td>
+						<td><%= plink %></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div></div>
+</div>
+
+<div class="row">
+<div class="col-md-8 col-md-offset-2">
 <%= form_for(dlink, {action: directlinksPath(), method: "POST", errors: errors}) { %>
-  <%= partial("direct_links/form.html") %>
+  <%= partial("direct_links/new.html") %>
   <a href="<%= directlinksPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>
+
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="directLinkNotice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Important Notice</h4>
+			</div>
+			<div class="modal-body">
+				<h4>Options</h4>
+				<%= descriprion_options %>
+				<ul>
+					<li>Link Type...</li>
+					<li>Bandwidth...</li>
+					<li>Routing Options...</li>
+					<li>CIDR Prefix...</li>
+					<li>Migration Time Window...</li>
+				</ul>
+				<h4>Restrictions and Limitations</h4>
+				<%= restrictions_and_limitations %>
+				<ul>
+					<li>BGP and Allowd Routing...</li>
+				</ul>
+				<h4>Term of Service</h4>
+				<%= term_of_service %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">OK</button>
+			</div>
+		</div>
+	</div>
+</div>

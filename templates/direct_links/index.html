@@ -32,10 +32,8 @@
 	<tbody>
 		<%= for (dlink) in dlinks { %>
 		<tr>
-			<td><span data-toggle="tooltip" data-placement="top" title="User:<%=
-					dlink.AccountId %>"><a href="<%=
-					accountPath({ account_id: dlink.AccountId }) %>"><%=
-					dlink.AccountId %></a></span></td>
+			<td><a href="<%= accountPath({ account_id: dlink.AccountId }) %>"><%=
+					dlink.AccountId %></a></td>
 			<td><span data-toggle="tooltip" data-placement="top" title="Location:<%=
 					dlink.Location %>, Port:<%=
 					dlink.Port
@@ -57,7 +55,8 @@
 			<td><%= capitalize(dlink.Status) %></td>
 			<td>
 				<div class="pull-right">
-					<a href="<%= ticketPath({ ticket_id: dlink.TicketId }) %>" class="btn btn-xs btn-primary">Ticket</a>
+					<%= if (dlink.Status == "draft") { %><a href="<%= directlinkPath({ directlink_id: dlink.ID }) %>" data-method="PUT" data-confirm="Are you sure?" class="btn btn-xs btn-primary">Order</a><% } %>
+					<%= if (dlink.TicketId > 0) { %><a href="<%= ticketPath({ ticket_id: dlink.TicketId }) %>" class="btn btn-xs btn-primary">Ticket</a><% } %>
 					<div class="btn-group">
 					<a href="<%= editDirectlinkPath({ directlink_id: dlink.ID }) %>" class="btn btn-xs btn-warning">Ed</a>
 					<%= if (user_is_admin) { %><a href="<%=
@@ -69,5 +68,24 @@
 		<% } %>
 	</tbody>
 </table>
+
+</div>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
+	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
+	<div class="panel-body">
+		<p><span class="label label-warning">TODO</span>
+		Approval......</p>
+		<p><span class="label label-warning">TODO</span>
+		NSP Support......</p>
+	</div>
+</div></div>
+
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
+	<div class="panel-body">
+		<p><span class="label label-info">Tip</span>
+		You can build your own Hybrid Cloud with Direct Link!</p>
+	</div>
+</div></div>
 
 </div>
