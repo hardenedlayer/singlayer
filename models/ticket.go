@@ -1,17 +1,21 @@
 package models
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"text/template"
 	"time"
 
 	"github.com/jinzhu/copier"
 	"github.com/markbates/pop"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
+	"github.com/softlayer/softlayer-go/datatypes"
 	"github.com/softlayer/softlayer-go/filter"
 	"github.com/softlayer/softlayer-go/services"
 	"github.com/softlayer/softlayer-go/session"
+	"github.com/softlayer/softlayer-go/sl"
 )
 
 type Ticket struct {
@@ -64,6 +68,64 @@ func (t *Ticket) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 //// Backend API Calls:
+
+// CreateDirectLinkTicket()
+func CreateDirectLinkTicket(user *User, dlink *DirectLink) (int, error) {
+	log.Infof("create order ticket... (use %v)", user.Username)
+	sess := session.New(user.Username, user.APIKey)
+	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+
+	var sl_ticket datatypes.Ticket
+	sl_ticket.AssignedUserId = sl.Int(user.ID)
+	sl_ticket.SubjectId = sl.Int(1002)
+	sl_ticket.GroupId = sl.Int(1014)
+	sl_ticket.Title = sl.String("SK Direct Link " + dlink.Type + " - SEO01")
+	inspect("new ticket", sl_ticket)
+
+	tmpl, err := template.ParseFiles("templates/order.templ")
+	if err != nil {
+		return 0, err
+	}
+	buf := &bytes.Buffer{}
+	if err = tmpl.Execute(buf, dlink); err != nil {
+		return 0, err
+	}
+	content := buf.String()
+	log.Debugf("new ticket contents: -------\n%v\n-------", content)
+
+	// for debug
+	return 0, errors.New("XXX EVERYTHING IS GOOD! BUT TEST.")
+
+	service := services.GetTicketService(sess)
+	tick, err := service.CreateStandardTicket(&sl_ticket, &content,
+		nil, nil, nil, nil, nil, nil)
+	if err != nil {
+		return 0, err
+	}
+	inspect("saved sl_ticket", tick)
+
+	SyncTickets(user)
+	return *tick.Id, nil
+}
+
+// AddUpdate() add an update to ticket and returns first added update.
+func (t *Ticket) AddUpdate(user *User, entry string) (*TicketUpdate, error) {
+	log.Infof("add update to ticket... (use %v)", user.Username)
+	sess := session.New(user.Username, user.APIKey)
+	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
+
+	var sl_update datatypes.Ticket_Update
+	sl_update.Entry = sl.String(entry)
+	inspect("new update", sl_update)
+
+	service := services.GetTicketService(sess)
+	upds, err := service.Id(t.ID).AddUpdate(&sl_update, nil)
+	if err != nil {
+		return &TicketUpdate{}, err
+	}
+	t.SyncTicketUpdates(user)
+	return PickUpdate(*upds[0].Id)
+}
 
 // SyncTickets() creates and updates all Tickets of given user's account.
 func SyncTickets(user *User) (count int, err error) {
@@ -170,16 +232,16 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 			}
 		}
 	}
-	if len(data) == count {
-		log.Infof("Bingo! all data were inserted to database! (%v)", count)
+	if len(data) == (count + exists) {
+		log.Infof("Yo! all were inserted or up-to-date! (%v,%v)", count, exists)
 		t.LastSync = time.Now()
 		err = t.Save()
 		if err != nil {
-			log.Errorf("cannot save ticket: %v", err)
+			log.Errorf("...but cannot save last sync time of ticket: %v", err)
 		}
 	} else {
-		log.Errorf("Oops! some data not inserted! x:%v, s:%v, e:%vi (%v)",
-			exists, count, errors, len(data))
+		log.Errorf("there are %v errors out of total %v. skip time update.",
+			errors, len(data))
 	}
 	return count, nil
 }
@@ -190,6 +252,12 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 func FindTicket(ticket_id int) (ticket *Ticket, err error) {
 	ticket = &Ticket{}
 	err = DB.Find(ticket, ticket_id)
+	return
+}
+
+func PickUpdate(update_id int) (update *TicketUpdate, err error) {
+	update = &TicketUpdate{}
+	err = DB.Find(update, update_id)
 	return
 }
 

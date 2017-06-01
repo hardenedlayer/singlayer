@@ -140,6 +140,15 @@ func (d *DirectLink) Updates() (updates *TicketUpdates) {
 	return
 }
 
+func (d *DirectLink) Ticket() (ticket *Ticket) {
+	ticket = &Ticket{}
+	err := DB.Find(ticket, d.TicketId)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 func (d *DirectLink) Account() (account *Account) {
 	account = &Account{}
 	err := DB.Find(account, d.AccountId)

@@ -12,6 +12,10 @@ type DirectLinksResource struct {
 	buffalo.Resource
 }
 
+type Reply struct {
+	Reply string
+}
+
 func (v DirectLinksResource) List(c buffalo.Context) error {
 	dlinks := &models.DirectLinks{}
 	if c.Session().Get("is_admin").(bool) {
@@ -52,6 +56,16 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	user := getCurrentSingle(c).UserByAccount(dlink.AccountId)
+	models.SyncTickets(user)
+	ticket, err := models.FindTicket(dlink.TicketId)
+	if err == nil {
+		ticket.SyncTicketUpdates(user)
+	} else {
+		c.Logger().Errorf("cannot pick related ticket: %v", err)
+	}
+
 	c.Set("statuses", []string{
 		"note",
 		"accepted",
@@ -61,7 +75,6 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	})
 
 	c.Set("vlan", models.VLAN(dlink.VlanId))
-
 	c.Set("dlink", dlink)
 	c.Set("progresses", dlink.Progresses())
 	c.Set("updates", dlink.Updates())
@@ -184,7 +197,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 
 	plink := models.PickDirectLink(dlink.SiblingID)
 	if plink == nil {
-		c.Logger().Errorf("oops! cannot pick pair link! %v", dlink.SiblingID)
+		c.Logger().Warnf("no pair link? %v", dlink.SiblingID)
 	} else {
 		plink.SiblingID = dlink.ID
 		plink.MultiPath = true
@@ -236,19 +249,22 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 		return err
 	}
 
-	// create ticket
-
-	ticket, err := models.FindTicket(41345215)
+	single := getCurrentSingle(c)
+	user := single.UserByUsername(c.Value("actor"))
+	ticket_id, err := models.CreateDirectLinkTicket(user, dlink)
 	if err != nil {
+		c.Logger().Errorf("ticket creation error: %v", err)
 		return err
 	}
 	progress := models.NewProgress(dlink.ID, "order")
 	progress.SingleID = getCurrentSingle(c).ID
-	progress.UpdateId = ticket.FirstUpdate().ID
+	if ticket, err := models.FindTicket(ticket_id); err == nil {
+		progress.UpdateId = ticket.FirstUpdate().ID
+	}
 	progress.Save()
 	c.Logger().Debugf("progress: %v", progress)
 
-	dlink.TicketId = ticket.ID
+	dlink.TicketId = ticket_id
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
 	if err != nil {
 		c.Logger().Errorf("database error: %v", err)
@@ -263,6 +279,8 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 }
 
 func (v DirectLinksResource) Proceed(c buffalo.Context) error {
+	single := getCurrentSingle(c)
+
 	dlink, err := setDirectLink(c)
 	if err != nil {
 		return err
@@ -272,11 +290,8 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	progress.SingleID = getCurrentSingle(c).ID
+	progress.SingleID = single.ID
 	c.Logger().Debugf("progress: %v", progress)
-
-	// add ticket update...
-
 	progress.Save()
 
 	dlink.Status = progress.Action
@@ -288,6 +303,21 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Logger().Errorf("validation error: %v", verrs)
 		return verrs
+	}
+
+	reply := &Reply{}
+	_ = c.Bind(reply)
+	if err == nil && len(reply.Reply) > 0 {
+		user := single.UserByUsername(c.Value("actor"))
+		ticket := dlink.Ticket()
+		u, err := ticket.AddUpdate(user, reply.Reply)
+		c.Logger().Debugf("new update %v on %v created!", u.ID, u.TicketId)
+		if err != nil {
+			c.Logger().Errorf("cannot add an update: %v", err)
+			return err
+		}
+	} else {
+		c.Logger().Debugf("blank reply, no-reply mode: '%v'", reply.Reply)
 	}
 	c.Flash().Add("success", "DirectLink was ordered successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
