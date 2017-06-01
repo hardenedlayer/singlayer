@@ -103,6 +103,17 @@ func (d *DirectLink) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error
 	return validate.NewErrors(), nil
 }
 
+//// selectors:
+
+func PickDirectLink(directlink_id uuid.UUID) (dlink *DirectLink) {
+	dlink = &DirectLink{}
+	err := DB.Find(dlink, directlink_id)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 //// Association and Relationship based search for instances.
 //// It need instance of Single so more expensive than raw query. FIXME later.
 

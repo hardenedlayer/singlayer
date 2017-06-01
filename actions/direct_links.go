@@ -68,6 +68,16 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	return c.Render(200, r.HTML("direct_links/show.html"))
 }
 
+func (v DirectLinksResource) Add(c buffalo.Context) error {
+	plink, err := setDirectLink(c)
+	if err != nil {
+		c.Logger().Errorf("oops! cannot get previous link: %v", err)
+	}
+	c.Logger().Debugf("add redundancy link for %v", plink)
+	c.Set("plink", plink)
+	return v.New(c)
+}
+
 func (v DirectLinksResource) New(c buffalo.Context) error {
 	actor := c.Value("actor").(string)
 	if actor == "All" {
@@ -78,16 +88,15 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 	c.Set("order_for", user.CompanyName)
 	account := user.Account()
 
-	dlink := &models.DirectLink{}
-	// TODO check parameter
-	dlink.MultiPath = false
+	plink, _ := c.Value("plink").(*models.DirectLink)
+	c.Logger().Debugf("previous link: %v", plink)
 
-	// account information and fixed values
+	dlink := &models.DirectLink{}
 	dlink.UserId = user.ID
 	dlink.AccountId = user.AccountId
 	dlink.Location = "SEO01"
 
-	// default
+	// default values
 	dlink.Type = "CX"
 	dlink.Speed = 1
 	dlink.RoutingOption = "Local"
@@ -96,16 +105,16 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 
 	// auto assignment
 	dlink.LineNumber = len(*account.DirectLinks()) + 1
-	if dlink.MultiPath == true {
-		plink := &models.DirectLink{}
-		c.Set("plink", plink)
+	if plink != nil {
+		dlink.MultiPath = true
+		dlink.SiblingID = plink.ID
 		dlink.VlanId = plink.VlanId
 		dlink.Router = (plink.Router + 2) % 2 + 1
-	} else {
-		plink := "No"
 		c.Set("plink", plink)
+	} else {
 		dlink.VlanId = models.NextVLAN(dlink.AccountId).ID
 		dlink.Router = models.NextRouter()
+		c.Set("plink", "No")
 	}
 	dlink.ASN = 4204200000 + dlink.VlanId
 	dlink.Port = "N/A"
@@ -171,6 +180,18 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("oops! cannot save vlan: %v", err)
 		return err
+	}
+
+	plink := models.PickDirectLink(dlink.SiblingID)
+	if plink == nil {
+		c.Logger().Errorf("oops! cannot pick pair link! %v", dlink.SiblingID)
+	} else {
+		plink.SiblingID = dlink.ID
+		plink.MultiPath = true
+		err = tx.Save(plink)
+		if err != nil {
+			c.Logger().Errorf("oops! cannot save pair link: %v %v", plink, err)
+		}
 	}
 
 	c.Flash().Add("success", "DirectLink was created successfully")

@@ -28,15 +28,14 @@
 			<th>Account</th>
 			<th>Configuration</th>
 			<th>Router</th>
-			<th>Link</th>
-			<th>Pair</th>
+			<th>IP Addr</th>
 			<th>Status</th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
 		<%= for (dlink) in dlinks { %>
-		<tr>
+		<tr class="clickable">
 			<td><%= shorten(dlink.AccountName(), 25) %></td>
 			<td><a id="link" href="<%=
 					directlinkPath({ directlink_id: dlink.ID }) %>"><%=
@@ -44,19 +43,36 @@
 			<td>XCR<%=
 					dlink.Router %>.v<%=
 					dlink.VlanId %></td>
-			<td><%= dlink.XCRIP %> <%= dlink.CERIP %></td>
-			<td><%= if (dlink.MultiPath) { %><a href="<%=
-					directlinkPath({ directlink_id: dlink.SiblingID })
-					%>">Sibling</a><% } else { %><% } %></td>
+			<td><%= dlink.CERIP %></td>
 			<td><%= capitalize(dlink.Status) %></td>
-			<td>
+			<td class="unclickable">
 				<div class="pull-right">
-					<%= if (dlink.Status == "draft") { %><a href="<%= directlinkOrderPath({ directlink_id: dlink.ID }) %>" data-method="PUT" data-confirm="Are you sure?" class="btn btn-xs btn-primary">Order</a><% } %>
-					<%= if (dlink.TicketId > 0) { %><a href="<%= ticketPath({ ticket_id: dlink.TicketId }) %>" class="btn btn-xs btn-primary">Ticket</a><% } %>
+					<%= if (dlink.MultiPath) {
+						%><a class="btn btn-xs btn-success" href="<%=
+						directlinkPath({ directlink_id: dlink.SiblingID })
+						%>">View Sibling</a><%
+					} else {
+						%><a class="btn btn-xs btn-success" href="<%=
+						directlinkAddPath({ directlink_id: dlink.ID })
+						%>">Add Redundancy Link</a><%
+					} %>
+					<%= if (dlink.Status == "draft") {
+						%><a class="btn btn-xs btn-primary" href="<%=
+							directlinkOrderPath({ directlink_id: dlink.ID })
+							%>" data-method="PUT" data-confirm="Are you sure?">Order</a><%
+					} %>
+					<%= if (dlink.TicketId > 0) {
+						%><a class="btn btn-xs btn-primary" href="<%=
+							ticketPath({ ticket_id: dlink.TicketId }) %>">Ticket</a><%
+					} %>
 					<div class="btn-group">
-					<a href="<%= editDirectlinkPath({ directlink_id: dlink.ID }) %>" class="btn btn-xs btn-warning">Ed</a>
-					<%= if (user_is_admin) { %><a href="<%=
-						directlinkPath({ directlink_id: dlink.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">De</a><% } %>
+						<a class="btn btn-xs btn-warning" href="<%=
+							editDirectlinkPath({ directlink_id: dlink.ID }) %>">Ed</a>
+						<%= if (user_is_admin) {
+							%><a class="btn btn-xs btn-danger" href="<%=
+							directlinkPath({ directlink_id: dlink.ID })
+							%>" data-method="DELETE" data-confirm="Are you sure?">De</a><%
+						} %>
 					</div>
 				</div>
 			</td>

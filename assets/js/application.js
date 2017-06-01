@@ -69,8 +69,8 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-	$('tr').click(function() {
-		window.location = $(this).find('a#link').attr('href');
+	$('tr.clickable > td[class!="unclickable"]').click(function() {
+		window.location = $(this).parent().find('a#link').attr('href');
 	});
 });
 
