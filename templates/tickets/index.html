@@ -21,7 +21,7 @@ the user's account are shown. (tickets assiciated to the user)
 
 <div class="row">
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed table-hover">
 	<thead>
 		<tr>
 			<th>Assignee</th>
@@ -33,7 +33,7 @@ the user's account are shown. (tickets assiciated to the user)
 		</tr>
 	</thead>
 	<tbody>
-		<%= for (ticket) in tickets { %><tr class="ticket-status-<%=
+		<%= for (ticket) in tickets { %><tr  class="clickable ticket-status-<%=
 			status(ticket.StatusId) %> <%= ticketTag(ticket)
 			%>">
 			<td class="ticket-owner"><span data-toggle="tooltip" data-placement="top"
@@ -43,7 +43,7 @@ the user's account are shown. (tickets assiciated to the user)
 			<td class="ticket-title"><span data-toggle="tooltip" data-placement="top"
 					title="<%= ticket.Title %> (<%=
 					group(ticket.GroupId) %> / <%=
-					subject(ticket.SubjectId) %>)"><a
+					subject(ticket.SubjectId) %>)"><a id="link"
 					class="hl-shorten"
 					href="<%= ticketPath({ ticket_id: ticket.ID }) %>"
 					><%= trimSubject(ticket.Title, ticket.SubjectId) %></a></span></td>

@@ -14,6 +14,25 @@ $bg-info: #91b0d0;
 $bg-warning: #e1b79e;
 $bg-danger: #ea9590;
 
+html, body, .container {
+	height: 100%;
+}
+.container {
+	display: table;
+	width: 100%;
+	margin-top: -50px;
+	padding: 50px 0 0 0;
+	box-sizing: border-box;
+}
+.row.full {
+	height: 100%;
+	display: table-row;
+}
+.row .no-float {
+	display: table-cell;
+	float: none;
+}
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
@@ -35,17 +54,17 @@ $bg-danger: #ea9590;
 .icon96 {
 	width: 96px; height: 96px;
 	&.round { border-radius: 48px; }
-	&.border { border: 1px solid black; }
+	&.border { border: 1px solid #000000; }
 }
 .icon32 {
 	width: 32px; height: 32px;
 	&.round { border-radius: 16px; }
-	&.border { border: 1px solid black; }
+	&.border { border: 1px solid #000000; }
 }
 .icon24 {
 	width: 24px; height: 24px;
 	&.round { border-radius: 12px; }
-	&.border { border: 1px solid black; }
+	&.border { border: 1px solid #000000; }
 }
 .avatar {
 	float: left;
@@ -77,6 +96,7 @@ $bg-danger: #ea9590;
 	}
 	& > pre {
 		white-space: pre-wrap;
+		word-break: normal;
 		margin-bottom: 5px;
 	}
 }
@@ -133,6 +153,9 @@ $bg-danger: #ea9590;
 	}
 }
 .navbar-default {
+	background-color: #000000 !important;
+	border-color: transparent !important;
+	box-shadow: 0 2px 2px rgba(0,0,0, 0.5);
 	.navbar-toggle {
 		border: 0;
 	}

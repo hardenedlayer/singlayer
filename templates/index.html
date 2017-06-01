@@ -1,37 +1,42 @@
-<div class="row">
-  <div class="col-md-2">
-    <img src="/assets/images/logo.svg" alt="" />
-  </div>
-  <div class="col-md-10">
-    <h1><%= t("welcome_greeting") %> [v0.8.2]</h1>
-    <h2>
-      <a href="https://github.com/gobuffalo/buffalo"><i class="fa fa-github" aria-hidden="true"></i> https://github.com/gobuffalo/buffalo</a>
-    </h2>
-    <h2>
-      <a href="http://gobuffalo.io"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
-    </h2>
-
-    <hr>
-    <h2>Defined Routes</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr text-align="left">
-          <th>METHOD</th>
-          <th>PATH</th>
-          <th>NAME</th>
-          <th>HANDLER</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for (r) in routes { %>
-        <tr>
-          <td><%= r.Method %></td>
-          <td><%= r.Path %></td>
-          <td><%= r.PathName %></td>
-          <td><code><%= r.HandlerName %></code></td>
-        </tr>
-        <% } %>
-      </tbody>
-    </table>
-  </div>
+<div class="row spacer">
 </div>
+
+<div class="row text-center">
+	<div class="col-md-4 tx">
+		<div class="well">
+		<div class="col-md-12 txxx"><i class="fa fa-photo"></i></div>
+		<h1>Landscape</h1>
+		Watch my all systems in a<br>SINGLE LANDSCAPE<br>without fence of accounts.
+		</div>
+	</div>
+	<div class="col-md-4 tx">
+		<div class="well">
+		<div class="col-md-12 txxx"><i class="fa fa-ticket"></i></div>
+		<h1>Ticket</h1>
+		Track my tickets and get<br>MOBILE NOTIFICATION<br>with my favorit app.
+		</div>
+	</div>
+	<div class="col-md-4 tx">
+		<div class="well">
+		<div class="col-md-12 txxx"><i class="fa fa-link"></i></div>
+		<h1>Direct Link</h1>
+		ORDER AND TRACK<br>direct links for accounts<br>in a single place.
+		</div>
+	</div>
+</div>
+
+<style>
+.spacer {
+	min-height: 120px;
+}
+.txxx {
+	font-size: 150px;
+}
+.tx {
+	font-size: 20px;
+}
+.tx h1 {
+	font-size: 30px;
+	font-weight: bold;
+}
+</style>

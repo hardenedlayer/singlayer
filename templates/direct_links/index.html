@@ -54,7 +54,7 @@
 					} else {
 						%><a class="btn btn-xs btn-success" href="<%=
 						directlinkAddPath({ directlink_id: dlink.ID })
-						%>">Add Redundancy Link</a><%
+						%>">Add Redundancy</a><%
 					} %>
 					<%= if (dlink.Status == "draft") {
 						%><a class="btn btn-xs btn-primary" href="<%=
@@ -67,7 +67,7 @@
 					} %>
 					<div class="btn-group">
 						<a class="btn btn-xs btn-warning" href="<%=
-							editDirectlinkPath({ directlink_id: dlink.ID }) %>">Ed</a>
+							editDirectlinkPath({ directlink_id: dlink.ID }) %>">Edit</a>
 						<%= if (user_is_admin) {
 							%><a class="btn btn-xs btn-danger" href="<%=
 							directlinkPath({ directlink_id: dlink.ID })

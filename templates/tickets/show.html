@@ -56,6 +56,8 @@
 			<span><%= iconize(update.EditorType) %></span>
 			<span><%= user(update.EditorId) %></span>,
 			<span><%= timeYYMDHM(update.CreateDate) %></span>
+			<span><a href="https://translate.google.com/#en/ko/<%= update.Entry
+				%>" target="trans"><i class="fa fa-language"></i></a></span>
 		</div>
 	</div>
 <% } %>
