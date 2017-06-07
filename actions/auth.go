@@ -45,6 +45,8 @@ func AuthCallback(c buffalo.Context) error {
 		return c.Error(501, err)
 	}
 
+	count, _ := tx.Count(&models.Singles{})
+
 	single := &models.Single{}
 	if len(*singles) == 1 {
 		single = &(*singles)[0]
@@ -61,7 +63,13 @@ func AuthCallback(c buffalo.Context) error {
 		single.UserID = user.UserID
 		single.AvatarUrl = user.AvatarURL
 		single.Permissions = ":guest:"
-		// TODO mark as admin for very first user.
+		if count == 0 {
+			c.Flash().Add("info", single.Name + ", you are the Master!")
+			c.Logger().Infof("very first %v, you are my lord!", single.Name)
+			single.Permissions = ":admin:"
+		} else {
+			c.Flash().Add("info", "Nice to meet you! You are now a Singler!")
+		}
 		verrs, err := tx.ValidateAndCreate(single)
 		if err != nil {
 			fmt.Printf("err: %v\n", err)
@@ -73,7 +81,6 @@ func AuthCallback(c buffalo.Context) error {
 		}
 
 		err = q.First(single)
-		c.Flash().Add("info", "Nice to meet you! You just become a singler!")
 	} else {
 		return c.Error(501, errors.New("Somthing went wrong!!!"))
 	}
