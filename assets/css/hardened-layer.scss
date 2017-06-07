@@ -1,6 +1,8 @@
-$nav_height: 40px;
-$font_size: 14px;
-$font_color: #222;
+$nav-height: 40px;
+$font-size: 14px;
+
+$color-default: #222;
+$bg-default: #f8f8f8;
 
 $color-muted: #999;
 $color-primary: #141414;
@@ -20,10 +22,28 @@ html, body, .container {
 .container {
 	display: table;
 	width: 100%;
-	margin-top: -50px;
-	padding: 50px 0 0 0;
+	margin-top: -60px;
+	padding: 60px 0 0 0;
 	box-sizing: border-box;
 }
+.page-tailer {
+	position: relative;
+	display: flex;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	min-height: 60px;
+	padding-top: 5px;
+	background: darken($bg-default, 6%);
+	border: 1px solid darken($bg-default, 15%);
+	border-width: 1px 0 0 0;
+	font-size: 0.9em;
+	color: lighten($color-default, 40%);
+	a {
+		color: lighten($color-default, 40%);
+	}
+}
+
 .row.full {
 	height: 100%;
 	display: table-row;
@@ -50,6 +70,8 @@ html, body, .container {
 		text-decoration: none;
 	}
 }
+
+//// my widgets
 
 .icon96 {
 	width: 96px; height: 96px;
@@ -130,13 +152,24 @@ html, body, .container {
 	}
 }
 
-.panel-body > *:last-child {
-	margin-bottom: 0px;
-}
-.pagination > li > a {
-	width: 2.5em;
+.not-released {
+	color: lighten($color-default, 40%);
 }
 
+.page-tips {
+	margin-top: 100px;
+	p {
+		padding-left: 60px;
+		span {
+			margin-left: -60px;
+			width: 55px;
+			float: left;
+		}
+	}
+}
+
+
+//// customize bootstrap
 
 @media screen and (max-width: 754px) {
 	.avatar { display: none; }
@@ -144,6 +177,14 @@ html, body, .container {
 		margin-right: -15px;
 	}
 }
+
+.panel-body > *:last-child {
+	margin-bottom: 0px;
+}
+.pagination > li > a {
+	width: 2.5em;
+}
+
 .navbar {
 	.navbar-brand .icon32 {
 		margin: ($nav_height - 32px) / 2 - 10px;
@@ -197,4 +238,4 @@ html, body, .container {
 	z-index: 999;
 }
 
-.jumbotron > h1 > img { width: ($font_size * 4); }
+.jumbotron > h1 > img { width: ($font-size * 4); }

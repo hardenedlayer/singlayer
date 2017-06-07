@@ -3,7 +3,8 @@
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
-			All users registered by singles are shown here.
+			Direct Link details.
+			You can check the progress of the process and update its status here.
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 </div>
@@ -133,6 +134,8 @@
 				<span><%= iconize(update.EditorType) %></span>
 				<span><%= update.EditorName() %></span>,
 				<span><%= timeYYMDHM(update.CreateDate) %></span>
+				<span><a href="https://translate.google.com/#en/ko/<%= update.Entry
+					%>" target="trans"><i class="fa fa-language"></i></a></span>
 			</div>
 		</div>
 		<%= if (update.EditorType != "USER") { %>
@@ -148,6 +151,27 @@
 	</div>
 </div>
 
+<div class="page-tips">
+<%= if (user_is_admin) { %>
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
+	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
+	<div class="panel-body">
+	</div>
+</div></div>
+<% } %>
+<div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
+	<div class="panel-body">
+		<p><span class="label label-info">Tips</span>
+		Step 1: Please check 'Associated Ticket Updates' and update the status, add a note, and send a message to cloud provider using 'Add Progress' button.</p>
+		<p><span class="label label-info">Tips</span>
+		Step 2: If the provider give a set of IPs via 'Ticket Update', please edit the configuration using 'Edit' button and set the status as 'Configured' using 'Add Progress' button.</p>
+		<p><span class="label label-info">Tips</span>
+		Setp 3: Client side setup is required after IP assignment. Please inform to your network administrator(NSP case) or Cloud Exchange administrator after set the status as 'Configured'.</p>
+		<p><span class="label label-danger">Warning</span>
+		Do not update the ticket for 'Step 3'. It is separated task!</p>
+	</div>
+</div></div>
+</div>
 
 
 <!-- Modal -->
@@ -162,8 +186,8 @@
 			<div class="modal-body">
 <%= f.InputTag("UpdateId", {readonly: true}) %>
 <%= f.SelectTag("Action", {options: statuses, label:"Change status to..."}) %>
-<%= f.TextArea("Note", {rows: 2, label:"Internal Note"}) %>
-<%= f.TextArea("Reply", {rows: 5, label:"Reply to Provider"}) %>
+<%= f.TextArea("Note", {rows: 2, label:"Your own note"}) %>
+<%= f.TextArea("Reply", {rows: 5, label:"Message to Cloud Provider"}) %>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-warning" data-dismiss="modal" aria-label="Close">Close</button>

@@ -3,7 +3,8 @@
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
-			All information related on this account are shown here.
+			This page shown detail conversations of the ticket in
+			new-update-first manner.
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 </div>
@@ -48,7 +49,7 @@
 </table>
 
 
-<div class="" id="ticket-updates">
+<div class="row" id="ticket-updates">
 <%= for (update) in updates { %>
 	<div id="update-<%= update.ID %>" class="ticket-update well col-md-9 <%= if (update.EditorType == "USER") { %>by-user col-md-offset-2<% } else { %>by-service col-md-offset-1<% } %>">
 		<pre><%= update.Entry %></pre>
@@ -63,7 +64,8 @@
 <% } %>
 </div>
 
-
+<div class="page-tips">
+<%= if (user_is_admin) { %>
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
 	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
 	<div class="panel-body">
@@ -77,13 +79,17 @@
 		Auto cleaning of all related items from this page.</p>
 	</div>
 </div></div>
-
+<% } %>
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
 	<div class="panel-body">
-		<p><span class="label label-info">Tip</span>
-		Some tips here!</p>
+		<p><span class="label label-info">Tips</span>
+		Recent updates are synced before displayed if you are in single-mode.</p>
+		<p><span class="label label-info">Tips</span>
+		Google translator will be open when you click on
+		<i class="fa fa-language"></i> icon.</p>
 	</div>
 </div></div>
+</div>
 
 </div>
 
