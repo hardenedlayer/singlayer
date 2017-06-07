@@ -93,8 +93,9 @@ func CreateDirectLinkTicket(user *User, dlink *DirectLink) (int, error) {
 	content := buf.String()
 	log.Debugf("new ticket contents: -------\n%v\n-------", content)
 
-	// for debug
-	return 0, errors.New("XXX EVERYTHING IS GOOD! BUT TEST.")
+	if is_test {
+		return 0, errors.New("XXX EVERYTHING IS GOOD! BUT TEST.")
+	}
 
 	service := services.GetTicketService(sess)
 	tick, err := service.CreateStandardTicket(&sl_ticket, &content,

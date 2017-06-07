@@ -13,6 +13,7 @@ import (
 // throughout your application.
 var DB *pop.Connection
 var log = logrus.New()
+var is_test = false
 
 func init() {
 	var err error
@@ -27,6 +28,7 @@ func init() {
 		log.Formatter = &logrus.TextFormatter{}
 		log.Out = os.Stdout
 		log.Level = logrus.DebugLevel
+		is_test = true
 	}
 
 	pop.MapTableName("TicketStatus", "ticket_statuses")
