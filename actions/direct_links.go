@@ -58,6 +58,9 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 	}
 
 	user := getCurrentSingle(c).UserByAccount(dlink.AccountId)
+	if c.Session().Get("is_admin").(bool) {
+		user, _ = models.FindUser(dlink.UserId)
+	}
 	models.SyncTickets(user)
 	ticket, err := models.FindTicket(dlink.TicketId)
 	if err == nil {
@@ -110,7 +113,7 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 	dlink.Location = "SEO01"
 
 	// default values
-	dlink.Type = "CX"
+	dlink.Type = "Cloud"
 	dlink.Speed = 1
 	dlink.RoutingOption = "Local"
 	dlink.Prefix = 31
@@ -132,7 +135,7 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 	dlink.ASN = 4204200000 + dlink.VlanId
 	dlink.Port = "N/A"
 
-	c.Set("types", []string{"CX", "NSP"})
+	c.Set("types", []string{"Cloud", "NSP"})
 	c.Set("speeds", []int{1, 10})
 	c.Set("routing_options", []string{"Local", "Global"})
 	c.Set("prefixes", []int{31, 30})
@@ -154,7 +157,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 			user.AccountId, dlink.AccountId, user.ID, dlink.UserId)
 		return err
 	}
-	if dlink.Type == "CX" {
+	if dlink.Type == "Cloud" {
 		dlink.Port = "N/A"
 	}
 	dlink.SingleID = single.ID
@@ -251,6 +254,9 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 
 	single := getCurrentSingle(c)
 	user := single.UserByUsername(c.Value("actor"))
+	if c.Session().Get("is_admin").(bool) {
+		user, _ = models.FindUser(dlink.UserId)
+	}
 	ticket_id, err := models.CreateDirectLinkTicket(user, dlink)
 	if err != nil {
 		c.Logger().Errorf("ticket creation error: %v", err)

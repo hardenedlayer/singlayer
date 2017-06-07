@@ -178,3 +178,11 @@ func (d DirectLink) SingleName() interface{} {
 	}
 	return single.Name
 }
+
+func (d DirectLink) PairTicketId() interface{} {
+	plink := PickDirectLink(d.SiblingID)
+	if plink != nil {
+		return plink.TicketId
+	}
+	return nil
+}
