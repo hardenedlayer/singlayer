@@ -1,0 +1,8 @@
+
+GPK='8...'
+GPS='c...'
+GHK='4...'
+GHS='6...'
+ENV='development'
+SEC='F...'
+HOST='http://example.com:3000'

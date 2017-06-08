@@ -111,8 +111,12 @@ html, body, .container {
 	&.well {
 		margin-bottom: 10px;
 		padding: 5px;
+		background-color: transparent;
+		border: 0 solid transparent;
+		box-shadow: 0 0 0 transparent;
 	}
 	&.by-user > pre {
+		background-color: darken($bg-default, 5%);
 	}
 	&.by-service > pre {
 	}
