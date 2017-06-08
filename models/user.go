@@ -105,6 +105,10 @@ func (u *User) Account() (account *Account) {
 	return
 }
 
+func (u User) AccountNick() interface{} {
+	return *u.Account()
+}
+
 // Single() returns associated Single instance for this user.
 func (u User) Single() interface{} {
 	single := &Single{}

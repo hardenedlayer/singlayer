@@ -28,7 +28,7 @@
 			<tbody>
 				<%= for (user) in users { %>
 				<tr>
-					<td><span data-toggle="tooltip" data-placement="right" title="<%= user.CompanyName %>"><%= user.Username %></span></td>
+					<td><span data-toggle="tooltip" data-placement="right" title="<%= user.AccountNick() %>"><%= user.Username %></span></td>
 					<td><%= user.OpenTicketCount %>/<%= user.TicketCount %></td>
 					<td><%= user.VirtualGuestCount %>/<%= user.HardwareCount %></td>
 					<td class="text-right">
