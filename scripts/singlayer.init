@@ -15,6 +15,8 @@ singlayer_root=/opt/singlayer
 pid_dir=/opt/singlayer
 bin_dir=/opt/singlayer
 conf_dir=/opt/singlayer
+user=root
+group=root
 
 test -x $bin_dir/singlayer || exit 0
 
@@ -24,7 +26,8 @@ if test -f $conf_dir/singlayer.conf; then
 	. $conf_dir/singlayer.conf
 	export GPLUS_KEY=$GPK GPLUS_SECRET=$GPS
 	export GITHUB_KEY=$GHK GITHUB_SECRET=$GHS
-	export SESSION_SECRET=$SEC HOST GO_ENV=$ENV
+	export SESSION_SECRET=$SEC HOST PORT GO_ENV=$ENV
+	export USE_TLS
 fi
 
 . /lib/lsb/init-functions
@@ -32,7 +35,7 @@ fi
 case "$1" in
   start)
 	log_daemon_msg "Starting Singlayer server" "singlayer" || true
-	if start-stop-daemon --start --quiet --oknodo -m --pidfile $pid_dir/singlayer.pid -b -C -d $singlayer_root --exec $bin_dir/singlayer -- $SINGLAYER_OPTS >> $singlayer_root/log/std.log 2>&1 ; then
+	if start-stop-daemon --start --quiet --oknodo -m --pidfile $pid_dir/singlayer.pid -c $user:$group -b -C -d $singlayer_root --exec $bin_dir/singlayer -- $SINGLAYER_OPTS >> $singlayer_root/log/std.log 2>&1 ; then
 	    log_end_msg 0 || true
 	else
 	    log_end_msg 1 || true
@@ -50,7 +53,7 @@ case "$1" in
   restart)
 	log_daemon_msg "Restarting Singlayer server" "singlayer" || true
 	start-stop-daemon --stop --quiet --oknodo --retry 30 --pidfile $pid_dir/singlayer.pid
-	if start-stop-daemon --start --quiet --oknodo -m --pidfile $pid_dir/singlayer.pid -b -C -d $singlayer_root --exec $bin_dir/singlayer -- $SINGLAYER_OPTS >> $singlayer_root/log/std.log 2>&1 ; then
+	if start-stop-daemon --start --quiet --oknodo -m --pidfile $pid_dir/singlayer.pid -c $user:$group -b -C -d $singlayer_root --exec $bin_dir/singlayer -- $SINGLAYER_OPTS >> $singlayer_root/log/std.log 2>&1 ; then
 	    log_end_msg 0 || true
 	else
 	    log_end_msg 1 || true
