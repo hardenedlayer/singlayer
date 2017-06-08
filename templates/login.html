@@ -1,29 +1,103 @@
-<div class="row">
-	<br/><br/>
-	<br/><br/>
+<div class="background">
+<div class="row spacer txx">
+	<h1 class="text-center"><img src="/assets/images/hardened-circle.png">
+		<span class="logo-sing"> Sing</span><span class="logo-lay">layer </span>
+	</h1>
 </div>
 
-<div class="row">
-	<div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Login with...</h3>
-			</div>
-			<div class="panel-body text-center">
-				<a href="/auth/gplus" class="btn btn-lg btn-primary">
-					<i class="fa fa-google-plus-official"></i> &nbsp; Google
-				</a>
-				<a href="/auth/github" class="btn btn-lg btn-primary">
-					<i class="fa fa-github-alt"></i> &nbsp; Github
-				</a>
-			</div>
+<div class="row text-center">
+	<div class="col-md-2 col-md-offset-2 tx boxer">
+		<div class="col-md-12 txx">
+			<a href="/auth/gplus">
+				<i class="fa fa-google-plus-official"></i>
+			</a>
 		</div>
-
-		<div class="jumbotron">
-			<h1><img src="/assets/images/hardened-circle.png"> Single Layer</h1>
-			<p>Single login with your existing social account,</p>
-			<p>Handle multiple SoftLayer accounts from single place.</p>
-			<p><a class="btn btn-primary btn-lg">Learn more</a></p>
+		<h1>Google</h1>
+	</div>
+	<div class="col-md-2 col-md-offset-1 tx boxer">
+		<div class="col-md-12 txx">
+			<a href="/auth/github">
+				<i class="fa fa-github"></i>
+			</a>
 		</div>
+		<h1>Github</h1>
+	</div>
+	<div class="col-md-2 col-md-offset-1 tx boxer">
+		<div class="col-md-12 txx">
+			<a>
+				<i class="fa fa-facebook-official"></i>
+			</a>
+		</div>
+		<h1>Facebook</h1>
 	</div>
 </div>
+
+<div class="row spacer tx text-center text-white">
+	<p>Single login with your existing social account,</p>
+	<p>Handle multiple SoftLayer accounts from single place.</p>
+</div>
+</div>
+
+<style>
+body {
+	overflow: hidden;
+}
+.container {
+	margin: 0px;
+}
+div.background {
+	display: table;
+	width: 100%;
+	height: 100%;
+	margin-top: -60px;
+	padding: 60px 0 0 0;
+	box-sizing: border-box;
+
+	position: fixed;
+	left: 0;
+	right: 0;
+	background: url("/assets/images/road.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.page-tailer {
+	opacity: 0.9;
+}
+.spacer {
+	padding-top: 50px;
+	padding-bottom: 20px;
+	min-height: 120px;
+}
+.txx {
+	font-size: 100px;
+}
+.txx h1 {
+	font-size: 52px;
+	font-weight: bold;
+	text-shadow: 0 1px 3px rgb(0,0,0);
+}
+.tx {
+	font-size: 20px;
+}
+.tx h1 {
+	font-size: 24px;
+	font-weight: bold;
+	text-shadow: 0 1px 2px rgb(128,128,128);
+}
+.boxer {
+	background: rgba(255,255,255,0.5);
+	border-radius: 150px;
+}
+.logo-sing {
+	color: #880000;
+}
+.logo-lay {
+	color: #000088;
+}
+.text-white {
+	color: white;
+	text-shadow: 0 0 2px rgb(0,0,0);
+}
+</style>
