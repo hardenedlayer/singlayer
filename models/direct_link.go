@@ -163,6 +163,10 @@ func (d DirectLink) AccountName() interface{} {
 	return d.Account().CompanyName
 }
 
+func (d DirectLink) AccountNick() interface{} {
+	return d.Account().String()
+}
+
 func (d DirectLink) UserName() interface{} {
 	user, err := FindUser(d.UserId)
 	if err != nil {

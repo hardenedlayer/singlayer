@@ -26,6 +26,10 @@ type Single struct {
 }
 
 func (s Single) String() string {
+	return s.Name
+}
+
+func (s Single) Marshal() string {
 	js, _ := json.Marshal(s)
 	return string(js)
 }
@@ -79,6 +83,15 @@ func (s *Single) Accounts() (accounts *Accounts) {
 		return nil
 	}
 	return
+}
+
+func (s Single) AccountCount() interface{} {
+	accounts := &Accounts{}
+	count, err := DB.BelongsToThrough(&s, "users").Count(accounts)
+	if err == nil {
+		return count
+	}
+	return -9
 }
 
 // User(user_id) returns single instance of User
@@ -189,7 +202,7 @@ func (s *Single) DirectLinks() (*DirectLinks) {
 // MyDirectLinks() returns all directlinks associated to the single directly.
 func (s *Single) MyDirectLinks() (dlinks *DirectLinks) {
 	dlinks = &DirectLinks{}
-	err := DB.BelongsTo(s).All(dlinks)
+	err := DB.BelongsTo(s).Order("account_id, line_number").All(dlinks)
 	if err != nil {
 		return nil
 	}

@@ -326,3 +326,11 @@ func (t *Ticket) Save() (err error) {
 	}
 	return nil
 }
+
+// display helpers:
+
+func (t Ticket) Account() interface{} {
+	account := &Account{}
+	DB.Find(account, t.AccountId)
+	return account
+}

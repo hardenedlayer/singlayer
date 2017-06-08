@@ -36,7 +36,7 @@
 	<tbody>
 		<%= for (dlink) in dlinks { %>
 		<tr class="clickable">
-			<td><%= shorten(dlink.AccountName(), 25) %></td>
+			<td><%= shorten(dlink.AccountNick(), 25) %></td>
 			<td><a id="link" href="<%=
 					directlinkPath({ directlink_id: dlink.ID }) %>"><%=
 					dlink %></a></td>

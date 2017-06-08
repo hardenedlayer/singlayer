@@ -22,16 +22,14 @@
     <tr><td>ParentId</td><td><%= user.ParentId %></td></tr>
     <tr><td>Username</td><td><%= user.Username %></td></tr>
     <tr><td>APIKey</td><td><%= user.APIKey %></td></tr>
-    <tr><td>Email</td><td><%= user.Email %></td></tr>
     <tr><td>CompanyName</td><td><%= user.CompanyName %></td></tr>
-    <tr><td>FirstName</td><td><%= user.FirstName %></td></tr>
-    <tr><td>LastName</td><td><%= user.LastName %></td></tr>
+    <tr><td>Contact</td><td><%= user.Contact() %></td></tr>
     <tr><td>OpenTicketCount</td><td><%= user.OpenTicketCount %></td></tr>
     <tr><td>TicketCount</td><td><%= user.TicketCount %></td></tr>
     <tr><td>VirtualGuestCount</td><td><%= user.VirtualGuestCount %></td></tr>
     <tr><td>HardwareCount</td><td><%= user.HardwareCount %></td></tr>
 		<%= if (user_is_admin) { %>
-    <tr><td>SingleID</td><td><%= user.SingleID %></td></tr>
+    <tr><td>Single</td><td><%= user.Single() %> (<%= user.SingleID %>)</td></tr>
     <tr><td>LastBatch</td><td><%= user.LastBatch %></td></tr>
 		<% } %>
   </tbody>

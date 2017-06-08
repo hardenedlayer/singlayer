@@ -1,0 +1,22 @@
+<div class="row page-header">
+	<h1>Edit Nickname for <span class="sing-data"><%= account.CompanyName %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="If your account name is not human friendly,
+please add a nickname for the account.
+It will be used for the display name for this account.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Enter human friendly name for this account.
+	</div>
+</div>
+
+<div class="row">
+<div class="col-md-8 col-md-offset-2">
+<%= form_for(account, {action: accountPath({ account_id: account.ID }), method: "PUT", errors: errors}) { %>
+  <%= partial("accounts/edit.html") %>
+  <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
+</div>
+</div>

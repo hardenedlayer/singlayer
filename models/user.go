@@ -105,6 +105,16 @@ func (u *User) Account() (account *Account) {
 	return
 }
 
+// Single() returns associated Single instance for this user.
+func (u User) Single() interface{} {
+	single := &Single{}
+	err := DB.Find(single, u.SingleID)
+	if err != nil {
+		return "Unknown Singler"
+	}
+	return single
+}
+
 // MyTickets() returns all tickets assigned to me.
 func (u *User) MyTickets(page, pp int) (*Tickets, *pop.Paginator) {
 	tickets := &Tickets{}
@@ -150,4 +160,10 @@ func FindUser(user_id int) (user *User, err error) {
 	user = &User{}
 	err = DB.Find(user, user_id)
 	return
+}
+
+// display functions:
+
+func (u User) Contact() interface{} {
+	return u.FirstName + " " + u.LastName + " <" + u.Email + ">"
 }

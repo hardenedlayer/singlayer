@@ -32,7 +32,7 @@
 	<tbody>
 		<tr>
 			<td><%= ticket.ID %></td>
-			<td><%= ticket.AccountId %></td>
+			<td><%= ticket.Account() %></td>
 			<td><%= user(ticket.AssignedUserId) %></td>
 			<td><%= subject(ticket.SubjectId) %></td>
 			<td><%= group(ticket.GroupId) %></td>

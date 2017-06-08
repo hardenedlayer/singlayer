@@ -25,6 +25,7 @@
     <th>Email</th>
     <th>Provider</th>
     <th>Organization</th>
+    <th>Accounts</th>
     <th>Permissions</th>
     <th>&nbsp;</th>
   </thead>
@@ -32,10 +33,11 @@
     <%= for (single) in singles { %>
       <tr>
 				<td><img class="icon24" src="<%= single.AvatarUrl %>"></td>
-				<td><a href="<%= singlePath({ single_id: single.ID }) %>"><%= single.Name %></a></td>
+				<td><a href="<%= singlePath({ single_id: single.ID }) %>"><%= single %></a></td>
         <td><%= single.Email %></td>
 				<td><span data-toggle="tooltip" data-placement="top" title="<%= single.UserID %>"><%= single.Provider %></span></td>
         <td><%= single.Organization %></td>
+        <td><%= single.AccountCount() %></td>
         <td><%= single.Permissions %></td>
         <td>
           <div class="pull-right">

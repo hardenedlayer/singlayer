@@ -25,9 +25,9 @@
     <%= for (account) in accounts { %>
       <tr>
         <td><%= account.ID %></td>
-        <td><%= account.CompanyName %></td>
-        <td><%= account.FirstName %> <%= account.LastName %>
-					&lt;<%= account.Email %>&gt;</td>
+        <td><span data-toggle="tooltip" data-placement="right" title="<%=
+					account.CompanyName %>"><%= account %></span></td>
+				<td><%= account.Contact() %></td>
         <td><span data-toggle="tooltip" data-placement="top"
 						title="<%= account.LastBatch %>"><%=
 						timeYYMDHMS(account.LastBatch) %></td>

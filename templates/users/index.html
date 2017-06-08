@@ -16,8 +16,7 @@
 <table class="table table-striped table-condensed">
   <thead>
     <th>Username</th>
-    <th>Name</th>
-    <th>Email</th>
+    <th>Contact</th>
     <th>CompanyName</th>
     <th>Tickets</th>
     <th>VSI/BM</th>
@@ -28,12 +27,11 @@
     <%= for (user) in users { %>
     <tr>
       <td><%= user.Username %></td>
-      <td><%= user.FirstName %> <%= user.LastName %></td>
-      <td><%= user.Email %></td>
+      <td><%= user.Contact() %></td>
       <td><span data-toggle="tooltip" data-placement="top" title="<%= user.AccountId %>"><%= user.CompanyName %></span></td>
       <td><%= user.OpenTicketCount %>/<%= user.TicketCount %></td>
       <td><%= user.VirtualGuestCount %>/<%= user.HardwareCount %></td>
-      <td><a href="<%= singlePath({single_id:user.SingleID}) %>">owner</a></td>
+			<td><a href="<%= singlePath({single_id:user.SingleID}) %>"><%= user.Single() %></a></td>
       <td>
         <div class="pull-right">
           <a href="<%= userPath({ user_id: user.ID }) %>" class="btn btn-sm btn-info">View</a>

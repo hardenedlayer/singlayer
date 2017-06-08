@@ -37,7 +37,7 @@ the user's account are shown after auto-sync. (tickets assiciated to the user)
 			status(ticket.StatusId) %> <%= ticketTag(ticket)
 			%>">
 			<td class="ticket-owner"><span data-toggle="tooltip" data-placement="top"
-					title="Account:<%= ticket.AccountId %>"
+					title="<%= ticket.Account() %>"
 					><%= user(ticket.AssignedUserId) %></span></td>
 			<td class="ticket-status"><%= status(ticket.StatusId) %></td>
 			<td class="ticket-title"><span data-toggle="tooltip" data-placement="top"

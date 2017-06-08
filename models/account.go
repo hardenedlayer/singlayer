@@ -22,9 +22,17 @@ type Account struct {
 	FirstName   string    `json:"first_name" db:"first_name"`
 	LastName    string    `json:"last_name" db:"last_name"`
 	LastBatch   time.Time `json:"last_batch" db:"last_batch"`
+	NickName    string    `json:"nick_name" db:"nick_name"`
 }
 
 func (a Account) String() string {
+	if a.NickName != "" {
+		return a.NickName
+	}
+	return a.CompanyName
+}
+
+func (a Account) Marshal() string {
 	ja, _ := json.Marshal(a)
 	return string(ja)
 }
@@ -123,4 +131,10 @@ func (a *Account) DirectLinks() (dlinks *DirectLinks) {
 		return nil
 	}
 	return
+}
+
+// display functions:
+
+func (a Account) Contact() interface{} {
+	return a.FirstName + " " + a.LastName + " <" + a.Email + ">"
 }
