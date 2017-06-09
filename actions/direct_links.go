@@ -312,10 +312,16 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 	}
 
 	reply := &Reply{}
-	_ = c.Bind(reply)
+	err = c.Bind(reply)
 	if err == nil && len(reply.Reply) > 0 {
 		user := single.UserByUsername(c.Value("actor"))
 		ticket := dlink.Ticket()
+		if user == nil {
+			return c.Error(412, errors.New("Actor/User Not Found"))
+		}
+		if ticket == nil {
+			return c.Error(412, errors.New("Associated Ticket Not Found"))
+		}
 		u, err := ticket.AddUpdate(user, reply.Reply)
 		c.Logger().Debugf("new update %v on %v created!", u.ID, u.TicketId)
 		if err != nil {

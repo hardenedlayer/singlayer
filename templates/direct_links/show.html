@@ -6,6 +6,10 @@
 			Direct Link details.
 			You can check the progress of the process and update its status here.
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+		<i class="fa fa-exclamation-circle text-danger"
+			data-toggle="tooltip" data-placement="left"
+			title="This page supports 'Actor mode'.
+			Please check your current actor."></i>
 	</div>
 </div>
 
@@ -140,7 +144,7 @@
 					%>" target="trans"><i class="fa fa-language"></i></a></span>
 			</div>
 		</div>
-		<%= if (update.EditorType != "USER") { %>
+		<%= if ((update.EditorType != "USER") && (actor != "All")) { %>
 		<div class="col-md-2">
 			<span data-toggle="tooltip" data-placement="top"
 				title="Add progress step mark with this update"><a data-toggle="modal"
