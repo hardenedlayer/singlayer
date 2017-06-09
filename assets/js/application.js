@@ -13,7 +13,7 @@ $(document).ready(function(){
 // auto closing of alerts. but how can I avoid it for specific alert?
 $(document).ready(function(){
 	window.setTimeout(function() {
-		$(".alert").alert('close');
+		$(".alert:not('.alert-danger')").alert('close');
 	}, 10000);
 });
 

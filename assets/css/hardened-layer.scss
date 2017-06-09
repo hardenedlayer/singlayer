@@ -240,6 +240,16 @@ html, body, .container {
 	position: fixed;
 	width: 100%;
 	z-index: 999;
+	.alert {
+		padding: 10px 15px;
+		display: inline-block;
+		position: absolute;
+		right: 0;
+		box-shadow: 2px 2px 4px rgba(100, 100, 100, 0.5);
+		.close {
+			margin-left: 10px;
+		}
+	}
 }
 
 .jumbotron > h1 > img { width: ($font-size * 4); }
