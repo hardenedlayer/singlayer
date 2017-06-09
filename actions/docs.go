@@ -13,7 +13,14 @@ type DocsResource struct {
 func (v DocsResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	docs := &models.Docs{}
-	err := tx.Order("category, subject, type").All(docs)
+	var err error
+	if c.Session().Get("is_admin").(bool) {
+		err = tx.Order("category, subject, title").All(docs)
+	} else {
+		err = tx.Where("published=?", true).
+			Order("category, subject, title").
+			All(docs)
+	}
 	if err != nil {
 		return err
 	}

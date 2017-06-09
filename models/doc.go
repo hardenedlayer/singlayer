@@ -70,16 +70,20 @@ func (d *Doc) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 func DocCategories() interface{} {
-	docs := &Categories{}
-	DB.RawQuery("SELECT DISTINCT category FROM docs ORDER BY category").
-		All(docs)
-	inspect("categories", docs)
-	return docs
+	cats := &Categories{}
+	DB.RawQuery(`SELECT DISTINCT category
+		FROM docs
+		ORDER BY category`).
+		All(cats)
+	inspect("categories", cats)
+	return cats
 }
 
 func DocSubjects() interface{} {
 	subjects := &Subjects{}
-	DB.RawQuery("SELECT DISTINCT category, subject FROM docs ORDER BY category, subject").
+	DB.RawQuery(`SELECT DISTINCT category, subject
+		FROM docs
+		ORDER BY category, subject`).
 		All(subjects)
 	inspect("subjects", subjects)
 	return subjects
