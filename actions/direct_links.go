@@ -125,7 +125,7 @@ func (v DirectLinksResource) New(c buffalo.Context) error {
 		dlink.MultiPath = true
 		dlink.SiblingID = plink.ID
 		dlink.VlanId = plink.VlanId
-		dlink.Router = (plink.Router + 2) % 2 + 1
+		dlink.Router = (plink.Router+2)%2 + 1
 		c.Set("plink", plink)
 	} else {
 		dlink.VlanId = models.NextVLAN(dlink.AccountId).ID

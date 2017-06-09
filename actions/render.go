@@ -63,7 +63,7 @@ func init() {
 					return template.HTML(`<i class="fa fa-` + s + `"></i>`)
 				}
 			},
-			"shorten": shortenHelper,
+			"shorten":  shortenHelper,
 			"paginate": pagerHelper,
 		},
 	})

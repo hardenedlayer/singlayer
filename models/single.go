@@ -184,7 +184,7 @@ func (s *Single) Ticket(ticket_id interface{}) (ticket *Ticket) {
 }
 
 // DirectLinks() returns all directlinks associated to the single's accounts.
-func (s *Single) DirectLinks() (*DirectLinks) {
+func (s *Single) DirectLinks() *DirectLinks {
 	dlinks := &DirectLinks{}
 	err := pop.Q(DB).
 		LeftJoin("accounts", "accounts.id = direct_links.account_id").

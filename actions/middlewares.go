@@ -47,15 +47,15 @@ func PermissionHandler(next buffalo.Handler) buffalo.Handler {
 
 			// register pages requiring specific permission:
 			perm := map[string]string{
-				"landscape": "landscape",
-				"tickets": "ticket",
+				"landscape":   "landscape",
+				"tickets":     "ticket",
 				"directlinks": "dlink",
 			}
 			if p := perm[pos]; p != "" {
 				if strings.Contains(perms, p) == false {
 					c.Logger().Infof("user has no permission %v for %v", p, pos)
 					c.Flash().Add("danger",
-						"You don't have permission for " + pos + "!")
+						"You don't have permission for "+pos+"!")
 					return c.Redirect(http.StatusTemporaryRedirect, "/")
 				}
 				c.Logger().Infof("user aquires permission %v for %v", p, pos)

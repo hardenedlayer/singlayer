@@ -64,7 +64,7 @@ func AuthCallback(c buffalo.Context) error {
 		single.AvatarUrl = user.AvatarURL
 		single.Permissions = ":guest:"
 		if count == 0 {
-			c.Flash().Add("info", single.Name + ", you are the Master!")
+			c.Flash().Add("info", single.Name+", you are the Master!")
 			c.Logger().Infof("very first %v, you are my lord!", single.Name)
 			single.Permissions = ":admin:"
 		} else {
