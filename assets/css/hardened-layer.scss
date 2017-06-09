@@ -172,6 +172,40 @@ html, body, .container {
 	}
 }
 
+.documentations {
+	.category-box {
+		&:nth-child(odd) {
+			clear: both;
+		}
+		margin-bottom: 20px;
+		div {
+			border-top: 1px solid #999;
+			background: linear-gradient(to bottom, #ddd 0, transparent 10px);
+		}
+		h2, h4 {
+			margin-top: 12px;
+		}
+		ul {
+			padding-left: 25px;
+			list-style: square;
+		}
+	}
+}
+
+.document {
+	margin-bottom: 50px;
+}
+
+
+//// decorations
+
+.meta-gray {
+	font-size: 0.9em;
+	background: rgba(128,128,128, 0.1);
+	padding: 0 4px;
+	border-radius: 4px;
+}
+
 
 //// customize bootstrap
 

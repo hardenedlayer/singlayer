@@ -1,0 +1,36 @@
+<div class="row page-header">
+	<h1><span class="sing-data"><%= doc.Title %></span></h1>
+	<div class="meta-gray">
+		<%= doc.Category %> / <%= doc.Subject %>
+		<span class="pull-right">
+		by <%= doc.Author() %>, <%= timeYYMD(doc.UpdatedAt) %>
+		</span>
+	</div>
+</div>
+
+<div class="row">
+
+<%= if (user_is_admin) { %>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= editDocPath({ doc_id: doc.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= docPath({ doc_id: doc.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Delete</a>
+	<li><strong>Published</strong>: <%= doc.Published %></li>
+</ul>
+<% } %>
+
+<div class="document">
+<%= markdown(doc.Content) %>
+</div>
+</div>
+
+<style>
+.document img {
+	max-width: 90%;
+	width: 90%;
+	margin: 5px auto;
+	display: block;
+}
+</style>
+
+<script src="/assets/vendor/highlight.min.js"></script>
+<link rel="stylesheet" href="/assets/vendor/github.min.css">

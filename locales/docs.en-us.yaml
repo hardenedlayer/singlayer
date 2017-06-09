@@ -1,0 +1,6 @@
+- id: "docs.created.success"
+  translation: "Doc was successfully created."
+- id: "docs.updated.success"
+  translation: "Doc was successfully updated."
+- id: "docs.destroyed.success"
+  translation: "Doc was successfully destroyed."

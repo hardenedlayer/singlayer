@@ -95,6 +95,11 @@ func App() *buffalo.App {
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper, r.Show, r.Edit, r.Update)
 
+		r = &DocsResource{&buffalo.BaseResource{}}
+		g = app.Resource("/docs", r)
+		g.Use(AdminPageKeeper)
+		g.Middleware.Skip(AdminPageKeeper, r.List, r.Show)
+
 		// landscape
 
 		r = &TicketsResource{&buffalo.BaseResource{}}

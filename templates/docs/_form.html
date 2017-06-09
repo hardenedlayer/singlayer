@@ -1,0 +1,59 @@
+<div class="col-md-5 small-form-8">
+<%= f.InputTag("Category") %>
+<%= f.InputTag("Subject") %>
+</div>
+<div class="col-md-4 small-form-8">
+<%= f.InputTag("Type") %>
+</div>
+<div class="col-md-3 small-form-5">
+<%= f.InputTag("Published") %>
+</div>
+<div class="col-md-7 small-form-9">
+<%= f.InputTag("Title") %>
+</div>
+<%= f.TextArea("Content", {rows: 10}) %>
+<button class="btn btn-success" role="submit">Save</button>
+
+<!-- https://github.com/sparksuite/simplemde-markdown-editor -->
+<link rel="stylesheet" href="/assets/vendor/simplemde.min.css">
+<script src="/assets/vendor/simplemde.min.js"></script>
+
+<script src="/assets/vendor/highlight.min.js"></script>
+<link rel="stylesheet" href="/assets/vendor/github.min.css">
+
+<script>
+var simplemde = new SimpleMDE({
+	lineWrapping: false,
+	spellChecker: false,
+	placeholder: "Type here...",
+	renderingConfig: {
+		singleLineBreaks: false,
+		codeSyntaxHighlighting: true,
+	},
+});
+</script>
+
+<!-- customize fullscreen -->
+<style>
+.editor-toolbar.fullscreen {
+	top: 40px;
+}
+.CodeMirror-fullscreen {
+	top: 90px;
+}
+.editor-preview-side {
+	top: 90px;
+}
+.small-form-9 input {
+	float: right;
+	width: 90%;
+}
+.small-form-8 input {
+	float: right;
+	width: 80%;
+}
+.small-form-5 input {
+	float: right;
+	width: 50%;
+}
+</style>

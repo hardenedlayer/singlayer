@@ -1,0 +1,50 @@
+<div class="row page-header">
+	<h1>Thinks to know!</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			Howtos, FAQs, and Documents for your convenience.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+			Howtos, FAQs, and Documents for your convenience.
+	</div>
+</div>
+
+<%= if (user_is_admin) { %>
+<p style="float: right">
+  <a href="<%= newDocPath() %>" class="btn btn-primary">Create New Doc</a>
+</p>
+<% } %>
+
+<div class="documentations row">
+
+<%= for (c) in categories { %>
+<div class="col-md-6 category-box">
+<div class="">
+	<h2><%= c.Name %></h2>
+	<%= for (s) in subjects { %>
+	<%= if (s.Category == c.Name) { %>
+		<h4><%= s.Name %></h4>
+		<ul type="square">
+		<%= for (d) in docs { %>
+			<%= if ((s.Category == d.Category) && (s.Name == d.Subject)) { %>
+			<li>
+				<a href="<%= docPath({ doc_id: d.ID }) %>" class=""><%= d.Title %></a>
+				<span class="meta-gray"><%= d.Type %>,
+				<%= timeYYMD(d.UpdatedAt) %></span>
+				<%= if (user_is_admin) { %>
+				<a href="<%= editDocPath({ doc_id: d.ID }) %>" class="btn btn-xs btn-warning">E</a>
+				<a href="<%= docPath({ doc_id: d.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">D</a>
+				<% } %>
+			</li>
+			<% } %>
+		<% } %>
+		</ul>
+	<% } %>
+	<% } %>
+</div>
+</div>
+<% } %>
+
+</div>

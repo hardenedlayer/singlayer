@@ -1,0 +1,10 @@
+create_table("docs", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("single_id", "uuid", {})
+	t.Column("type", "string", {})
+	t.Column("category", "string", {})
+	t.Column("subject", "string", {})
+	t.Column("title", "string", {})
+	t.Column("content", "text", {})
+	t.Column("published", "bool", {})
+})
