@@ -52,7 +52,6 @@ func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.IntIsPresent{Field: u.ID, Name: "ID"},
 		&validators.IntIsPresent{Field: u.AccountId, Name: "AccountId"},
-		&validators.IntIsPresent{Field: u.ParentId, Name: "ParentId"},
 		&validators.StringIsPresent{Field: u.Username, Name: "Username"},
 		&validators.StringIsPresent{Field: u.APIKey, Name: "APIKey"},
 		&validators.StringIsPresent{Field: u.CompanyName, Name: "CompanyName"},
