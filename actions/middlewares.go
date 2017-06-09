@@ -1,7 +1,9 @@
 package actions
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 )
@@ -26,6 +28,39 @@ func AdminPageKeeper(next buffalo.Handler) buffalo.Handler {
 			return c.Redirect(http.StatusTemporaryRedirect, "/")
 		}
 		c.Set("theme", "admin")
+		err := next(c)
+		return err
+	}
+}
+
+// check permission for specific pathes.
+func PermissionHandler(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		is_admin := c.Session().Get("is_admin")
+		if is_admin == nil {
+			c.Logger().Errorf("cannot get session info for PermissionHandler")
+			return c.Error(500, errors.New("Session Information Error"))
+		}
+		if is_admin.(bool) == false {
+			pos := strings.Split(c.Value("current_path").(string), "/")[1]
+			perms := c.Session().Get("permissions").(string)
+
+			// register pages requiring specific permission:
+			perm := map[string]string{
+				"landscape": "landscape",
+				"tickets": "ticket",
+				"directlinks": "dlink",
+			}
+			if p := perm[pos]; p != "" {
+				if strings.Contains(perms, p) == false {
+					c.Logger().Infof("user has no permission %v for %v", p, pos)
+					c.Flash().Add("danger",
+						"You don't have permission for " + pos + "!")
+					return c.Redirect(http.StatusTemporaryRedirect, "/")
+				}
+				c.Logger().Infof("user aquires permission %v for %v", p, pos)
+			}
+		}
 		err := next(c)
 		return err
 	}

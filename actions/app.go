@@ -65,6 +65,10 @@ func App() *buffalo.App {
 		app.Use(AuthenticateHandler)
 		app.Use(SessionInfoHandler)
 
+		app.Use(PermissionHandler)
+		app.Middleware.Skip(PermissionHandler, HomeHandler)
+		app.Middleware.Skip(PermissionHandler, LoginHandler, LogoutHandler)
+
 		// special routes without resource
 		app.GET("/me", MeHandler)
 		n := app.Group("/n")
@@ -90,6 +94,8 @@ func App() *buffalo.App {
 		g = app.Resource("/accounts", r)
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper, r.Show, r.Edit, r.Update)
+
+		// landscape
 
 		r = &TicketsResource{&buffalo.BaseResource{}}
 		g = app.Resource("/tickets", r)
