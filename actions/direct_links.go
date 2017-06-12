@@ -85,7 +85,7 @@ func (v DirectLinksResource) Add(c buffalo.Context) error {
 	if err != nil {
 		c.Logger().Errorf("oops! cannot get previous link: %v", err)
 	}
-	c.Logger().Debugf("add redundancy link for %v", plink)
+	c.Logger().Infof("add redundancy link for %v", plink)
 	c.Set("plink", plink)
 	return v.New(c)
 }
@@ -342,7 +342,7 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 			return c.Error(412, errors.New("Associated Ticket Not Found"))
 		}
 		u, err := ticket.AddUpdate(user, reply.Reply)
-		c.Logger().Debugf("new update %v on %v created!", u.ID, u.TicketId)
+		c.Logger().Infof("new update %v on %v created!", u.ID, u.TicketId)
 		if err != nil {
 			c.Logger().Errorf("cannot add an update: %v", err)
 			return err

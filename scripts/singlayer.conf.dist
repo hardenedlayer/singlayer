@@ -5,6 +5,12 @@ export GITHUB_SECRET='c...'
 export FACEBOOK_KEY='1...'
 export FACEBOOK_SECRET='b...'
 
+export MG_API_KEY='key-7...'
+export MG_DOMAIN='mg...'
+export MG_URL='https://api.mailgun.net/v3'
+export MAIL_SENDER='Robot <robot@example.com>'
+export MAIL_ADMINS='admin@example.com; master@example.com'
+
 export SESSION_SECRET='F...'
 export GO_ENV='development'
 export USE_TLS='no'

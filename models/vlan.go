@@ -68,7 +68,7 @@ func NextVLAN(account_id int) (vlan *Vlan) {
 		Where("r1_link_id=?", uuid.UUID{}).
 		Where("r2_link_id=?", uuid.UUID{}).
 		All(vlans)
-	log.Debugf("remove locks for %v entries... %v", len(*vlans), vlans)
+	log.Infof("remove locks for %v entries... %v", len(*vlans), vlans)
 	for _, v := range *vlans {
 		v.AccountId = 0
 		v.Booked = false

@@ -197,7 +197,7 @@ func (t *Ticket) SyncTicketUpdates(user *User) (count int, err error) {
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
 	date_since := t.LastSync.AddDate(0, 0, -1).Format("01/02/2006 15:04:05")
-	log.Debugf("try to sync updates from %v...", date_since)
+	log.Infof("try to sync updates from %v...", date_since)
 
 	data, err := services.GetTicketService(sess).
 		Id(t.ID).

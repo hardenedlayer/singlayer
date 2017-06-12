@@ -160,7 +160,7 @@ func send(m *Mail) (resp, id string, err error) {
 		log.Errorf("cannot setup mailgun from env: %v", err)
 		return "", "", err
 	}
-	log.Debugf("about to send mail... %v to %v", m.Subject, m.Rcpt)
+	log.Infof("about to send mail... %v to %v", m.Subject, m.Rcpt)
 	message := mailgun.NewMessage(m.Sender, m.Subject, m.ContentText, m.Rcpt)
 	if len(m.ContentHtml) > 0 {
 		message.SetHtml(m.ContentHtml)

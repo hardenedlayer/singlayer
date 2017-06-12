@@ -5,14 +5,14 @@ Account ID:	{{.AccountId}}
 Ordered by:	{{.SingleName}}
 Status:		{{.Status}}
 
-Direct Link Configuration:
+Direct Link Configuration
 - Type:		{{.Type}}
 - Speed:	{{.Speed}}
 - Routing:	{{.RoutingOption}}
 - Redundant:	{{if .MultiPath}}Yes, Ticket #{{.PairTicketId}} {{else}}No {{end}}
 - Migration:	{{.Migration}}
 
-Exchange Configuration:
+Exchange Configuration
 - FDF Port:	{{.Port}}
 - Router ID:	{{.Router}}
 - ASN/Customer:	{{.ASN}}

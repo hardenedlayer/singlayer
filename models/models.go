@@ -36,7 +36,7 @@ func init() {
 	}
 
 	mail_sender = os.Getenv("MAIL_SENDER")
-	log.Debugf("mail_sender: %v", mail_sender)
+	log.Infof("mail_sender: %v", mail_sender)
 	if mail_sender == "" {
 		log.Fatal("environment variable MAIL_SENDER not defined!")
 	}
@@ -46,7 +46,7 @@ func init() {
 			mail_admins = append(mail_admins, strings.TrimSpace(el))
 		}
 	}
-	log.Debugf("mail_admins: %v", mail_admins)
+	log.Infof("mail_admins: %v", mail_admins)
 
 	pop.MapTableName("TicketStatus", "ticket_statuses")
 	pop.MapTableName("TicketStatuses", "ticket_statuses")
