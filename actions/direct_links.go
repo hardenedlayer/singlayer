@@ -71,10 +71,6 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 
 	c.Set("statuses", []string{
 		"note",
-		"accepted",
-		"configured",
-		"confirmed",
-		"canceled",
 	})
 
 	c.Set("vlan", models.VLAN(dlink.VlanId))
@@ -159,6 +155,8 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 	}
 	if dlink.Type == "Cloud" {
 		dlink.Port = "N/A"
+	} else {
+		dlink.Port = "To be Assigned"
 	}
 	dlink.SingleID = single.ID
 	dlink.Status = "draft"
@@ -209,6 +207,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 			c.Logger().Errorf("oops! cannot save pair link: %v %v", plink, err)
 		}
 	}
+	models.FormMail(single, "Direct Link Ordered", *dlink, single.Email)
 
 	c.Flash().Add("success", "DirectLink was created successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
@@ -232,6 +231,13 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	is_for_configured := false
+	if dlink.Status == "ordered" && dlink.XCRIP != "" && dlink.CERIP != "" {
+		dlink.Status = "configured"
+		is_for_configured = true
+	}
+
 	tx := c.Value("tx").(*pop.Connection)
 	verrs, err := tx.ValidateAndUpdate(dlink)
 	if err != nil {
@@ -242,6 +248,13 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 		c.Set("errors", verrs)
 		return c.Render(422, r.HTML("direct_links/edit.html"))
 	}
+
+	if is_for_configured {
+		single := getCurrentSingle(c)
+		models.FormMail(single, "Request for DL Configuration",
+			*dlink, single.Email)
+	}
+
 	c.Flash().Add("success", "DirectLink was updated successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
@@ -271,6 +284,7 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 	c.Logger().Debugf("progress: %v", progress)
 
 	dlink.TicketId = ticket_id
+	dlink.Status = "ordered"
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
 	if err != nil {
 		c.Logger().Errorf("database error: %v", err)
@@ -280,6 +294,11 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 		c.Logger().Errorf("validation error: %v", verrs)
 		return verrs
 	}
+	s, err := models.FindSingle(dlink.SingleID)
+	if err == nil {
+		models.FormMail(single, "Direct Link Ordered", *dlink, s.Email)
+	}
+
 	c.Flash().Add("success", "DirectLink was ordered successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
@@ -300,7 +319,7 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 	c.Logger().Debugf("progress: %v", progress)
 	progress.Save()
 
-	dlink.Status = progress.Action
+	//dlink.Status = progress.Action
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
 	if err != nil {
 		c.Logger().Errorf("database error: %v", err)

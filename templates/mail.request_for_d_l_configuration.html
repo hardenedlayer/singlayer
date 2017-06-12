@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<style>
+body {
+	font-family: "맑은 고딕";
+		font-size: 10pt;
+}
+h1 {
+		font-size: 1.2em;
+				margin-bottom: 4px;
+}
+h4 {
+		margin-bottom: 2px;
+				font-size: 11pt;
+}
+table {
+		width: 600px;
+}
+td {
+		padding: 0cm 5.4pt;
+				border: solid windowtext 1.0px;
+}
+td.odd {
+		width: 200px;
+				background: #ddd;
+}
+div.comment {
+		margin-top: 11pt;
+				border-top: 0.5px solid black;
+}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h1>Request for Direct Link Configuration</h1>
+
+			<h4>Customer Information</h4>
+			<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse'>
+				<tbody>
+					<tr><td class="odd">Customer</td><td>{{.AccountNick}}</td></tr>
+					<tr><td class="odd">Account ID</td><td>{{.AccountId}}</td></tr>
+					<tr><td class="odd">Ordered by</td><td>{{.SingleName}}</td></tr>
+					<tr><td class="odd">Status</td><td>{{.Status}}</td></tr>
+				</tbody>
+			</table>
+
+			<h4>Direct Link Configuration:</h4>
+			<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse'>
+				<tbody>
+					<tr><td class="odd">Type</td><td>{{.Type}}</td></tr>
+					<tr><td class="odd">Speed</td><td>{{.Speed}}</td></tr>
+					<tr><td class="odd">Routing</td><td>{{.RoutingOption}}</td></tr>
+					<tr><td class="odd">Redundant</td><td>{{if .MultiPath}}Yes, Ticket #{{.PairTicketId}} {{else}}No {{end}}</td></tr>
+					<tr><td class="odd">Migration</td><td>{{.Migration}}</td></tr>
+				</tbody>
+			</table>
+
+			<h4>Exchange Configuration:</h4>
+			<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse'>
+				<tbody>
+					<tr><td class="odd">FDF Port</td><td>{{.Port}}</td></tr>
+					<tr><td class="odd">Router ID</td><td>{{.Router}}</td></tr>
+					<tr><td class="odd">ASN/Customer</td><td>{{.ASN}}</td></tr>
+					<tr><td class="odd">ASN/Provider</td><td>13884</td></tr>
+					<tr><td class="odd">VLAN</td><td>{{.VlanId}}</td></tr>
+					<tr><td class="odd">Local IP</td><td>{{.CERIP}}/{{.Prefix}}</td></tr>
+					<tr><td class="odd">Provider IP</td><td>{{.XCRIP}}/{{.Prefix}}</td></tr>
+				</tbody>
+			</table>
+
+			<div class="comment">{{.Comments}}</div>
+		</div>
+	</body>
+</html>

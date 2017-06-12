@@ -1,10 +1,13 @@
 package models
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"text/template"
 	"time"
 
+	"github.com/markbates/inflect"
 	"github.com/markbates/pop"
 	"github.com/markbates/validate"
 	"github.com/markbates/validate/validators"
@@ -41,6 +44,10 @@ func (m Mails) String() string {
 	return string(jm)
 }
 
+type Object interface {
+	String() string
+}
+
 // Validate gets run everytime you call a "pop.Validate" method.
 func (m *Mail) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
@@ -63,6 +70,40 @@ func (m *Mail) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 ////
+
+func FormMail(single *Single, subject string, obj Object, to string) error {
+	templ_name := inflect.Underscore(subject)
+	log.Debugf("templ_name: %v", templ_name)
+
+	t_text, err := template.ParseFiles("templates/mail."+templ_name+".text")
+	if err != nil {
+		log.Errorf("error on parsing text template: %v", err)
+		return err
+	}
+	buf := &bytes.Buffer{}
+	if err = t_text.Execute(buf, obj); err != nil {
+		log.Errorf("error on executing text template: %v", err)
+		return err
+	}
+	cont_text := buf.String()
+
+	t_html, err := template.ParseFiles("templates/mail."+templ_name+".html")
+	if err != nil {
+		log.Errorf("error on parsing html template: %v", err)
+		return err
+	}
+	buf = &bytes.Buffer{}
+	if err = t_html.Execute(buf, obj); err != nil {
+		log.Errorf("error on executing html template: %v", err)
+		return err
+	}
+	cont_html := buf.String()
+
+	subj := subject + " " + obj.String()
+	m := PrepareMail(subj, cont_text, to)
+	m.ContentHtml = cont_html
+	return m.Send(single.ID)
+}
 
 // SendMail() prepare basic text mail and send immediately.
 func SendMail(single_id uuid.UUID, subj, cont, to string) error {
@@ -119,8 +160,11 @@ func send(m *Mail) (resp, id string, err error) {
 		log.Errorf("cannot setup mailgun from env: %v", err)
 		return "", "", err
 	}
-	inspect("about to send mail...", m)
+	log.Debugf("about to send mail... %v to %v", m.Subject, m.Rcpt)
 	message := mailgun.NewMessage(m.Sender, m.Subject, m.ContentText, m.Rcpt)
+	if len(m.ContentHtml) > 0 {
+		message.SetHtml(m.ContentHtml)
+	}
 	for _, el := range mail_admins {
 		message.AddBCC(el)
 	}

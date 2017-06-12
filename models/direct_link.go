@@ -42,8 +42,8 @@ type DirectLink struct {
 }
 
 func (d DirectLink) String() string {
-	str := fmt.Sprintf("%v %vGbps %v Line#%v",
-		d.Type, d.Speed, d.RoutingOption, d.LineNumber)
+	str := fmt.Sprintf("%v %vGbps %v Line#%v of %v",
+		d.Type, d.Speed, d.RoutingOption, d.LineNumber, d.AccountNick())
 	return str
 }
 
@@ -99,6 +99,10 @@ func (d *DirectLink) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error
 	if d.Status == "draft" && d.TicketId > 0 {
 		log.Infof("status is draft but has ticket. upgrading to ordered...")
 		d.Status = "ordered"
+	}
+	if d.Status == "ordered" && d.XCRIP != "" && d.CERIP != "" {
+		log.Infof("status is ordered but has ips. upgrading to configured...")
+		d.Status = "configured"
 	}
 	return validate.NewErrors(), nil
 }

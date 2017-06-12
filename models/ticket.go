@@ -94,7 +94,8 @@ func CreateDirectLinkTicket(user *User, dlink *DirectLink) (int, error) {
 	log.Debugf("new ticket contents: -------\n%v\n-------", content)
 
 	if is_test {
-		return 0, errors.New("XXX EVERYTHING IS GOOD! BUT TEST.")
+		log.Infof("XXXXXXXXXXXXXXXXXXXXXXX EVERYTHING IS GOOD! BUT TEST.")
+		return 0, nil
 	}
 
 	service := services.GetTicketService(sess)

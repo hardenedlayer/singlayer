@@ -12,3 +12,4 @@ buffalo build -o $singlayer_root/singlayer
 
 mkdir -p $singlayer_root/templates
 cp -a templates/order.templ $singlayer_root/templates/
+cp -a templates/mail.* $singlayer_root/templates/
