@@ -1,0 +1,50 @@
+<div class="row page-header">
+	<h1>Mails</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Mails
+	</div>
+</div>
+
+<div class="row">
+
+<%= if (user_is_admin) { %>
+<p>
+	<a href="<%= newMailPath() %>" class="btn btn-primary">Create New Mail</a>
+</p>
+<% } %>
+
+<table class="table table-striped table-condensed table-hover">
+	<thead>
+		<th>Subject</th>
+		<th>From</th>
+		<th>To</th>
+		<th>Status</th>
+		<%= if (user_is_admin) { %><th>&nbsp;</th><% } %>
+	</thead>
+	<tbody>
+		<%= for (mail) in mails { %>
+			<tr class="clickable">
+				<td><a id="link" href="<%= mailPath({ mail_id: mail.ID })
+					%>"><%= mail.Subject %></a></td>
+				<td><%= mail.Sender %></td>
+				<td><span data-toggle="tooltip" data-placement="top" title="Bcc: <%=
+					mail.Bccs %>"><%= mail.Rcpt %></span></td>
+				<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					shorten(mail.MailID, 27) %>"><%= mail.Status %></span></td>
+				<%= if (user_is_admin) { %><td class="unclickable">
+					<div class="pull-right">
+						<a href="<%= singlePath({ single_id: mail.SingleID }) %>" class="btn btn-xs btn-info">owner</a>
+						<a href="<%= mailPath({ mail_id: mail.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Delete</a>
+					</div>
+				</td><% } %>
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+
+</div>

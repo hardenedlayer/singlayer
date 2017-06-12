@@ -95,6 +95,12 @@ func App() *buffalo.App {
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper, r.Show, r.Edit, r.Update)
 
+		r = &MailsResource{&buffalo.BaseResource{}}
+		g = app.Resource("/mails", r)
+		g.Use(AdminPageKeeper)
+
+		//// services below:
+
 		r = &DocsResource{&buffalo.BaseResource{}}
 		g = app.Resource("/docs", r)
 		g.Use(AdminPageKeeper)

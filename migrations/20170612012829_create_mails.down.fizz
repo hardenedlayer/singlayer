@@ -1,0 +1,2 @@
+drop_index("mails", "mails_single_id_idx")
+drop_table("mails")

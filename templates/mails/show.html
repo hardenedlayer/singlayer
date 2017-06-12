@@ -1,0 +1,35 @@
+<div class="row page-header">
+	<h1>Mail <span class="sing-data"><%= mail.Subject %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+	</div>
+</div>
+
+<div class="row">
+
+<ul class="list-unstyled list-inline">
+	<li><a href="<%= mailsPath() %>" class="btn btn-info">Back to all Mails</a></li>
+	<li><a href="<%= editMailPath({ mail_id: mail.ID })%>" class="btn btn-warning">Edit</a></li>
+	<li><a href="<%= mailPath({ mail_id: mail.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Delete</a>
+</ul>
+
+<table class="table table-striped table-condensed">
+	<tbody>
+		<tr><td>SingleID</td><td><%= mail.SingleID %></td></tr>
+		<tr><td>Type</td><td><%= mail.Type %></td></tr>
+		<tr><td>Status</td><td><%= mail.Status %></td></tr>
+		<tr><td>MailID</td><td><%= mail.MailID %></td></tr>
+		<tr><td>MailResp</td><td><%= mail.MailResp %></td></tr>
+		<tr><td>Sender</td><td><%= mail.Sender %></td></tr>
+		<tr><td>Subject</td><td><%= mail.Subject %></td></tr>
+		<tr><td>Rcpt</td><td><%= mail.Rcpt %></td></tr>
+		<tr><td>ContentText</td><td><%= mail.ContentText %></td></tr>
+		<tr><td>ContentHtml</td><td><%= mail.ContentHtml %></td></tr>
+	</tbody>
+</table>
+
+</div>

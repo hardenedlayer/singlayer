@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 	"html/template"
+	"strings"
 	"time"
 
 	"github.com/gobuffalo/buffalo/render"
@@ -64,6 +65,7 @@ func init() {
 				}
 			},
 			"shorten":  shortenHelper,
+			"asArray":  asArrayHelper,
 			"paginate": pagerHelper,
 		},
 	})
@@ -74,6 +76,24 @@ func shortenHelper(s string, l int) string {
 		return s[0:l-3] + "..."
 	} else {
 		return s
+	}
+}
+
+func asArrayHelper(a string) interface{} {
+	sl := strings.Split(
+		strings.Replace(
+			strings.Trim(a, "[]"),
+			" ", "", -1),
+		",")
+	switch len(sl) {
+	case 0:
+		return "none"
+	case 1:
+		return sl[0]
+	default:
+		label := fmt.Sprintf("%v and %v more", sl[0], len(sl)-1)
+		return template.HTML(`<span data-toggle="tooltip" title="` +
+			a + `">` + label + `</span>`)
 	}
 }
 

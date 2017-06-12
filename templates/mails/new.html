@@ -1,0 +1,20 @@
+<div class="row page-header">
+	<h1>New Mail</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+	</div>
+</div>
+
+<div class="row">
+
+
+<%= form_for(mail, {action: mailsPath(), method: "POST", errors: errors}) { %>
+  <%= partial("mails/form.html") %>
+  <a href="<%= mailsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
+
+</div>

@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"os"
+	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/gobuffalo/envy"
@@ -14,6 +15,9 @@ import (
 var DB *pop.Connection
 var log = logrus.New()
 var is_test = false
+
+var mail_sender string
+var mail_admins []string
 
 func init() {
 	var err error
@@ -30,6 +34,19 @@ func init() {
 		log.Level = logrus.DebugLevel
 		is_test = true
 	}
+
+	mail_sender = os.Getenv("MAIL_SENDER")
+	log.Debugf("mail_sender: %v", mail_sender)
+	if mail_sender == "" {
+		log.Fatal("environment variable MAIL_SENDER not defined!")
+	}
+	admins := os.Getenv("MAIL_ADMINS")
+	if len(admins) > 0 {
+		for _, el := range strings.Split(admins, ";") {
+			mail_admins = append(mail_admins, strings.TrimSpace(el))
+		}
+	}
+	log.Debugf("mail_admins: %v", mail_admins)
 
 	pop.MapTableName("TicketStatus", "ticket_statuses")
 	pop.MapTableName("TicketStatuses", "ticket_statuses")
