@@ -39,7 +39,7 @@ type Categories []Category
 
 type Subject struct {
 	Category string `json:"category" db:"category"`
-	Name string `json:"name" db:"subject"`
+	Name     string `json:"name" db:"subject"`
 }
 
 type Subjects []Subject

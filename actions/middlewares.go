@@ -50,7 +50,7 @@ func PermissionHandler(next buffalo.Handler) buffalo.Handler {
 				"landscape":   "landscape",
 				"tickets":     "ticket",
 				"directlinks": "dlink",
-				"docs": "user",
+				"docs":        "user",
 			}
 			if p := perm[pos]; p != "" {
 				if strings.Contains(perms, p) == false {
