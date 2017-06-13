@@ -194,6 +194,16 @@ html, body, .container {
 
 .document {
 	margin-bottom: 50px;
+	margin: 0 auto 50px;
+	max-width: 760px;
+	img {
+		max-width: 90%;
+		width: auto;
+		margin: 5px auto;
+		display: block;
+		border: 1px solid black;
+		box-shadow: 3px 3px 6px rgba(100, 100, 100, 0.5);
+	}
 }
 
 
@@ -287,3 +297,25 @@ html, body, .container {
 }
 
 .jumbotron > h1 > img { width: ($font-size * 4); }
+
+@media print {
+	.document {
+		margin-bottom: 50px;
+		margin: 0 auto 50px;
+		width: 100% !important;
+		img {
+			max-width: 90% !important;
+			width: auto;
+			margin: 5px auto;
+			display: block !important;
+			border: 1px solid black;
+			box-shadow: 3px 3px 6px rgba(100, 100, 100, 0.5);
+		}
+	}
+	.document img,
+	img {
+		page-break-before: auto !important;
+		page-break-after: auto !important;
+		page-break-inside: avoid !important;
+	}
+}
