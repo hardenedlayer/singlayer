@@ -14,7 +14,7 @@ type MailsResource struct {
 func (v MailsResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	mails := &models.Mails{}
-	err := tx.All(mails)
+	err := tx.Order("created_at desc").All(mails)
 	if err != nil {
 		return err
 	}
