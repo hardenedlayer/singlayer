@@ -75,7 +75,7 @@ func FormMail(single *Single, subject string, obj Object, to string) error {
 	templ_name := inflect.Underscore(subject)
 	log.Debugf("templ_name: %v", templ_name)
 
-	t_text, err := template.ParseFiles("templates/mail."+templ_name+".text")
+	t_text, err := template.ParseFiles("templates/mail." + templ_name + ".text")
 	if err != nil {
 		log.Errorf("error on parsing text template: %v", err)
 		return err
@@ -87,7 +87,7 @@ func FormMail(single *Single, subject string, obj Object, to string) error {
 	}
 	cont_text := buf.String()
 
-	t_html, err := template.ParseFiles("templates/mail."+templ_name+".html")
+	t_html, err := template.ParseFiles("templates/mail." + templ_name + ".html")
 	if err != nil {
 		log.Errorf("error on parsing html template: %v", err)
 		return err
