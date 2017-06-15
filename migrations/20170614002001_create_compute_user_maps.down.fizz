@@ -1,0 +1,3 @@
+drop_index("comp_user_maps", "comp_user_maps_compute_id_idx")
+drop_index("comp_user_maps", "comp_user_maps_user_id_idx")
+drop_table("comp_user_maps")

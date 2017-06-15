@@ -133,6 +133,16 @@ func (a *Account) DirectLinks() (dlinks *DirectLinks) {
 	return
 }
 
+// VirtualGuests()
+func (a Account) Computes() (cs Computes) {
+	cs = Computes{}
+	err := DB.BelongsTo(&a).All(&cs)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
 // display functions:
 
 func (a Account) Contact() interface{} {

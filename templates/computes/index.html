@@ -1,0 +1,75 @@
+<div class="row page-header">
+	<h1>Computes: List</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			All your compute instances, including virtual servers and baremetals,
+			are listed here. This page also support 'actor mode'.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+		<i class="fa fa-exclamation-circle text-danger"
+			data-toggle="tooltip" data-placement="left"
+			title="This page supports 'Actor mode'.
+			Please check your current actor."></i>
+	</div>
+	<div>
+		Compute Instances
+	</div>
+</div>
+
+<div class="row">
+
+<table class="table table-striped table-condensed table-hover">
+  <thead>
+		<tr>
+			<th>Hostname</th>
+			<th>Notes</th>
+			<th>Public IP</th>
+			<th>Private IP</th>
+			<th>OS</th>
+			<th>SPEC</th>
+			<th>Type</th>
+			<th>Path</th>
+			<%= if (user_is_admin) { %>
+			<th>&nbsp;</th>
+			<% } %>
+		</tr>
+  </thead>
+  <tbody>
+		<%= for (compute) in computes { %>
+			<tr class="clickable <%=
+				if (!compute.IsHourly) { %>comp-hourly<% }
+				%> <%=
+				if (!compute.IsGatewayMember) { %>comp-gateway<% }
+				%> <%=
+				if (!compute.IsPrivateOnly) { %>comp-private<% }
+				%> <%=
+				if (!compute.HasPendingMigration) { %>comp-migratable<% }
+				%>">
+				<td><a id="link" href="<%= computePath({ compute_id: compute.ID })
+					%>"><%= compute.Hostname %></a></td>
+				<td><%= compute.Notes %></td>
+				<td><%= if (compute.IsPrivateOnly) { %>-<%
+					} else { %><%= compute.PublicIP %><% } %></td>
+				<td><%= compute.PrivateIP %></td>
+				<td><span data-toggle="tooltip" data-placement="top" title="<%=
+					compute.OSName %>"><%= shorten(compute.OSName,15) %></span></td>
+				<td><%= compute.Cores %> x <%= compute.Memories %></td>
+				<td><%= compute.Type %> <%= if (compute.IsHourly) { %>Hourly<% } %></td>
+				<td data-toggle="tooltip" data-placement="left" title="VRack: <%=
+					compute.VirtualRackId %> Rack: <%= compute.RackId
+				%>"><%= compute.Path %></td>
+				<%= if (user_is_admin) { %>
+				<td class="unclickable">
+					<div class="pull-right">
+						<a href="<%= computePath({ compute_id: compute.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Destroy</a>
+					</div>
+				</td>
+				<% } %>
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+
+<%= paginate(pager.Page, pager.PerPage, pager.TotalPages) %>
+
+</div>

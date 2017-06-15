@@ -209,6 +209,38 @@ func (s *Single) MyDirectLinks() (dlinks *DirectLinks) {
 	return
 }
 
+// Computes() returns all compute instances associated with this single.
+func (s *Single) Computes(page, pp int) (*Computes, *pop.Paginator) {
+	comps := &Computes{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.
+		LeftJoin("comp_user_maps", "comp_user_maps.compute_id = computes.id").
+		LeftJoin("users", "comp_user_maps.user_id = users.id").
+		Where("users.single_id = ?", s.ID).
+		Order("account_id, hostname").
+		All(comps)
+	if err != nil {
+		log.Errorf("Err: %v", err)
+		return nil, nil
+	}
+	return comps, q.Paginator
+}
+
+// Compute() specified compute instance associated with this single.
+func (s *Single) Compute(compute_id interface{}) (compute *Compute) {
+	compute = &Compute{}
+	err := pop.Q(DB).
+		LeftJoin("comp_user_maps", "comp_user_maps.compute_id = computes.id").
+		LeftJoin("users", "comp_user_maps.user_id = users.id").
+		Where("users.single_id = ?", s.ID).
+		Find(compute, compute_id)
+	if err != nil {
+		log.Errorf("Err: %v", err)
+		return nil
+	}
+	return
+}
+
 //// search functions
 
 // Find and a single with single_id

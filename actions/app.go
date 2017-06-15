@@ -108,6 +108,9 @@ func App() *buffalo.App {
 
 		// landscape
 
+		r = &ComputesResource{&buffalo.BaseResource{}}
+		g = app.Resource("/computes", r)
+
 		r = &TicketsResource{&buffalo.BaseResource{}}
 		g = app.Resource("/tickets", r)
 		g.Use(AdminPageKeeper)

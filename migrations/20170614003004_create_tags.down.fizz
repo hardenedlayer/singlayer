@@ -1,0 +1,2 @@
+drop_index("tags", "tags_account_id_idx")
+drop_table("tags")

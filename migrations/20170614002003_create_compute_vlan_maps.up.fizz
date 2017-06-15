@@ -1,0 +1,6 @@
+create_table("comp_vlan_maps", func(t) {
+	t.Column("compute_id", "bigint", {})
+	t.Column("vlan_id", "integer", {})
+})
+add_index("comp_vlan_maps", "compute_id", {})
+add_index("comp_vlan_maps", "vlan_id", {})

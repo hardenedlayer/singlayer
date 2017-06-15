@@ -1,0 +1,6 @@
+- id: "computes.created.success"
+  translation: "Compute was successfully created."
+- id: "computes.updated.success"
+  translation: "Compute was successfully updated."
+- id: "computes.destroyed.success"
+  translation: "Compute was successfully destroyed."

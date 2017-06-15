@@ -1,0 +1,3 @@
+drop_index("comp_vlan_maps", "comp_vlan_maps_compute_id_idx")
+drop_index("comp_vlan_maps", "comp_vlan_maps_vlan_id_idx")
+drop_table("comp_vlan_maps")

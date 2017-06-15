@@ -1,0 +1,6 @@
+create_table("comp_user_maps", func(t) {
+	t.Column("compute_id", "bigint", {})
+	t.Column("user_id", "integer", {})
+})
+add_index("comp_user_maps", "compute_id", {})
+add_index("comp_user_maps", "user_id", {})

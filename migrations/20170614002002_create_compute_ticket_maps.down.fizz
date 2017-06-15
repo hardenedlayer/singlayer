@@ -1,0 +1,3 @@
+drop_index("comp_ticket_maps", "comp_ticket_maps_compute_id_idx")
+drop_index("comp_ticket_maps", "comp_ticket_maps_ticket_id_idx")
+drop_table("comp_ticket_maps")

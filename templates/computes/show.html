@@ -1,0 +1,94 @@
+<div class="row page-header">
+	<h1>Compute Instance <span class="sing-data"><%= compute.Nick() %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+			Detail information of selected Compute Instance.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		<%= compute.OSName %>
+	</div>
+</div>
+
+<div class="row">
+
+<table class="table table-striped table-condensed">
+  <thead>
+		<tr>
+			<th>ID</th>
+			<th>Account</th>
+			<th>Hostname</th>
+			<th>Domain</th>
+			<th>OS</th>
+			<th>SPEC</th>
+			<th>Type</th>
+			<th>Provisioned</th>
+		</tr>
+  </thead>
+  <tbody>
+		<tr>
+			<td><%= compute.ID %></td>
+			<td><%= compute.AccountId %></td>
+			<td><%= compute.Hostname %></td>
+			<td><%= compute.Domain %></td>
+			<td><%= compute.OperatingSystemId %></td>
+			<td><%= compute.Cores %> x <%= compute.Memories %></td>
+			<td><%= if (compute.IsHourly) { %>Hourly<%
+			 } else { %>Monthly<% } %> <%= compute.Type %></td>
+			<td><%= timeYYMDHM(compute.ProvisionDate) %></td>
+		</tr>
+	</tbody>
+</table>
+
+<table class="table table-striped table-condensed">
+  <thead>
+		<tr>
+			<th>Public IP</th>
+			<th>Private IP</th>
+			<th>Management IP</th>
+			<th>Free Traffic</th>
+			<th>DC</th>
+			<th>Rack</th>
+			<th>VRack</th>
+			<th>Path</th>
+		</tr>
+  </thead>
+  <tbody>
+		<tr>
+			<td><%= if (compute.IsPrivateOnly) { %>Private Only<%
+				} else { %><%= compute.PublicIP %><% } %></td>
+			<td><%= compute.PrivateIP %></td>
+			<td><%= compute.ManagementIP %></td>
+			<td><%= compute.BandwidthAllocation %></td>
+			<td><%= compute.DatacenterId %></td>
+			<td><%= compute.RackId %></td>
+			<td><%= compute.VirtualRackId %></td>
+			<td><%= compute.Path %></td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-md-6">
+		<h5>Provisioning User Data:</h5>
+		<div class="well" style="white-space: pre-wrap"><%=
+			compute.CloudUserData %></div>
+	</div>
+	<div class="col-md-6">
+		<%= if (compute.HasPendingMigration) {
+			%><div class="alert alert-danger" role="alert">
+			<strong>Migration Required!</strong>
+		</div><% } %>
+		<h5>Notes:</h5>
+		<div class="well" style="white-space: pre-wrap"><%=
+			compute.Notes %></div>
+		<h5>Tags:</h5>
+		<ul class="list-group"><%= for (n) in compute.TagNames() { %>
+			<li class="list-group-item"><%= n %></li>
+			<% } %>
+		</ul>
+	</div>
+</div>
+
+</div>

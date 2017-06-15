@@ -1,0 +1,6 @@
+create_table("tags", func(t) {
+	t.Column("id", "integer", {"primary": true})
+	t.Column("account_id", "integer", {})
+	t.Column("name", "string", {})
+})
+add_index("tags", "account_id", {})

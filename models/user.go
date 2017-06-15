@@ -156,6 +156,32 @@ func (u *User) DirectLinks() (dlinks *DirectLinks) {
 	return
 }
 
+// Computes() returns all compute instances from user's account.
+func (u User) Computes(page, pp int) (*Computes, *pop.Paginator) {
+	comps := &Computes{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.BelongsToThrough(&u, "comp_user_maps").
+		Order("account_id, hostname").
+		All(comps)
+	if err != nil {
+		return nil, nil
+	}
+	return comps, q.Paginator
+}
+
+// lastSyncTimeCompute() returns last sync time of model Compute.
+func (u *User) lastSyncTimeCompute() time.Time {
+	c := &Compute{}
+	err := DB.BelongsToThrough(u, "comp_user_maps").
+		Order("updated_at desc").
+		First(c)
+	if err != nil {
+		t, _ := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
+		return t
+	}
+	return c.UpdatedAt
+}
+
 //// search functions
 
 // Find a user with user_id.
