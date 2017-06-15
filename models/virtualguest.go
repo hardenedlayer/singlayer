@@ -48,7 +48,7 @@ func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
 
 	service := services.GetAccountService(sess)
 	data, err := service.
-		Mask("id;accountId;hourlyBillingFlag;hostname;domain;notes;tagReferences.tag.name;tagReferences.tag.id;userData.value;provisionDate;createDate;modifyDate;bandwidthAllocation;privateNetworkOnlyFlag;primaryIpAddress;primaryBackendIpAddress;networkVlans.id;operatingSystem.id;operatingSystem.softwareLicense.softwareDescription.longDescription;datacenter.id;location.pathString;location.id;virtualRackId;startCpus;maxCpu;maxCpuUnits;maxMemory;type.name;modifyDate;pendingMigrationFlag;dedicatedAccountHostOnlyFlag;dedicatedHost;host;users.id").
+		Mask("id;accountId;hourlyBillingFlag;hostname;domain;notes;tagReferences.tag.name;tagReferences.tag.id;userData.value;provisionDate;createDate;modifyDate;bandwidthAllocation;privateNetworkOnlyFlag;primaryIpAddress;primaryBackendIpAddress;networkVlans.id;operatingSystem.id;operatingSystem.softwareLicense.softwareDescription.longDescription;datacenter.id;location.pathString;location.id;virtualRackId;startCpus;maxCpu;maxCpuUnits;maxMemory;type.name;pendingMigrationFlag;dedicatedAccountHostOnlyFlag;dedicatedHost;host").
 		Filter(filter.Build(
 			filter.Path("virtualGuests.modifyDate").DateAfter(date_since),
 		)).
@@ -72,11 +72,10 @@ func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
 			comp.CloudUserData = *el.UserData[0].Value
 		}
 		inspect("compute instance", comp)
+		log.Infof("----- sync %v: %v.%v", comp.ID, comp.Hostname, comp.Domain)
 
 		// relational things...
-		for _, u := range el.Users {
-			comp.MapUserId(*u.Id)
-		}
+		comp.MapUserId(user.ID)
 		for _, t := range el.TagReferences {
 			comp.MapTagId(*t.Tag.Id)
 			tag := Tag{

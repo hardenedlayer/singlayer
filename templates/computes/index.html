@@ -21,14 +21,14 @@
 <table class="table table-striped table-condensed table-hover">
   <thead>
 		<tr>
+			<th><i class="fa fa-server"></i></th>
 			<th>Hostname</th>
 			<th>Notes</th>
 			<th>Public IP</th>
 			<th>Private IP</th>
 			<th>OS</th>
 			<th>SPEC</th>
-			<th>Type</th>
-			<th>Path</th>
+			<th>Location</th>
 			<%= if (user_is_admin) { %>
 			<th>&nbsp;</th>
 			<% } %>
@@ -45,6 +45,13 @@
 				%> <%=
 				if (!compute.HasPendingMigration) { %>comp-migratable<% }
 				%>">
+				<td><i class="fa fa-<%=
+					if (compute.Type == "Metal") { %>rocket<% }
+					%><%= if (compute.Type == "Shield") { %>link<% }
+					%><%= if (compute.Type == "Public") { %>paper-plane-o<% }
+					%><%= if (compute.Type == "Private") { %>paper-plane<% }
+					%>"></i><%= if (compute.IsHourly) {
+					%><i class="fa fa-hourglass-half"></i><% } %></td>
 				<td><a id="link" href="<%= computePath({ compute_id: compute.ID })
 					%>"><%= compute.Hostname %></a></td>
 				<td><%= compute.Notes %></td>
@@ -54,7 +61,6 @@
 				<td><span data-toggle="tooltip" data-placement="top" title="<%=
 					compute.OSName %>"><%= shorten(compute.OSName,15) %></span></td>
 				<td><%= compute.Cores %> x <%= compute.Memories %></td>
-				<td><%= compute.Type %> <%= if (compute.IsHourly) { %>Hourly<% } %></td>
 				<td data-toggle="tooltip" data-placement="left" title="VRack: <%=
 					compute.VirtualRackId %> Rack: <%= compute.RackId
 				%>"><%= compute.Path %></td>

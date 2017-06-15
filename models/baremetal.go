@@ -57,7 +57,6 @@ func SyncBareMetals(user *User, since time.Time) (count int, err error) {
 		log.Errorf("slapi error: %v", err)
 		return 0, err
 	}
-	inspect("baremetals", data)
 
 	count = 0
 	for _, el := range data {
@@ -66,6 +65,9 @@ func SyncBareMetals(user *User, since time.Time) (count int, err error) {
 		copier.Copy(comp, el)
 		comp.ID = *el.Id + 8000000000000
 		comp.Type = "Metal"
+		if comp.IsGatewayMember {
+			comp.Type = "Shield"
+		}
 		comp.OSName = *el.OperatingSystem.SoftwareLicense.SoftwareDescription.LongDescription
 		comp.ProvisionDate, _ = time.Parse(time.RFC3339,
 			el.ProvisionDate.String())
@@ -73,6 +75,7 @@ func SyncBareMetals(user *User, since time.Time) (count int, err error) {
 			comp.CloudUserData = *el.UserData[0].Value
 		}
 		inspect("compute instance", comp)
+		log.Infof("----- sync %v: %v.%v", comp.ID, comp.Hostname, comp.Domain)
 
 		// relational things...
 		comp.MapUserId(user.ID)

@@ -171,15 +171,13 @@ func (u User) Computes(page, pp int) (*Computes, *pop.Paginator) {
 
 // lastSyncTimeCompute() returns last sync time of model Compute.
 func (u *User) lastSyncTimeCompute() time.Time {
-	c := &Compute{}
-	err := DB.BelongsToThrough(u, "comp_user_maps").
-		Order("updated_at desc").
-		First(c)
+	m := &CompUserMap{}
+	err := DB.BelongsTo(u).Order("updated_at desc").First(m)
 	if err != nil {
 		t, _ := time.Parse(time.RFC3339, "1977-05-25T00:00:00+09:00")
 		return t
 	}
-	return c.UpdatedAt
+	return m.UpdatedAt
 }
 
 //// search functions

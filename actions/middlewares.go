@@ -48,6 +48,7 @@ func PermissionHandler(next buffalo.Handler) buffalo.Handler {
 			// register pages requiring specific permission:
 			perm := map[string]string{
 				"landscape":   "landscape",
+				"computes":    "landscape",
 				"tickets":     "ticket",
 				"directlinks": "dlink",
 				"docs":        "user",
