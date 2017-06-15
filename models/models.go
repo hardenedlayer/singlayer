@@ -40,13 +40,15 @@ func init() {
 	if mail_sender == "" {
 		log.Fatal("environment variable MAIL_SENDER not defined!")
 	}
+
+	// deprecated block. currently use admin mail. (AdminMail)
 	admins := os.Getenv("MAIL_ADMINS")
 	if len(admins) > 0 {
 		for _, el := range strings.Split(admins, ";") {
 			mail_admins = append(mail_admins, strings.TrimSpace(el))
 		}
 	}
-	log.Infof("mail_admins: %v", mail_admins)
+	log.Infof("mail_admins: %v (deprecated)", mail_admins)
 
 	pop.MapTableName("TicketStatus", "ticket_statuses")
 	pop.MapTableName("TicketStatuses", "ticket_statuses")

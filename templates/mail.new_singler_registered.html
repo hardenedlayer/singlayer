@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<style>
+body {
+	font-family: "맑은 고딕";
+		font-size: 10pt;
+}
+h1 {
+		font-size: 1.2em;
+				margin-bottom: 4px;
+}
+h4 {
+		margin-bottom: 2px;
+				font-size: 11pt;
+}
+table {
+		width: 600px;
+}
+td {
+		padding: 0cm 5.4pt;
+				border: solid windowtext 1.0px;
+}
+td.odd {
+		width: 200px;
+				background: #ddd;
+}
+div.comment {
+		margin-top: 11pt;
+				border-top: 0.5px solid black;
+}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h1>Welcome to the world of Singlers</h1>
+
+			<h4>Your registered information</h4>
+			<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse'>
+				<tbody>
+					<tr><td class="odd">Name</td><td>{{.Name}}</td></tr>
+					<tr><td class="odd">Email</td><td>{{.Email}}</td></tr>
+					<tr><td class="odd">Provider</td><td>{{.Provider}}</td></tr>
+				</tbody>
+			</table>
+
+			<div class="comment">
+				<a href="https://singlayer.as-a-svc.com">Singlayer</a>,
+				an Hardened Layer Project.
+			</div>
+		</div>
+	</body>
+</html>

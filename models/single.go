@@ -249,3 +249,16 @@ func FindSingle(single_id uuid.UUID) (single *Single, err error) {
 	err = DB.Find(single, single_id)
 	return
 }
+
+func GetSinglesByPermission(perm string) (singles *Singles, err error) {
+	singles = &Singles{}
+	err = DB.Where("permissions LIKE ?", "%:" + perm + ":%").All(singles)
+	return
+}
+
+//// utilities:
+
+// AdminMail wrapper
+func (s *Single) AdminMail(obj Object, subj, to string, grps ...string) error {
+	return AdminMail(s, obj, subj, to, grps...)
+}

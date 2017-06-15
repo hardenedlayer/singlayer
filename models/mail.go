@@ -71,9 +71,23 @@ func (m *Mail) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 
 ////
 
-func FormMail(single *Single, subject string, obj Object, to string) error {
-	templ_name := inflect.Underscore(subject)
-	log.Debugf("templ_name: %v", templ_name)
+func AdminMail(s *Single, obj Object, subj, to string, groups ...string) error {
+	var bccs []string
+	for _, group := range groups {
+		singles, err := GetSinglesByPermission(group)
+		if err == nil {
+			for _, s := range *singles {
+				bccs = append(bccs, s.Email)
+			}
+		}
+	}
+	log.Infof("sending admin mail for %v, bcc to %v", groups, bccs)
+	return FormMail(s, obj, subj, to, bccs...)
+}
+
+func FormMail(s *Single, obj Object, subj, to string, bccs ...string) error {
+	templ_name := inflect.Underscore(subj)
+	log.Infof("preparing form mail with template %v", templ_name)
 
 	t_text, err := template.ParseFiles("templates/mail." + templ_name + ".text")
 	if err != nil {
@@ -99,10 +113,10 @@ func FormMail(single *Single, subject string, obj Object, to string) error {
 	}
 	cont_html := buf.String()
 
-	subj := subject + " " + obj.String()
-	m := PrepareMail(subj, cont_text, to)
+	subject := subj + ": " + obj.String()
+	m := PrepareMail(subject, cont_text, to)
 	m.ContentHtml = cont_html
-	return m.Send(single.ID)
+	return m.Send(s.ID, bccs...)
 }
 
 // SendMail() prepare basic text mail and send immediately.
@@ -123,8 +137,9 @@ func PrepareMail(subj, cont, to string) (mail *Mail) {
 }
 
 // Send() send a mail with current mailer and save its status to database.
-func (m *Mail) Send(single_id uuid.UUID) error {
-	resp, id, err := send(m)
+func (m *Mail) Send(single_id uuid.UUID, bccs ...string) error {
+	log.Debugf("sending a mail by %v", single_id)
+	resp, id, err := send(m, bccs...)
 	if err != nil {
 		return err
 	}
@@ -132,7 +147,7 @@ func (m *Mail) Send(single_id uuid.UUID) error {
 	m.MailID = id
 	m.Status = "sent"
 	m.SingleID = single_id
-	m.Bccs = fmt.Sprintf("%v", mail_admins)
+	m.Bccs = fmt.Sprintf("%v", bccs)
 	return m.save()
 }
 
@@ -154,7 +169,7 @@ func (m *Mail) save() error {
 }
 
 // independent mail sender: currently implemented with mailgun!
-func send(m *Mail) (resp, id string, err error) {
+func send(m *Mail, bccs ...string) (resp, id string, err error) {
 	mg, err := mailgun.NewMailgunFromEnv()
 	if err != nil {
 		log.Errorf("cannot setup mailgun from env: %v", err)
@@ -165,9 +180,10 @@ func send(m *Mail) (resp, id string, err error) {
 	if len(m.ContentHtml) > 0 {
 		message.SetHtml(m.ContentHtml)
 	}
-	for _, el := range mail_admins {
+	for _, el := range bccs {
+		log.Debugf("add %v as BCC...", el)
 		message.AddBCC(el)
 	}
-	log.Infof("bcc: %v (%v rcpts)", mail_admins, message.RecipientCount())
+	log.Infof("shot the gun to %v rcpts.", message.RecipientCount())
 	return mg.Send(message)
 }

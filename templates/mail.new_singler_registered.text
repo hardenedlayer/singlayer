@@ -1,0 +1,11 @@
+Welcome to world of Singlers.
+
+Your registered information
+
+   Name:	{{.Name}}
+   Email:	{{.Email}}
+   Provider:	{{.Provider}}
+
+-- 
+Singlayer, an Hardened Layer Project
+https://singlayer.as-a-svc.com

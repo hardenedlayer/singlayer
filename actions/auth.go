@@ -81,6 +81,9 @@ func AuthCallback(c buffalo.Context) error {
 		}
 
 		err = q.First(single)
+
+		single.AdminMail(*single, "New Singler Registered", single.Email,
+			"admin")
 	} else {
 		return c.Error(501, errors.New("Somthing went wrong!!!"))
 	}
