@@ -38,7 +38,7 @@ func init() {
 	mail_sender = os.Getenv("MAIL_SENDER")
 	log.Infof("mail_sender: %v", mail_sender)
 	if mail_sender == "" {
-		log.Fatal("environment variable MAIL_SENDER not defined!")
+		log.Error("environment variable MAIL_SENDER not defined!")
 	}
 
 	// deprecated block. currently use admin mail. (AdminMail)
