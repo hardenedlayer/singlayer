@@ -12,27 +12,27 @@ import (
 	"github.com/softlayer/softlayer-go/session"
 )
 
-type VirtualGuest struct {
+type BareMetal struct {
 	Compute
 }
 
-func (m VirtualGuest) String() string {
+func (m BareMetal) String() string {
 	jm, _ := json.Marshal(m)
 	return string(jm)
 }
 
-type VirtualGuests []VirtualGuest
+type BareMetals []BareMetal
 
-func (m VirtualGuests) String() string {
+func (m BareMetals) String() string {
 	jm, _ := json.Marshal(m)
 	return string(jm)
 }
 
 //// backend api calls:
 
-// SyncVirtualGuests() sync all virtual servers of user's account from origin.
-func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
-	log.Infof("sync virtual servers... (use %v)", user.Username)
+// SyncBareMetals() sync all bare metals of user's account from origin.
+func SyncBareMetals(user *User, since time.Time) (count int, err error) {
+	log.Infof("sync baremetal servers... (use %v)", user.Username)
 	sess := session.New(user.Username, user.APIKey)
 	sess.Endpoint = "https://api.softlayer.com/rest/v3.1"
 
@@ -44,27 +44,28 @@ func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
 	log.Debugf("account: %v", account)
 
 	date_since := since.Format("01/02/2006 15:04:05")
-	log.Infof("try to sync virtual servers from %v...", date_since)
+	log.Infof("try to sync baremetal servers from %v...", date_since)
 
 	service := services.GetAccountService(sess)
 	data, err := service.
-		Mask("id;accountId;hourlyBillingFlag;hostname;domain;notes;tagReferences.tag.name;tagReferences.tag.id;userData.value;provisionDate;createDate;modifyDate;bandwidthAllocation;privateNetworkOnlyFlag;primaryIpAddress;primaryBackendIpAddress;networkVlans.id;operatingSystem.id;operatingSystem.softwareLicense.softwareDescription.longDescription;datacenter.id;location.pathString;location.id;virtualRackId;startCpus;maxCpu;maxCpuUnits;maxMemory;type.name;modifyDate;pendingMigrationFlag;dedicatedAccountHostOnlyFlag;dedicatedHost;host;users.id").
+		Mask("id;accountId;hourlyBillingFlag;hostname;domain;notes;tagReferences.tag.name;tagReferences.tag.id;userData.value;provisionDate;bandwidthAllocation;privateNetworkOnlyFlag;primaryIpAddress;primaryBackendIpAddress;networkVlans.id;operatingSystem.id;operatingSystem.softwareLicense.softwareDescription.longDescription;datacenter.id;location.pathString;location.id;virtualRackId;processorPhysicalCoreAmount;memoryCapacity;networkGatewayMemberFlag;networkManagementIpAddress;rack.id").
 		Filter(filter.Build(
-			filter.Path("virtualGuests.modifyDate").DateAfter(date_since),
+			filter.Path("hardware.provisionDate").DateAfter(date_since),
 		)).
-		GetVirtualGuests()
-		// status.name;powerState.name
+		GetHardware()
 	if err != nil {
 		log.Errorf("slapi error: %v", err)
 		return 0, err
 	}
+	inspect("baremetals", data)
 
 	count = 0
 	for _, el := range data {
 		comp := &Compute{}
 		inspect("origin virtual guest", el)
 		copier.Copy(comp, el)
-		comp.ID = *el.Id + 1000000000000
+		comp.ID = *el.Id + 8000000000000
+		comp.Type = "Metal"
 		comp.OSName = *el.OperatingSystem.SoftwareLicense.SoftwareDescription.LongDescription
 		comp.ProvisionDate, _ = time.Parse(time.RFC3339,
 			el.ProvisionDate.String())
@@ -74,9 +75,7 @@ func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
 		inspect("compute instance", comp)
 
 		// relational things...
-		for _, u := range el.Users {
-			comp.MapUserId(*u.Id)
-		}
+		comp.MapUserId(user.ID)
 		for _, t := range el.TagReferences {
 			comp.MapTagId(*t.Tag.Id)
 			tag := Tag{

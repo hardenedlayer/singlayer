@@ -197,8 +197,11 @@ func (c *Compute) MapTagId(id int) error {
 //// callers:
 
 func SyncComputes(user *User) (count int, err error) {
-	vg_count, err := SyncVirtualGuests(user)
+	since := user.lastSyncTimeCompute().AddDate(0, 0, -1)
+	vg_count, err := SyncVirtualGuests(user, since)
 	count += vg_count
+	bm_count, err := SyncBareMetals(user, since)
+	count += bm_count
 	return
 }
 
@@ -263,19 +266,24 @@ func (c *Compute) MaxCpu(s *int) {
 
 // vsi case
 func (c *Compute) MaxMemory(s *int) {
-	c.Memories = *s
+	c.Memories = *s / 1024
 }
 
 // bm case
-func (c *Compute) ProcessorPhysicalCoreAmount(s *int) {
-	c.Cores = *s
+func (c *Compute) ProcessorPhysicalCoreAmount(s *uint) {
+	c.Cores = int(*s)
 }
 
 // bm case
-func (c *Compute) MemoryCapacity(s *int) {
-	c.Memories = *s
+func (c *Compute) MemoryCapacity(s *uint) {
+	c.Memories = int(*s)
 }
 
 func (c *Compute) OperatingSystem(s *datatypes.Software_Component_OperatingSystem) {
 	c.OperatingSystemId = *s.Id
+}
+
+// bm only
+func (c *Compute) Rack(s *datatypes.Location) {
+	c.RackId = *s.Id
 }
