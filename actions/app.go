@@ -19,6 +19,7 @@ import (
 // ENV is used to help switch settings based on where the
 // application is being run. Default is "development".
 var ENV = envy.Get("GO_ENV", "development")
+var SESS_NAME = envy.Get("SESSION_NAME", "_singlayer_session")
 var app *buffalo.App
 var T *i18n.Translator
 
@@ -30,7 +31,7 @@ func App() *buffalo.App {
 		app = buffalo.Automatic(buffalo.Options{
 			Env:          ENV,
 			SessionStore: newSessionStore(ENV),
-			SessionName:  "_singlayer_session",
+			SessionName:  SESS_NAME,
 		})
 		if ENV == "development" {
 			app.Use(middleware.ParameterLogger)
