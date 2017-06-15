@@ -51,14 +51,13 @@ the user's account are shown after auto-sync. (tickets assiciated to the user)
 					ticket.CreateDate %>" data-placement="top"><%=
 					timeYYMD(ticket.CreateDate) %></td>
 			<td class="update-date"><span data-toggle="tooltip" title="<%=
-					ticket.LastEditDate %> by <%=
+					ticket.ModifyDate %> by <%=
 					ticket.LastEditType %>" data-placement="top"><%=
 					iconize(ticket.LastEditType) %> <%=
-					timeYYMDHM(ticket.LastEditDate) %></td>
+					timeYYMDHM(ticket.ModifyDate) %></td>
 			<!-- sync time: <%= timeYYMDHM(ticket.LastSync) %> -->
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
-					<a href="<%= editTicketPath({ ticket_id: ticket.ID }) %>" class="btn btn-xs btn-warning">Ed</a>
 					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">De</a>
 				</div>
 			</td><% } %>

@@ -30,7 +30,7 @@ type Ticket struct {
 	Title            string    `json:"title" db:"title"`
 	TotalUpdateCount int       `json:"total_update_count" db:"total_update_count"`
 	CreateDate       time.Time `json:"create_date" db:"create_date"`
-	LastEditDate     time.Time `json:"last_edit_date" db:"last_edit_date"`
+	ModifyDate       time.Time `json:"modify_date" db:"last_edit_date"`
 	LastEditType     string    `json:"last_edit_type" db:"last_edit_type"`
 	LastSync         time.Time `json:"last_sync" db:"last_sync"`
 }
@@ -54,7 +54,7 @@ func (t *Ticket) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.IntIsPresent{Field: t.StatusId, Name: "StatusId"},
 		&validators.StringIsPresent{Field: t.Title, Name: "Title"},
 		&validators.TimeIsPresent{Field: t.CreateDate, Name: "CreateDate"},
-		&validators.TimeIsPresent{Field: t.LastEditDate, Name: "LastEditDate"},
+		&validators.TimeIsPresent{Field: t.ModifyDate, Name: "ModifyDate"},
 		&validators.StringIsPresent{Field: t.LastEditType, Name: "LastEditType"},
 	), nil
 }
@@ -148,9 +148,9 @@ func SyncTickets(user *User) (count int, err error) {
 
 	service := services.GetAccountService(sess)
 	data, err := service.
-		Mask("id;accountId;assignedUserId;subjectId;groupId;statusId;title;totalUpdateCount;createDate;lastEditDate;lastEditType").
+		Mask("id;accountId;assignedUserId;subjectId;groupId;statusId;title;totalUpdateCount;createDate;lastEditDate;lastEditType;modifyDate").
 		Filter(filter.Build(
-			filter.Path("tickets.lastEditDate").DateAfter(date_since),
+			filter.Path("tickets.modifyDate").DateAfter(date_since),
 		)).
 		GetTickets()
 	if err != nil {
@@ -164,7 +164,7 @@ func SyncTickets(user *User) (count int, err error) {
 		copier.Copy(ticket, el)
 		ticket.ID = *el.Id
 		ticket.CreateDate, _ = time.Parse(time.RFC3339, el.CreateDate.String())
-		ticket.LastEditDate, _ = time.Parse(time.RFC3339, el.LastEditDate.String())
+		ticket.ModifyDate, _ = time.Parse(time.RFC3339, el.ModifyDate.String())
 		log.Debugf("ticket %v/%v --", ticket.AccountId, ticket.ID)
 		for _, elu := range el.Updates {
 			ticket_update := &TicketUpdate{}

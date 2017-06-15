@@ -14,7 +14,6 @@
 <%= if (user_is_admin) { %>
 <ul class="list-unstyled list-inline">
 	<li><a href="<%= ticketsPath() %>" class="btn btn-info">Back to List</a></li>
-	<li><a href="<%= editTicketPath({ ticket_id: ticket.ID })%>" class="btn btn-warning">Edit</a></li>
 </ul>
 <% } %>
 
@@ -41,9 +40,9 @@
 					ticket.CreateDate %>"><%=
 					timeYYMD(ticket.CreateDate) %></td>
 			<td><span data-toggle="tooltip" data-placement="top" title="<%=
-					ticket.LastEditDate %> by <%= ticket.LastEditType %>"><%=
+					ticket.ModifyDate %> by <%= ticket.LastEditType %>"><%=
 					iconize(ticket.LastEditType) %> <%=
-					timeYYMDHM(ticket.LastEditDate) %></td>
+					timeYYMDHM(ticket.ModifyDate) %></td>
 		</tr>
 	</tbody>
 </table>

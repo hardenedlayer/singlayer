@@ -232,7 +232,7 @@ func addTicketHelpers(c buffalo.Context) {
 	})
 	c.Set("ticketTag", func(t models.Ticket) interface{} {
 		tag := "ticket-item"
-		if time.Now().Sub(t.LastEditDate).Hours() < (14 * 24) {
+		if time.Now().Sub(t.ModifyDate).Hours() < (14 * 24) {
 			tag += " ticket-new"
 		}
 		return tag
