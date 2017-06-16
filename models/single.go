@@ -252,7 +252,7 @@ func FindSingle(single_id uuid.UUID) (single *Single, err error) {
 
 func GetSinglesByPermission(perm string) (singles *Singles, err error) {
 	singles = &Singles{}
-	err = DB.Where("permissions LIKE ?", "%:" + perm + ":%").All(singles)
+	err = DB.Where("permissions LIKE ?", "%:"+perm+":%").All(singles)
 	return
 }
 

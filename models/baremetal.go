@@ -92,7 +92,7 @@ func SyncBareMetals(user *User, since time.Time) (count int, err error) {
 			comp.MapVlanId(*v.Id)
 		}
 
-		err = comp.Save()	// after save, ID will be set '0'. why?
+		err = comp.Save() // after save, ID will be set '0'. why?
 		if err != nil {
 			log.Errorf("cannot save virtual guest: %v, %v", err, comp)
 		} else {
