@@ -80,6 +80,13 @@ func SessionInfoHandler(next buffalo.Handler) buffalo.Handler {
 			c.Set("user_is_admin", c.Session().Get("is_admin"))
 			c.Set("actors", c.Session().Get("actors"))
 		}
+		if perms, ok := c.Session().Get("permissions").(string); ok {
+			for _, el := range strings.Split(perms, ":") {
+				if el != "" {
+					c.Set("perm_"+el, true)
+				}
+			}
+		}
 		c.Set("actor", "All")
 		if k, err := c.Request().Cookie("_singlayer_actor"); err == nil {
 			if actors, ok := c.Session().Get("actors").([]string); ok {

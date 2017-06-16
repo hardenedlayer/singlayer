@@ -27,7 +27,7 @@
 			<div class="collapse navbar-collapse" id="main-navbar-collapse">
 				<%= if (user_id) { %>
 				<ul class="nav navbar-nav">
-					<%= if (true) { %>
+					<%= if ((user_is_admin) || (perm_landscape)) { %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Landscape <span class="caret"></span></a>
 						<ul class="dropdown-menu">
@@ -35,9 +35,23 @@
 						</ul>
 					</li>
 					<% } %>
+					<%= if ((user_is_admin) || (perm_ticket)) { %>
 					<li><a href="/tickets" class="navbar-link">Ticket</a></li>
+					<% } %>
+					<%= if ((user_is_admin) || (perm_dlink)) { %>
 					<li><a href="/directlinks" class="navbar-link">Link</a></li>
+					<% } %>
+					<%= if ((user_is_admin) || (perm_user)) { %>
 					<li><a href="/docs" class="navbar-link">Docs</a></li>
+					<% } %>
+					<%= if ((user_is_admin) || (perm_exman)) { %>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exchange <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="<%= linksExchangePath() %>"><i aria-hidden="true" class="fa fa-link"></i> Direct Links</a></li>
+						</ul>
+					</li>
+					<% } %>
 					<%= if (user_is_admin) { %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>

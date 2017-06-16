@@ -21,6 +21,7 @@ func ExchangeLinksList(c buffalo.Context) error {
 		return err
 	}
 	c.Set("dlinks", dlinks)
+	c.Set("theme", "dark")
 	return c.Render(200, r.HTML("exchange_links/index.html"))
 }
 
@@ -38,6 +39,7 @@ func ExchangeLinksShow(c buffalo.Context) error {
 	c.Set("dlink", dlink)
 	c.Set("progresses", dlink.Progresses())
 	c.Set("updates", dlink.Updates())
+	c.Set("theme", "dark")
 	return c.Render(200, r.HTML("exchange_links/show.html"))
 }
 

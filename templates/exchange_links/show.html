@@ -109,7 +109,7 @@
 	<div class="" id="ticket-updates">
 	<%= for (update) in updates { %>
 		<div id="update-<%= update.ID %>" class="ticket-update well col-md-9 <%= if (update.EditorType == "USER") { %>by-user col-md-offset-2<% } else { %>by-service col-md-offset-1<% } %>">
-			<pre><%= update.Entry %></pre>
+			<pre class="well"><%= update.Entry %></pre>
 			<div class="ticket-update-footer <%= if (update.EditorType == "USER") { %>text-right<% } else { %>text-left<% } %>">
 				<span><%= iconize(update.EditorType) %></span>
 				<span><%= update.EditorName() %></span>,
