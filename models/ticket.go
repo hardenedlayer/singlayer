@@ -278,10 +278,24 @@ func (t *Ticket) Updates() (updates *TicketUpdates) {
 	return
 }
 
+// FirstUpdate() returns first update of given ticket.
 func (t *Ticket) FirstUpdate() (update *TicketUpdate) {
 	update = &TicketUpdate{}
 	err := DB.BelongsTo(t).
 		Order("create_date").
+		First(update)
+	if err != nil {
+		return nil
+	}
+	inspect("'update' from dbms", update)
+	return
+}
+
+// LastUpdate() returns last update of given ticket.
+func (t *Ticket) LastUpdate() (update *TicketUpdate) {
+	update = &TicketUpdate{}
+	err := DB.BelongsTo(t).
+		Order("create_date desc").
 		First(update)
 	if err != nil {
 		return nil

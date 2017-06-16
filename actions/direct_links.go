@@ -253,6 +253,14 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 		single := getCurrentSingle(c)
 		single.AdminMail(*dlink, "Request for DL Configuration",
 			single.Email, "admin", "exman")
+
+		progress := models.NewProgress(dlink.ID, "configured")
+		progress.SingleID = single.ID
+		if ticket, err := models.FindTicket(dlink.TicketId); err == nil {
+			progress.UpdateId = ticket.LastUpdate().ID
+		}
+		progress.Save()
+		c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)
 	}
 
 	c.Flash().Add("success", "DirectLink was updated successfully")
@@ -275,13 +283,13 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 		c.Logger().Errorf("ticket creation error: %v", err)
 		return err
 	}
-	progress := models.NewProgress(dlink.ID, "order")
+	progress := models.NewProgress(dlink.ID, "ordered")
 	progress.SingleID = getCurrentSingle(c).ID
 	if ticket, err := models.FindTicket(ticket_id); err == nil {
 		progress.UpdateId = ticket.FirstUpdate().ID
 	}
 	progress.Save()
-	c.Logger().Debugf("progress: %v", progress)
+	c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)
 
 	dlink.TicketId = ticket_id
 	dlink.Status = "ordered"
@@ -316,8 +324,8 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 		return err
 	}
 	progress.SingleID = single.ID
-	c.Logger().Debugf("progress: %v", progress)
 	progress.Save()
+	c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)
 
 	//dlink.Status = progress.Action
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
