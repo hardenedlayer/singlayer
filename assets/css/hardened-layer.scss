@@ -126,6 +126,10 @@ html, body, .container {
 		margin-bottom: 5px;
 	}
 }
+.pre-wrap {
+	white-space: pre-wrap;
+	word-break: normal;
+}
 .admode {
 	border: 1px dashed $color-danger;
 	border-radius: 5px;

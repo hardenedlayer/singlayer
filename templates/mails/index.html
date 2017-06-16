@@ -3,6 +3,7 @@
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
+			List of system mails
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 	<div>
@@ -13,9 +14,9 @@
 <div class="row">
 
 <%= if (user_is_admin) { %>
-<p>
-	<a href="<%= newMailPath() %>" class="btn btn-primary">Create New Mail</a>
-</p>
+<div class="btn-group" style="margin-bottom: 5px;">
+	<a href="<%= newMailPath() %>" class="btn btn-default">New Mail</a>
+</div>
 <% } %>
 
 <table class="table table-striped table-condensed table-hover">
@@ -34,8 +35,7 @@
 					%>"><%= mail.Subject %></a></td>
 				<td><span data-toggle="tooltip" data-placement="top" title="Bcc: <%=
 					mail.Bccs %>"><%= mail.Rcpt %></span></td>
-				<td><span data-toggle="tooltip" data-placement="top" title="<%=
-					shorten(mail.MailID, 27) %>"><%= mail.Status %></span></td>
+				<td><%= capitalize(mail.Status) %></span></td>
 				<%= if (user_is_admin) { %><td class="unclickable">
 					<div class="pull-right">
 						<a href="<%= singlePath({ single_id: mail.SingleID }) %>" class="btn btn-xs btn-info">owner</a>
