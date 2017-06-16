@@ -30,7 +30,8 @@
 		<%= for (d) in docs { %>
 			<%= if ((s.Category == d.Category) && (s.Name == d.Subject)) { %>
 			<li>
-				<a href="<%= docPath({ doc_id: d.ID }) %>" class=""><%= d.Title %></a>
+				<a href="<%= docPath({ doc_id: d.PermLink() }) %>" class=""><%=
+					d.Title %></a>
 				<span class="meta-gray"><%= d.Type %>,
 				<%= timeYYMD(d.UpdatedAt) %></span>
 				<%= if (user_is_admin) { %>

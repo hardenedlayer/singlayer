@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/markbates/pop"
@@ -69,6 +70,8 @@ func (d *Doc) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
+//// utilities
+
 func DocCategories() interface{} {
 	cats := &Categories{}
 	DB.RawQuery(`SELECT DISTINCT category
@@ -93,4 +96,12 @@ func (d Doc) Author() interface{} {
 	single := &Single{}
 	DB.Find(single, d.SingleID)
 	return single.Name
+}
+
+func (d Doc) PermLink() interface{} {
+	return strings.Replace(d.Title, " ", "-", -1)
+}
+
+func DocTitleize(t string) string {
+	return strings.Replace(t, "-", " ", -1)
 }

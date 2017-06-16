@@ -33,9 +33,12 @@ func (v DocsResource) List(c buffalo.Context) error {
 func (v DocsResource) Show(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	doc := &models.Doc{}
-	err := tx.Find(doc, c.Param("doc_id"))
+	err := tx.Where("title=?", models.DocTitleize(c.Param("doc_id"))).First(doc)
 	if err != nil {
-		return err
+		err := tx.Find(doc, c.Param("doc_id"))
+		if err != nil {
+			return err
+		}
 	}
 	c.Set("doc", doc)
 	return c.Render(200, r.HTML("docs/show.html"))
