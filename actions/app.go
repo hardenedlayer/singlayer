@@ -128,6 +128,13 @@ func App() *buffalo.App {
 		g.Middleware.Skip(AdminPageKeeper, DirectLinksResource{}.Proceed)
 		g.GET("/{directlink_id}/add", DirectLinksResource{}.Add)
 		g.Middleware.Skip(AdminPageKeeper, DirectLinksResource{}.Add)
+
+		// exchange portal
+		e := app.Group("/exchange")
+		e.GET("/links", ExchangeLinksList)
+		e.GET("/links/{directlink_id}", ExchangeLinksShow)
+		e.PUT("/links/{directlink_id}", ExchangeLinksProceed)
+		e.GET("/links/{directlink_id}/confirm", ExchangeLinksConfirm)
 	}
 
 	return app

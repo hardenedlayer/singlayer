@@ -1,0 +1,27 @@
+Direct Link Confirmation (Cloud Exchange)
+
+The Connection was configured and confirmed by exchange network engineer.
+
+Customer:	{{.AccountNick}}
+Account ID:	{{.AccountId}}
+Ordered by:	{{.SingleName}}
+Status:		{{.Status}}
+
+Direct Link Configuration
+- Type:		{{.Type}}
+- Speed:	{{.Speed}}
+- Routing:	{{.RoutingOption}}
+- Redundant:	{{if .MultiPath}}Yes, Ticket #{{.PairTicketId}} {{else}}No {{end}}
+- Migration:	{{.Migration}}
+
+Exchange Configuration
+- FDF Port:	{{.Port}}
+- Router ID:	{{.Router}}
+- ASN/Customer:	{{.ASN}}
+- ASN/Provider:	13884
+- VLAN:		{{.VlanId}}
+- Local IP:	{{.CERIP}}/{{.Prefix}}
+- Provider IP:	{{.XCRIP}}/{{.Prefix}}
+
+
+{{.Comments}}

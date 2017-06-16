@@ -358,7 +358,7 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 	} else {
 		c.Logger().Debugf("blank reply, no-reply mode: '%v'", reply.Reply)
 	}
-	c.Flash().Add("success", "DirectLink was ordered successfully")
+	c.Flash().Add("success", "Note added successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
 
