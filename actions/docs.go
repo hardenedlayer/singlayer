@@ -14,7 +14,7 @@ func (v DocsResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	docs := &models.Docs{}
 	var err error
-	if c.Session().Get("is_admin").(bool) {
+	if b, o := c.Session().Get("is_admin").(bool); b && o {
 		err = tx.Order("category, subject, title").All(docs)
 	} else {
 		err = tx.Where("published=?", true).
