@@ -1,0 +1,6 @@
+- id: "messangers.created.success"
+  translation: "Messanger was successfully created."
+- id: "messangers.updated.success"
+  translation: "Messanger was successfully updated."
+- id: "messangers.destroyed.success"
+  translation: "Messanger was successfully destroyed."

@@ -1,0 +1,23 @@
+<div class="row page-header">
+	<h1>Edit Messanger <span class="sing-data"><%= user.Username %></span></h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+Edit your registered messanger for notifications and alerts.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Edit your registered messanger.
+	</div>
+</div>
+
+<div class="row">
+
+<div class="col-md-8 col-md-offset-2">
+<%= form_for(messanger, {action: messangerPath({ messanger_id: messanger.ID }), method: "PUT", errors: errors}) { %>
+  <%= partial("messangers/form.html") %>
+  <a href="<%= messangerPath({ messanger_id: messanger.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
+</div>
+
+</div>

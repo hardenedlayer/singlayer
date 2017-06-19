@@ -1,0 +1,8 @@
+create_table("messangers", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("single_id", "uuid", {})
+	t.Column("name", "string", {})
+	t.Column("level", "string", {})
+	t.Column("method", "string", {})
+	t.Column("value", "string", {})
+})

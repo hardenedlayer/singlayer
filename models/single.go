@@ -65,6 +65,58 @@ func (s *Single) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 //// Association and Relationship based search for instances.
 //// It need instance of Single so more expensive than raw query. FIXME later.
 
+// Messanger() returns single messanger for this singler.
+func (s *Single) Messanger(messanger_id interface{}) (messanger *Messanger) {
+	messanger = &Messanger{}
+	err := DB.BelongsTo(s).Find(messanger, messanger_id)
+	if err != nil {
+		return nil
+	}
+	return
+}
+
+// Messangers() returns all messanger for this singler.
+func (s *Single) Messangers(levels ...string) (messangers *Messangers) {
+	messangers = &Messangers{}
+	q := DB.BelongsTo(s)
+	for _, e := range levels { // tricky optional single argument.
+		q = q.Where("level = ?", e)
+	}
+	q.Order("level").All(messangers)
+	return
+}
+
+func (s Single) NotifyTo() (messangers *Messangers) {
+	messangers = s.Messangers("notification")
+	m := &Messanger{}
+	err := DB.BelongsTo(&s).
+		Where("level = ? AND method = ?", "notification", "mail").First(m)
+	if err != nil {
+		m = &Messanger{
+			Level: "Notification",
+			Method: "Mail",
+			Value: s.Email,
+		}
+		*messangers = append(*messangers, *m)
+	}
+	return
+}
+
+func (s Single) AlertTo() (messangers *Messangers) {
+	return s.Messangers("alert")
+}
+
+func (s Single) Mail() (mail string) {
+	mail = s.Email
+	m := &Messanger{}
+	err := DB.BelongsTo(&s).
+		Where("level = ? AND method = ?", "notification", "mail").First(m)
+	if err == nil {
+		mail = m.Value
+	}
+	return
+}
+
 // Users() returns instance of Users struct.
 func (s *Single) Users() (users *Users) {
 	users = &Users{}

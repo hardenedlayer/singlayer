@@ -1,22 +1,21 @@
 <div class="row page-header">
-	<h1>Register a New User</h1>
+	<h1>New Messanger</h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
-			Enter a valid Bluemix(SoftLayer) ID and API Key to register new user
-			for your single. If you submit this form, I will check the credential
-			and register this user as one of your Bluemix user.
+You can register your own messanger for notification and alert here.
 			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 	<div>
-		Enter valid Bluemix ID and API Key and Press "Save" button.
+		Register your messanger for notification and alert.
 	</div>
 </div>
 
 <div class="row">
 <div class="col-md-8 col-md-offset-2">
-<%= form_for(user, {action: usersPath(), method: "POST", errors: errors}) { %>
-  <%= partial("users/form.html") %>
+
+<%= form_for(messanger, {action: messangersPath(), method: "POST", errors: errors}) { %>
+  <%= partial("messangers/form.html") %>
 	<button class="btn btn-success" role="submit">Save</button>
   <a href="<%= mePath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>

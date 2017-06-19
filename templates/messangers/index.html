@@ -1,0 +1,54 @@
+<div class="row page-header">
+	<h1>Messangers</h1>
+	<div class="page-help">
+		<a href="#" data-toggle="popover" data-placement="left"
+			data-content="
+All registered messangers for all singlers.
+			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+	</div>
+	<div>
+		Registered Messangers for all singlers.
+	</div>
+</div>
+
+<div class="row">
+
+<table class="table table-striped table-condensed table-hover">
+	<thead>
+		<tr>
+			<th>Single</th>
+			<th>Name</th>
+			<th>Level</th>
+			<th>Method</th>
+			<th>Value</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%= for (messanger) in messangers { %>
+			<tr class="clickable">
+				<td class="unclickable"><a href="<%=
+					singlePath({ single_id: messanger.SingleID })
+					%>"><%= messanger.Single() %></a></td>
+				<td><a id="link" href="<%= messangerPath({ messanger_id: messanger.ID })
+					%>"><%= messanger.Name %></a></td>
+				<td><%= messanger.Level %></td>
+				<td><%= messanger.Method %></td>
+				<td><%= messanger.Value %></td>
+				<td class="unclickable">
+					<div class="pull-right btn-group">
+						<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
+							%>" class="btn btn-xs btn-warning">Edit</a>
+						<a href="<%= messangerPath({ messanger_id: messanger.ID })
+							%>" data-method="DELETE" data-confirm="Are you sure?"
+							class="btn btn-xs btn-danger">Destroy</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+
+<%= paginate(pager.Page, pager.PerPage, pager.TotalPages) %>
+
+</div>
