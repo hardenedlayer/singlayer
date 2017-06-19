@@ -58,9 +58,12 @@ case "$1" in
   status)
 	status_of_proc -p $pid_dir/singlayer.pid $bin_dir/singlayer singlayer && exit 0 || exit $?
 	;;
+  migrate)
+	$bin_dir/singlayer migrate
+	;;
 
   *)
-	log_action_msg "Usage: /etc/init.d/singlayer {start|stop|restart|status}" || true
+	log_action_msg "Usage: /etc/init.d/singlayer {start|stop|restart|status|migrate}" || true
 	exit 1
 esac
 
