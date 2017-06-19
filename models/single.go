@@ -82,7 +82,7 @@ func (s *Single) Messangers(levels ...string) (messangers *Messangers) {
 	for _, e := range levels { // tricky optional single argument.
 		q = q.Where("level = ?", e)
 	}
-	q.Order("level").All(messangers)
+	q.Order("level, updated_at desc").All(messangers)
 	return
 }
 
@@ -110,7 +110,9 @@ func (s Single) Mail() (mail string) {
 	mail = s.Email
 	m := &Messanger{}
 	err := DB.BelongsTo(&s).
-		Where("level = ? AND method = ?", "notification", "mail").First(m)
+		Where("level = ? AND method = ?", "notification", "mail").
+		Order("updated_at desc").
+		First(m)
 	if err == nil {
 		mail = m.Value
 	}

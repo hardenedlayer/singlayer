@@ -141,11 +141,13 @@ func (m *Mail) Send(single_id uuid.UUID, bccs ...string) error {
 	log.Debugf("sending a mail by %v", single_id)
 	resp, id, err := send(m, bccs...)
 	if err != nil {
-		return err
+		log.Errorf("oops! sending error: %v", err)
+		m.Status = "error"
+	} else {
+		m.MailResp = resp
+		m.MailID = id
+		m.Status = "sent"
 	}
-	m.MailResp = resp
-	m.MailID = id
-	m.Status = "sent"
 	m.SingleID = single_id
 	m.Bccs = fmt.Sprintf("%v", bccs)
 	return m.save()

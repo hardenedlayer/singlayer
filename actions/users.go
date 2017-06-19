@@ -99,7 +99,11 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	}
 	updateActors(c, tx)
 	c.Flash().Add("success", "User was created successfully")
-	return c.Redirect(302, "/me")
+	if b, o := c.Session().Get("is_admin").(bool); b && o {
+		return c.Redirect(302, "/users")
+	} else {
+		return c.Redirect(302, "/me")
+	}
 }
 
 func (v UsersResource) Update(c buffalo.Context) error {
@@ -139,7 +143,11 @@ func (v UsersResource) Update(c buffalo.Context) error {
 		return c.Render(422, r.HTML("users/edit.html"))
 	}
 	c.Flash().Add("success", "User was updated successfully")
-	return c.Redirect(302, "/me")
+	if b, o := c.Session().Get("is_admin").(bool); b && o {
+		return c.Redirect(302, "/users")
+	} else {
+		return c.Redirect(302, "/me")
+	}
 }
 
 func (v UsersResource) Destroy(c buffalo.Context) error {
@@ -156,7 +164,11 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 	}
 	updateActors(c, tx)
 	c.Flash().Add("success", "User was destroyed successfully")
-	return c.Redirect(302, "/me")
+	if b, o := c.Session().Get("is_admin").(bool); b && o {
+		return c.Redirect(302, "/users")
+	} else {
+		return c.Redirect(302, "/me")
+	}
 }
 
 // Find target user based on the context and permission.
