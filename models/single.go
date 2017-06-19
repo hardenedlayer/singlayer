@@ -106,6 +106,16 @@ func (s Single) AlertTo() (messangers *Messangers) {
 	return s.Messangers("alert")
 }
 
+func (s Single) Mails(levels ...string) (mails []string) {
+	mails = []string{}
+	for _, n := range *s.NotifyTo() {
+		if n.Method == "Mail" {
+			mails = append(mails, n.Value)
+		}
+	}
+	return mails
+}
+
 func (s Single) Mail() (mail string) {
 	mail = s.Email
 	m := &Messanger{}
