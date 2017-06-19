@@ -107,7 +107,7 @@ Connection configured and confirmed by network engineer.`)
 
 	s, err := models.FindSingle(dlink.SingleID) // finally shot a mail
 	if err == nil {
-		single.AdminMail(*dlink, "DLink Completed", s.Email, "admin", "exman")
+		single.AdminMail(*dlink, "DLink Completed", s.Mail(), "admin", "exman")
 	}
 
 	c.Flash().Add("success", "DirectLink was confirmed successfully")

@@ -77,7 +77,7 @@ func AdminMail(s *Single, obj Object, subj, to string, groups ...string) error {
 		singles, err := GetSinglesByPermission(group)
 		if err == nil {
 			for _, s := range *singles {
-				bccs = append(bccs, s.Email)
+				bccs = append(bccs, s.Mail())
 			}
 		}
 	}

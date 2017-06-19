@@ -207,7 +207,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 			c.Logger().Errorf("oops! cannot save pair link: %v %v", plink, err)
 		}
 	}
-	single.AdminMail(*dlink, "DLink Ordered", single.Email, "admin", "exman")
+	single.AdminMail(*dlink, "DLink Ordered", single.Mail(), "admin", "exman")
 
 	c.Flash().Add("success", "DirectLink was created successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
@@ -252,7 +252,7 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 	if is_for_configured {
 		single := getCurrentSingle(c)
 		single.AdminMail(*dlink, "Request for DL Configuration",
-			single.Email, "admin", "exman")
+			single.Mail(), "admin", "exman")
 
 		progress := models.NewProgress(dlink.ID, "configured")
 		progress.SingleID = single.ID
@@ -304,7 +304,7 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 	}
 	s, err := models.FindSingle(dlink.SingleID)
 	if err == nil {
-		single.AdminMail(*dlink, "DLink Ordered", s.Email, "admin", "exman")
+		single.AdminMail(*dlink, "DLink Ordered", s.Mail(), "admin", "exman")
 	}
 
 	c.Flash().Add("success", "DirectLink was ordered successfully")
