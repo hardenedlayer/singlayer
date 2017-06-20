@@ -33,6 +33,34 @@ func AdminPageKeeper(next buffalo.Handler) buffalo.Handler {
 	}
 }
 
+func LanguageHandler(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		// quick and dirty, static ordered list of supported languages.
+		supported_langs := []string{"ko-KR", "en-US"}
+		langs := c.Request().Header.Get("Accept-Language")
+		var lang string
+		for _, la := range strings.Split(langs, ",") {
+			la = strings.Split(la, ";")[0]
+			for _, al := range supported_langs {
+				if la == al {
+					lang = la
+					break
+				}
+			}
+			if len(lang) > 0 {
+				break
+			}
+		}
+		if len(lang) == 0 {
+			lang = supported_langs[0]
+		}
+		c.Set("lang", lang)
+		c.Logger().Infof("current language: %v", c.Value("lang"))
+		err := next(c)
+		return err
+	}
+}
+
 // check permission for specific pathes.
 func PermissionHandler(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {

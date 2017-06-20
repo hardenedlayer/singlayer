@@ -65,6 +65,7 @@ func App() *buffalo.App {
 
 		app.Use(AuthenticateHandler)
 		app.Use(SessionInfoHandler)
+		app.Use(LanguageHandler)
 
 		app.Use(PermissionHandler)
 		app.Middleware.Skip(PermissionHandler, HomeHandler)
