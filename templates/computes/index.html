@@ -1,5 +1,5 @@
 <div class="row page-header">
-	<h1>Computes: List</h1>
+	<h1><%=t("computes")%>: <%=t("list")%></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
@@ -12,7 +12,7 @@
 			Please check your current actor."></i>
 	</div>
 	<div>
-		Compute Instances
+		<%=t("compute_instances")%>
 	</div>
 </div>
 
@@ -22,13 +22,13 @@
   <thead>
 		<tr>
 			<th><i class="fa fa-server"></i></th>
-			<th>Hostname</th>
-			<th>Notes</th>
-			<th>Public IP</th>
-			<th>Private IP</th>
-			<th>OS</th>
-			<th>SPEC</th>
-			<th>Location</th>
+			<th><%= t("hostname") %></th>
+			<th><%= t("notes") %></th>
+			<th><%= t("public_ip") %></th>
+			<th><%= t("private_ip") %></th>
+			<th><%= t("os") %></th>
+			<th><%= t("spec") %></th>
+			<th><%= t("location") %></th>
 			<%= if (user_is_admin) { %>
 			<th>&nbsp;</th>
 			<% } %>
@@ -61,13 +61,13 @@
 				<td><span data-toggle="tooltip" data-placement="top" title="<%=
 					compute.OSName %>"><%= shorten(compute.OSName,15) %></span></td>
 				<td><%= compute.Cores %> x <%= compute.Memories %></td>
-				<td data-toggle="tooltip" data-placement="left" title="VRack: <%=
+				<td><span data-toggle="tooltip" data-placement="left" title="VRack: <%=
 					compute.VirtualRackId %> Rack: <%= compute.RackId
-				%>"><%= compute.Path %></td>
+					%>"><%= compute.Path %></span></td>
 				<%= if (user_is_admin) { %>
 				<td class="unclickable">
 					<div class="pull-right">
-						<a href="<%= computePath({ compute_id: compute.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Destroy</a>
+						<a href="<%= computePath({ compute_id: compute.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-xs btn-danger"><%=t("delete")%></a>
 					</div>
 				</td>
 				<% } %>

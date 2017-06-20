@@ -1,0 +1,29 @@
+
+- id: "help.popup.mypage"
+  translation: "You can link new softlayer users or make a alert configuration here."
+
+- id: "help.actormode"
+  translation: "This page supports 'Actor mode'. Please check your current actor."
+- id: "help.popup.directlink.edit"
+  translation: "You can edit user's notes only. If you need to fix missing or incorrect information, please contact service administrator."
+- id: "help.popup.directlink.list"
+  translation: "All Direct Link configurations are shown here. You can order new link, manage existing orders and view the links."
+- id: "help.popup.directlink.new"
+  translation: "You can order a Direct Link service here. Please read 'Important Notice' for more information."
+- id: "help.popup.directlink.show"
+  translation: "Direct Link details. You can check the progress of the process and update its status here."
+
+- id: "help.page.administrative_confirmation_required"
+  translation: "Administrative confirmation required after creating a order draft."
+- id: "help.page.you_can_build_your_own_hybrid_cloud"
+  translation: "You can build your own hybrid cloud with Direct Link"
+
+- id: "help.page.do_not_update_the_ticket_for_step_3"
+  translation: "Do not update the ticket for 'Step 3'. It is separated task!"
+- id: "help.page.step_1_please_check_associated_ticket_upate"
+  translation: "Step 1: Please check 'Associated Ticket Updates' and update the status, add a note, and send a message to cloud provider using 'Add Progress' button."
+- id: "help.page.step_2_if_the_provier_give_a_set_of_ips"
+  translation: "Step 2: If the provider give a set of IPs via 'Ticket Update', please edit the configuration using 'Edit' button to enter IP information. By this step, status will be set as 'Configured' and IP information will be sent to Exchange service engineer automatically."
+- id: "help.page.step_3_client_side_setup_is_required"
+  translation: "Step 3: Client side setup is required after IP assignment.  In case of Cloud Exchange, IP information will be sent to Exchange service engineer automatically. If your service type is NSP, you need to inform your network administrator."
+

@@ -12,7 +12,7 @@
   <li><a href="<%= mePath() %>" class="btn btn-info">My Page</a></li>
 	<% } %>
   <li><a href="<%= editUserPath({ user_id: user.ID })%>" class="btn btn-warning">Edit</a></li>
-  <li><a href="<%= userPath({ user_id: user.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Delete</a>
+	<li><a href="<%= userPath({ user_id: user.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
 </ul>
 
 <table class="table table-striped">

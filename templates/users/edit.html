@@ -17,7 +17,7 @@
 <div class="col-md-8 col-md-offset-2">
 <%= form_for(user, {action: userPath({ user_id: user.ID }), method: "PUT", errors: errors}) { %>
   <%= partial("users/edit.html") %>
-  <a href="<%= userPath({ user_id: user.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<a href="<%= userPath({ user_id: user.ID }) %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 </div>
 </div>

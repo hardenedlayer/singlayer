@@ -34,7 +34,7 @@
         <td>
           <div class="pull-right">
             <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-sm btn-info">View</a>
-            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Delete</a>
+            <a href="<%= accountPath({ account_id: account.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-sm btn-danger"><%=t("delete")%></a>
           </div>
         </td>
       </tr>

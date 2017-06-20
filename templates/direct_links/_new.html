@@ -14,4 +14,4 @@
 <%= f.SelectTag("Prefix", {options: prefixes, label:"CIDR Prefix"}) %>
 <%= f.InputTag("Migration", {label:"Migration Time Window"}) %>
 <%= f.TextArea("Comments", {rows: 3}) %>
-<button class="btn btn-success" role="submit">Save</button>
+<button class="btn btn-success" role="submit"><%=t("accept_and_save")%></button>

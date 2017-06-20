@@ -16,7 +16,7 @@ It will be used for the display name for this account.
 <div class="col-md-8 col-md-offset-2">
 <%= form_for(account, {action: accountPath({ account_id: account.ID }), method: "PUT", errors: errors}) { %>
   <%= partial("accounts/edit.html") %>
-  <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= accountPath({ account_id: account.ID }) %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 </div>
 </div>

@@ -43,7 +43,7 @@
           <div class="pull-right">
             <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-sm btn-info">View</a>
             <a href="<%= editSinglePath({ single_id: single.ID }) %>" class="btn btn-sm btn-warning">Edit</a>
-            <a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-sm btn-danger">Delete</a>
+						<a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-sm btn-danger"><%=t("delete")%></a>
           </div>
         </td>
       </tr>

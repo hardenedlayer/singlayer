@@ -40,8 +40,8 @@ All registered messangers for all singlers.
 						<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
 							%>" class="btn btn-xs btn-warning">Edit</a>
 						<a href="<%= messangerPath({ messanger_id: messanger.ID })
-							%>" data-method="DELETE" data-confirm="Are you sure?"
-							class="btn btn-xs btn-danger">Destroy</a>
+							%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
+							class="btn btn-xs btn-danger"><%=t("delete")%></a>
 					</div>
 				</td>
 			</tr>

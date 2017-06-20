@@ -1,26 +1,25 @@
 <div class="row page-header">
-	<h1><%= t("Preference") %></h1>
+	<h1><%=t("preference")%></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
-			data-content="
-			You can link new softlayer users or make a alert configuration here.
-			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+			data-content="<%=t("help.popup.mypage")%>"
+			data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 	<div>
-		Manage your service preferences here.
+		<%=t("manage_your_service_preferences_here")%>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-6">
-		<h2 class="underline">My Users</h2>
+		<h2 class="underline"><%=t("my_users")%></h2>
 		<p><a data-toggle="modal" class="btn btn-xs btn-primary"
-			data-target="#addUser">Link Cloud User</a></p>
+		data-target="#addUser"><%=t("link_cloud_user")%></a></p>
 		<table class="table table-striped table-condensed">
 			<thead>
 				<tr text-align="left">
-					<th>User</th>
-					<th>Account</th>
+					<th><%=t("user")%></th>
+					<th><%=t("account")%></th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
@@ -34,9 +33,9 @@
 					<td class="text-right">
 						<div class="btn-group">
 						<a href="<%= editUserPath({ user_id: user.ID }) %>"
-							class="btn btn-xs btn-warning">Ed</a>
+							class="btn btn-xs btn-warning"><%=t("edit")%></a>
 						<a data-toggle="tooltip" title="Not Implemented"
-							class="btn btn-xs btn-danger">Tranfer</a>
+							class="btn btn-xs btn-danger"><%=t("tranfer")%></a>
 						</div>
 					</td>
 				</tr>
@@ -47,14 +46,14 @@
 
 
 	<div class="col-md-6">
-		<h2 class="underline">My Messangers</h2>
+		<h2 class="underline"><%=t("my_messangers")%></h2>
 		<p><a data-toggle="modal" class="btn btn-xs btn-primary"
-			data-target="#addMessanger">Add Messanger</a></p>
+		data-target="#addMessanger"><%=t("add_messanger")%></a></p>
 		<table class="table table-striped table-condensed">
 			<thead>
 				<tr text-align="left">
-					<th>Level</th>
-					<th>Massenger</th>
+					<th><%=t("level")%></th>
+					<th><%=t("massenger")%></th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
@@ -68,10 +67,10 @@
 					<td class="text-right">
 						<div class="btn-group">
 						<a href="<%= editMessangerPath({ messanger_id: m.ID }) %>"
-							class="btn btn-xs btn-warning">Ed</i></a>
+							class="btn btn-xs btn-warning"><%=t("edit")%></i></a>
 						<a href="<%= messangerPath({ messanger_id: m.ID })
 							%>" data-method="DELETE" data-confirm="Are you sure?"
-							class="btn btn-xs btn-danger">Delete</a>
+							class="btn btn-xs btn-danger"><%=t("delete")%></a>
 						</div>
 					</td>
 				</tr>
@@ -79,20 +78,20 @@
 			</tbody>
 		</table>
 
-		<h4>Current Notifications</h4>
+		<h4><%=t("current_notifications")%></h4>
 		<table class="table table-condensed">
 			<tr>
-				<td style="vertical-align: top !important;">General Notification</td>
+				<td style="vertical-align: top !important;"><%=t("general_notification")%></td>
 				<td><%= single.Mail() %></td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top !important;">Notifications to...</td>
+				<td style="vertical-align: top !important;"><%=t("notifications_to")%></td>
 				<td><%= for (m) in single.NotifyTo() { %><%=
 					m.Method %> to <%= m.Value %><br/><% }
 				%></td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top !important;">Emergency Alert to...</td>
+				<td style="vertical-align: top !important;"><%=t("emergency_alert_to")%></td>
 				<td><%= for (m) in single.AlertTo() { %><%=
 					m.Method %> to <%= m.Value %><br/><% }
 				%></td>

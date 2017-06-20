@@ -16,8 +16,8 @@ Edit your registered messanger for notifications and alerts.
 <div class="col-md-8 col-md-offset-2">
 <%= form_for(messanger, {action: messangerPath({ messanger_id: messanger.ID }), method: "PUT", errors: errors}) { %>
   <%= partial("messangers/form.html") %>
-	<button class="btn btn-success" role="submit">Save</button>
-  <a href="<%= messangerPath({ messanger_id: messanger.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<button class="btn btn-success" role="submit"><%=t("save")%></button>
+	<a href="<%= messangerPath({ messanger_id: messanger.ID }) %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 </div>
 

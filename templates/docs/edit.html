@@ -12,7 +12,7 @@
 
 <%= form_for(doc, {action: docPath({ doc_id: doc.ID }), method: "PUT", errors: errors}) { %>
   <%= partial("docs/form.html") %>
-  <a href="<%= docPath({ doc_id: doc.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<a href="<%= docPath({ doc_id: doc.ID }) %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 
 </div>

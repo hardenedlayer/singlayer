@@ -39,7 +39,7 @@
 				<%= if (user_is_admin) { %><td class="unclickable">
 					<div class="pull-right">
 						<a href="<%= singlePath({ single_id: mail.SingleID }) %>" class="btn btn-xs btn-info">owner</a>
-						<a href="<%= mailPath({ mail_id: mail.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Delete</a>
+						<a href="<%= mailPath({ mail_id: mail.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-xs btn-danger"><%=t("delete")%></a>
 					</div>
 				</td><% } %>
 			</tr>

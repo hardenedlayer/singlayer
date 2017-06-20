@@ -36,7 +36,7 @@
 				<%= timeYYMD(d.UpdatedAt) %></span>
 				<%= if (user_is_admin) { %>
 				<a href="<%= editDocPath({ doc_id: d.ID }) %>" class="btn btn-xs btn-warning">E</a>
-				<a href="<%= docPath({ doc_id: d.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">D</a>
+				<a href="<%= docPath({ doc_id: d.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-xs btn-danger">D</a>
 				<% } %>
 			</li>
 			<% } %>

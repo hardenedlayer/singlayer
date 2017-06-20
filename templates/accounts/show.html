@@ -14,7 +14,7 @@
 <%= if (user_is_admin) { %>
 <ul class="list-unstyled list-inline">
   <li><a href="<%= accountsPath() %>" class="btn btn-info">Back to all Accounts</a></li>
-  <li><a href="<%= accountPath({ account_id: account.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+  <li><a href="<%= accountPath({ account_id: account.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
 </ul>
 <% } %>
 

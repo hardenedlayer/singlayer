@@ -14,7 +14,7 @@
 
 <%= form_for(mail, {action: mailsPath(), method: "POST", errors: errors}) { %>
   <%= partial("mails/form.html") %>
-  <a href="<%= mailsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<a href="<%= mailsPath() %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 
 </div>

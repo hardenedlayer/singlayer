@@ -17,8 +17,8 @@
 <div class="col-md-8 col-md-offset-2">
 <%= form_for(user, {action: usersPath(), method: "POST", errors: errors}) { %>
   <%= partial("users/form.html") %>
-	<button class="btn btn-success" role="submit">Save</button>
-  <a href="<%= mePath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<button class="btn btn-success" role="submit"><%=t("save")%></button>
+	<a href="<%= mePath() %>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 </div>
 </div>

@@ -18,7 +18,7 @@
 	<a class="btn btn-default" href="<%= mailsPath()
 		%>"><i class="fa fa-arrow-left"></i> List</a>
 	<a class="btn btn-default" href="<%= mailPath({ mail_id: mail.ID })
-		%>" data-method="DELETE" data-confirm="Are you sure?"
+		%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
 		><i class="fa fa-trash"></i> Delete</a>
 </div>
 

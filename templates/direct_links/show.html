@@ -1,15 +1,12 @@
 <div class="row page-header">
-	<h1>Direct Link <span class="sing-data"><%= dlink %></span></h1>
+	<h1><%=t("direct_link")%> <span class="sing-data"><%= dlink %></span></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
-			data-content="
-			Direct Link details.
-			You can check the progress of the process and update its status here.
-			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+			data-content="<%=t("help.popup.directlink.show")%>"
+			data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 		<i class="fa fa-exclamation-circle text-danger"
-			data-toggle="tooltip" data-placement="left"
-			title="This page supports 'Actor mode'.
-			Please check your current actor."></i>
+			data-toggle="tooltip" data-placement="left" title="<%=t("help.actormode")
+			%>"></i>
 	</div>
 </div>
 
@@ -49,11 +46,11 @@
 <table class="table table-striped table-condensed">
 	<thead>
 		<tr>
-			<th>Account</th>
-			<th>User</th>
-			<th>Single</th>
-			<th>Location</th>
-			<th>Status</th>
+			<th><%=t("account")%></th>
+			<th><%=t("user")%></th>
+			<th><%=t("single")%></th>
+			<th><%=t("location")%></th>
+			<th><%=t("status")%></th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -70,29 +67,30 @@
 					<%= if (dlink.MultiPath) {
 						%><a class="btn btn-xs btn-success" href="<%=
 						directlinkPath({ directlink_id: dlink.SiblingID })
-						%>">View Sibling</a><%
+						%>"><%=t("view_sibling")%></a><%
 					} else {
 						%><a class="btn btn-xs btn-success" href="<%=
 						directlinkAddPath({ directlink_id: dlink.ID })
-						%>">Add Redundancy</a><%
+						%>"><%=t("add_redundancy")%></a><%
 					} %>
 					<% } %>
 					<%= if ((dlink.Status == "draft") && (user_is_admin)) {
 						%><a class="btn btn-xs btn-primary" href="<%=
 							directlinkOrderPath({ directlink_id: dlink.ID })
-							%>" data-method="PUT" data-confirm="Are you sure?">Order</a><%
+							%>" data-method="PUT" data-confirm="<%=t("sure")%>">Order</a><%
 					} %>
 					<%= if (dlink.TicketId > 0) {
 						%><a class="btn btn-xs btn-primary" href="<%=
-							ticketPath({ ticket_id: dlink.TicketId }) %>">Ticket</a><%
+						ticketPath({ ticket_id: dlink.TicketId }) %>"><%=t("ticket")%></a><%
 					} %>
 					<div class="btn-group">
 						<a class="btn btn-xs btn-warning" href="<%=
-							editDirectlinkPath({ directlink_id: dlink.ID }) %>">Edit</a>
+							editDirectlinkPath({ directlink_id: dlink.ID })
+							%>"><%=t("edit")%></a>
 						<%= if (user_is_admin) {
 							%><a class="btn btn-xs btn-danger" href="<%=
 							directlinkPath({ directlink_id: dlink.ID })
-							%>" data-method="DELETE" data-confirm="Are you sure?">De</a><%
+							%>" data-method="DELETE" data-confirm="<%=t("sure")%>">De</a><%
 						} %>
 					</div>
 				</div>
@@ -131,7 +129,7 @@
 
 <div class="row">
 	<hr/>
-	<h4 class="col-md-12">Associated Ticket Updates</h4>
+	<h4 class="col-md-12"><%=t("associated_ticket_updates")%></h4>
 	<div class="" id="ticket-updates">
 	<%= for (update) in updates { %>
 		<div id="update-<%= update.ID %>" class="ticket-update well col-md-9 <%= if (update.EditorType == "USER") { %>by-user col-md-offset-2<% } else { %>by-service col-md-offset-1<% } %>">
@@ -150,7 +148,7 @@
 				title="Add progress step mark with this update"><a data-toggle="modal"
 				class="btn btn-xs btn-info setter" value="<%=
 				update.ID %>" data-target="#addProgress"><i
-				class="fa fa-chevron-circle-up"></i> Add Progress</a></span>
+				class="fa fa-chevron-circle-up"></i> <%=t("add_progress")%></a></span>
 		</div>
 		<% } %>
 	<% } %>
@@ -167,14 +165,14 @@
 <% } %>
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
 	<div class="panel-body">
-		<p><span class="label label-info">Tips</span>
-		Step 1: Please check 'Associated Ticket Updates' and update the status, add a note, and send a message to cloud provider using 'Add Progress' button.</p>
-		<p><span class="label label-info">Tips</span>
-		Step 2: If the provider give a set of IPs via 'Ticket Update', please edit the configuration using 'Edit' button and set the status as 'Configured' using 'Add Progress' button.</p>
-		<p><span class="label label-info">Tips</span>
-		Setp 3: Client side setup is required after IP assignment. Please inform to your network administrator(NSP case) or Cloud Exchange administrator after set the status as 'Configured'.</p>
-		<p><span class="label label-danger">Warning</span>
-		Do not update the ticket for 'Step 3'. It is separated task!</p>
+		<p><span class="label label-info"><%=t("tips")%></span>
+		<%=t("help.page.step_1_please_check_associated_ticket_upate")%></p>
+		<p><span class="label label-info"><%=t("tips")%></span>
+		<%=t("help.page.step_2_if_the_provier_give_a_set_of_ips")%></p>
+		<p><span class="label label-info"><%=t("tips")%></span>
+		<%=t("help.page.step_3_client_side_setup_is_required")%></p>
+		<p><span class="label label-danger"><%=t("warning")%></span>
+		<%=t("help.page.do_not_update_the_ticket_for_step_3")%></p>
 	</div>
 </div></div>
 </div>

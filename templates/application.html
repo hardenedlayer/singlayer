@@ -28,40 +28,40 @@
 				<ul class="nav navbar-nav">
 					<%= if ((user_is_admin) || (perm_landscape)) { %>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Landscape <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=t("landscape")%> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<%= computesPath() %>"><i aria-hidden="true" class="fa fa-server"></i> Computes</a></li>
+							<li><a href="<%= computesPath() %>"><i aria-hidden="true" class="fa fa-server"></i> <%=t("computes")%></a></li>
 						</ul>
 					</li>
 					<% } %>
 					<%= if ((user_is_admin) || (perm_ticket)) { %>
-					<li><a href="/tickets" class="navbar-link">Ticket</a></li>
+					<li><a href="/tickets" class="navbar-link"><%=t("ticket")%></a></li>
 					<% } %>
 					<%= if ((user_is_admin) || (perm_dlink)) { %>
-					<li><a href="/directlinks" class="navbar-link">Link</a></li>
+					<li><a href="/directlinks" class="navbar-link"><%=t("link")%></a></li>
 					<% } %>
 					<%= if ((user_is_admin) || (perm_user)) { %>
-					<li><a href="/docs" class="navbar-link">Docs</a></li>
+					<li><a href="/docs" class="navbar-link"><%=t("docs")%></a></li>
 					<% } %>
 					<%= if ((user_is_admin) || (perm_exman)) { %>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exchange <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=t("exchange")%> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<%= linksExchangePath() %>"><i aria-hidden="true" class="fa fa-link"></i> Direct Links</a></li>
+							<li><a href="<%= linksExchangePath() %>"><i aria-hidden="true" class="fa fa-link"></i> <%=t("direct_links")%></a></li>
 						</ul>
 					</li>
 					<% } %>
 					<%= if (user_is_admin) { %>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=t("admin")%> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<%= singlesPath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> Singles</a></li>
-							<li><a href="<%= usersPath() %>"><i aria-hidden="true" class="fa fa-users"></i> Users</a></li>
-							<li><a href="<%= accountsPath() %>"><i aria-hidden="true" class="fa fa-building"></i> Accounts</a></li>
-							<li><a href="<%= mailsPath() %>"><i aria-hidden="true" class="fa fa-envelope"></i> Mails</a></li>
-							<li><a href="<%= messangersPath() %>"><i aria-hidden="true" class="fa fa-bell"></i> Messangers</a></li>
+							<li><a href="<%= singlesPath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> <%=t("singles")%></a></li>
+							<li><a href="<%= usersPath() %>"><i aria-hidden="true" class="fa fa-users"></i> <%=t("users")%></a></li>
+							<li><a href="<%= accountsPath() %>"><i aria-hidden="true" class="fa fa-building"></i> <%=t("accounts")%></a></li>
+							<li><a href="<%= mailsPath() %>"><i aria-hidden="true" class="fa fa-envelope"></i> <%=t("mails")%></a></li>
+							<li><a href="<%= messangersPath() %>"><i aria-hidden="true" class="fa fa-bell"></i> <%=t("messangers")%></a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="<%= ticketsMetaNPath() %>"><i aria-hidden="true" class="fa fa-ticket"></i> Meta:Tickets</a></li>
+							<li><a href="<%= ticketsMetaNPath() %>"><i aria-hidden="true" class="fa fa-ticket"></i> <%=t("meta")%>:<%=t("tickets")%></a></li>
 						</ul>
 					</li>
 					<% } %>
@@ -78,14 +78,14 @@
 							<li><span><i aria-hidden="true" class="fa fa-star-o"></i> Administrator</span></li>
 							<% } %>
 							<li role="separator" class="divider"></li>
-							<li><a href="<%= mePath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> Me</a></li>
+							<li><a href="<%= mePath() %>"><i aria-hidden="true" class="fa fa-address-card"></i> <%=t("me")%></a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="/logout"><i aria-hidden="true" class="fa fa-sign-out"></i> Logout</a></li>
+							<li><a href="/logout"><i aria-hidden="true" class="fa fa-sign-out"></i> <%=t("logout")%></a></li>
 						</ul>
 					</li>
 <%= partial("actor_selector.html") %>
 					<% } else { %>
-					<li><a href="/login" class="navbar-link">Login</a></li>
+					<li><a href="/login" class="navbar-link"><%=t("login")%></a></li>
 					<% } %>
 				</ul>
 			</div>

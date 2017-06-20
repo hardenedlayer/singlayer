@@ -1,11 +1,9 @@
 <div class="row page-header">
-	<h1>Edit <span class="sing-data"><%= dlink %></span></h1>
+	<h1><%=t("edit")%>: <span class="sing-data"><%= dlink %></span></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
-			data-content="You can edit user's notes only.
-If you need to fix missing or incorrect information,
-please contact service administrator.
-			" data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
+			data-content="<%=t("help.popup.directlink.edit")%>"
+			data-trigger="hover" title=""><i class="fa fa-question-circle"></i></a>
 	</div>
 </div>
 
@@ -18,7 +16,8 @@ please contact service administrator.
 <% } else { %>
   <%= partial("direct_links/edit.html") %>
 <% } %>
-  <a href="<%= directlinkPath({ directlink_id: dlink.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+	<a href="<%= directlinkPath({ directlink_id: dlink.ID })
+	%>" class="btn btn-warning" data-confirm="<%=t("sure")%>"><%=t("cancel")%></a>
 <% } %>
 
 </div>

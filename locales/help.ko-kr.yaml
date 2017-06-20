@@ -1,0 +1,29 @@
+
+- id: "help.popup.mypage"
+  translation: "클라우드 사용자를 연결하거나 알림환경 설정을 할 수 있습니다."
+
+- id: "help.actormode"
+  translation: "'역할 모드'를 지원하는 페이지입니다. 선택된 역할을 확인하세요."
+- id: "help.popup.directlink.edit"
+  translation: "사용자는 Provider가 제공한 IP 정보와 사용자 노트만 수정할 수 있습니다. 주문을 생성한 이후에 누락되었거나 잘못된 내용을 발견했다면 주문 진행 전에 관리자에게 정정요청을 하시기 바랍니다."
+- id: "help.popup.directlink.list"
+  translation: "모든 Direct Link 설정이 이곳에 표시됩니다. 사용자는 새로운 연결을 주문하거나 기존 주문을 관리/확인할 수 있습니다."
+- id: "help.popup.directlink.new"
+  translation: "신규 Direct Link를 주문할 수 있습니다. Direct Link 주문과 관련된 상세 내용은 '중요 정보'를 꼭 읽어보시기 바랍니다."
+- id: "help.popup.directlink.show"
+  translation: "Direct Link 상세정보 페이지입니다. 주문 진행상황의 확인 및 사용자 진행기록 작성 등을 진행할 수 있습니다."
+
+- id: "help.page.administrative_confirmation_required"
+  translation: "주문 양식 작성 이후, 관리자의 승인이 필요합니다."
+- id: "help.page.you_can_build_your_own_hybrid_cloud"
+  translation: "Direct Link를 통하여 Hybrid Cloud를 구성하실 수 있습니다."
+
+- id: "help.page.do_not_update_the_ticket_for_step_3"
+  translation: "'단계 3'의 진행을 위해 티켓 업데이트를 하지 마십시오. 이 단계는 별도로 진행되는 단계입니다."
+- id: "help.page.step_1_please_check_associated_ticket_upate"
+  translation: "단계 1: '연결된 티켓 업데이트'를 확인하여 진행상황을 업데이트하시기 바랍니다. 사용자 편의를 위한 노트를 추가하거나 제공자에게 메시지를 남기려면 '진행상황 추가' 버튼을 이용하시기 바랍니다."
+- id: "help.page.step_2_if_the_provier_give_a_set_of_ips"
+  translation: "단계 2: Cloud 서비스 제공자가 IP를 할당하였다면 '수정' 버튼을 누르고 할당된 IP 정보를 입력하시기 바랍니다. 이후, 주문상태가 Configured로 변경되고 Exchange 관리자에게 자동 메일이 발송됩니다."
+- id: "help.page.step_3_client_side_setup_is_required"
+  translation: "단계 3: IP 할당이 완료되면 사용자측 작업이 필요합니다. Exchange 서비스의 경우, 자동으로 관리자에게 IP 정보가 전달되어 설정이 진행되며, NSP 서비스의 경우, 귀사의 네트워크 관리자에게 설정을 요청하시기 바랍니다."
+

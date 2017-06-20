@@ -13,7 +13,7 @@
 <ul class="list-unstyled list-inline">
   <li><a href="<%= messangersPath() %>" class="btn btn-info">Back to all Messangers</a></li>
   <li><a href="<%= editMessangerPath({ messanger_id: messanger.ID })%>" class="btn btn-warning">Edit</a></li>
-  <li><a href="<%= messangerPath({ messanger_id: messanger.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+	<li><a href="<%= messangerPath({ messanger_id: messanger.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
 </ul>
 <% } %>
 
@@ -43,7 +43,7 @@
 					<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
 						%>" class="btn btn-xs btn-warning">Edit</a>
 					<a href="<%= messangerPath({ messanger_id: messanger.ID })
-						%>" data-method="DELETE" data-confirm="Are you sure?"
+						%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
 						class="btn btn-xs btn-danger">Destroy</a>
 				</div>
 			</td>

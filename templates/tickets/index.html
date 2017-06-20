@@ -58,7 +58,7 @@ the user's account are shown after auto-sync. (tickets assiciated to the user)
 			<!-- sync time: <%= timeYYMDHM(ticket.LastSync) %> -->
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
-					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-xs btn-danger">De</a>
+					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-xs btn-danger">De</a>
 				</div>
 			</td><% } %>
 		</tr><% } %>
