@@ -42,6 +42,7 @@
   </tbody>
 </table>
 
+<%= if (user_is_admin) { %>
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-danger">
 	<div class="panel-heading"><h3 class="panel-title">Admin Notes</h3></div>
 	<div class="panel-body">
@@ -55,6 +56,7 @@
 		Auto cleaning of all related items from this page.</p>
 	</div>
 </div></div>
+<% } %>
 
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
 	<div class="panel-body">

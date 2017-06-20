@@ -199,13 +199,16 @@ html, body, .container {
 }
 
 .document {
+	h2, h3 {
+		margin-top: 2em;
+	}
 	margin-bottom: 50px;
 	margin: 0 auto 50px;
 	max-width: 760px;
 	img {
 		max-width: 90%;
 		width: auto;
-		margin: 5px auto;
+		margin: 30px auto;
 		display: block;
 		border: 1px solid black;
 		box-shadow: 3px 3px 6px rgba(100, 100, 100, 0.5);
