@@ -72,7 +72,7 @@ func l(c buffalo.Context, cat, lev, format string, args ...interface{}) error {
 		c.Logger().Info(message)
 	case WARN:
 		c.Logger().Warn(message)
-	case ERROR:
+	case ERR:
 		c.Logger().Error(message)
 	case FATAL:
 		c.Logger().Error(message)

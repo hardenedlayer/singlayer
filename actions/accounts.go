@@ -58,6 +58,8 @@ func (v AccountsResource) Show(c buffalo.Context) error {
 		single := getCurrentSingle(c)
 		account = single.Account(c.Param("account_id"))
 		if account == nil {
+			l(c, VIOL, ERR, "user tried to access account_id %v",
+				c.Param("account_id"))
 			return c.Error(404, errors.New("Account Not Found"))
 		}
 	}
@@ -104,8 +106,10 @@ func (v AccountsResource) Update(c buffalo.Context) error {
 	user := getCurrentSingle(c).UserByAccount(c.Param("account_id"))
 	err = account.UpdateAndSave(user)
 	if err != nil {
+		l(c, USER, ERR, "cannot save account %v", c.Param("account_id"))
 		c.Logger().Warnf("cannot save account: %v, %v", err, account)
 	}
+	l(c, USER, INFO, "user updated account_id %v", c.Param("account_id"))
 	c.Flash().Add("success", "Account was updated successfully")
 	return c.Redirect(302, "/me")
 }

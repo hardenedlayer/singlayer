@@ -25,6 +25,7 @@ func AdminPageKeeper(next buffalo.Handler) buffalo.Handler {
 		is_admin := c.Session().Get("is_admin")
 		if is_admin == false {
 			c.Flash().Add("danger", "STAFF ONLY")
+			l(c, VIOL, FATAL, "user tried to enter god place!")
 			return c.Redirect(http.StatusTemporaryRedirect, "/")
 		}
 		c.Set("theme", "admin")
@@ -83,12 +84,12 @@ func PermissionHandler(next buffalo.Handler) buffalo.Handler {
 			}
 			if p := perm[pos]; p != "" {
 				if strings.Contains(perms, p) == false {
-					c.Logger().Infof("user has no permission %v for %v", p, pos)
+					l(c, VIOL, FATAL, "violation no perm_%v for %v", p, pos)
 					c.Flash().Add("danger",
 						"You don't have permission for "+pos+"!")
 					return c.Redirect(http.StatusTemporaryRedirect, "/")
 				}
-				c.Logger().Infof("user aquires permission %v for %v", p, pos)
+				c.Logger().Debugf("user aquires permission %v for %v", p, pos)
 			}
 		}
 		err := next(c)

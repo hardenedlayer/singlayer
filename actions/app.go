@@ -25,14 +25,17 @@ var T *i18n.Translator
 
 const (
 	FATAL = "fatal"
-	ERROR = "error"
+	ERR   = "error"
 	WARN  = "warn"
 	INFO  = "info"
 
 	LOGIN    = "login"
 	LOGOUT   = "logout"
+	SYS      = "system"
+	API      = "api"
 	USER     = "user"
-	SECURITY = "security"
+	VIOL     = "violation"
+	SEC      = "security"
 	ORDER    = "order"
 	SYNC     = "sync"
 )

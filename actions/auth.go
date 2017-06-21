@@ -82,12 +82,12 @@ func AuthCallback(c buffalo.Context) error {
 
 		err = q.First(single)
 
+		l(c, USER, INFO, "new singler %v %v joined", single.Name, single.Email)
 		single.AdminMail(*single, "New Singler Registered", single.Email,
 			"admin")
 	} else {
 		return c.Error(501, errors.New("Somthing went wrong!!!"))
 	}
-	c.Logger().Infof("%v <%v> logged in.", single.Name, single.Email)
 
 	var actors []string
 	for _, a := range *single.Users() {
@@ -112,6 +112,8 @@ func AuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(401, err)
 	}
+
+	l(c, LOGIN, INFO, "singler %v <%v> logged in", single.Name, single.Email)
 	return c.Redirect(307, "/")
 }
 
@@ -120,9 +122,13 @@ func LoginHandler(c buffalo.Context) error {
 }
 
 func LogoutHandler(c buffalo.Context) error {
+	single := getCurrentSingle(c)
+	l(c, LOGOUT, INFO, "singler %v <%v> logged out", single.Name, single.Email)
+
 	session := c.Session()
 	session.Clear()
 	session.Save()
+
 	c.Flash().Add("success", "You have been successfully logged out.")
 	return c.Redirect(307, "/")
 }

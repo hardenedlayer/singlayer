@@ -51,7 +51,7 @@ func (v DirectLinksResource) List(c buffalo.Context) error {
 		} else {
 			user := single.UserByUsername(c.Value("actor"))
 			if user == nil {
-				c.Logger().Errorf("SECURITY: cannot found user for %v", actor)
+				l(c, VIOL, FATAL, "cannot found user for %v.", actor)
 				c.Flash().Add("warning", "Oops! Who are you?")
 			} else {
 				c.Logger().Debugf("single mode for %v.", actor)
@@ -105,7 +105,7 @@ func (v DirectLinksResource) Show(c buffalo.Context) error {
 func (v DirectLinksResource) Add(c buffalo.Context) error {
 	plink, err := setDirectLink(c)
 	if err != nil {
-		c.Logger().Errorf("oops! cannot get previous link: %v", err)
+		l(c, SYS, ERR, "oops! cannot get previous link: %v", err)
 	}
 	c.Logger().Infof("add redundancy link for %v", plink)
 	c.Set("plink", plink)
@@ -171,7 +171,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 	single := getCurrentSingle(c)
 	user := single.UserByUsername(c.Value("actor"))
 	if user.AccountId != dlink.AccountId || user.ID != dlink.UserId {
-		c.Logger().Errorf("SECURITY: incorrect account/user %v!=%v or %v!=%v",
+		l(c, VIOL, FATAL, "SECURITY: incorrect account/user %v!=%v or %v!=%v",
 			user.AccountId, dlink.AccountId, user.ID, dlink.UserId)
 		return err
 	}
@@ -214,7 +214,7 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 	}
 	err = tx.Save(vlan)
 	if err != nil {
-		c.Logger().Errorf("oops! cannot save vlan: %v", err)
+		l(c, SYS, FATAL, "oops! cannot save vlan: %v", err)
 		return err
 	}
 
@@ -226,11 +226,12 @@ func (v DirectLinksResource) Create(c buffalo.Context) error {
 		plink.MultiPath = true
 		err = tx.Save(plink)
 		if err != nil {
-			c.Logger().Errorf("oops! cannot save pair link: %v %v", plink, err)
+			l(c, SYS, FATAL, "oops! cannot save pair link: %v %v", plink, err)
 		}
 	}
 	single.AdminMail(*dlink, "DLink Ordered", single.Mail(), "admin", "exman")
 
+	l(c, ORDER, INFO, "order created: %v", dlink)
 	c.Flash().Add("success", "DirectLink was created successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
@@ -282,7 +283,8 @@ func (v DirectLinksResource) Update(c buffalo.Context) error {
 			progress.UpdateId = ticket.LastUpdate().ID
 		}
 		progress.Save()
-		c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)
+
+		l(c, ORDER, INFO, "order upgrade to 'configured': %v", dlink)
 	}
 
 	c.Flash().Add("success", "DirectLink was updated successfully")
@@ -302,7 +304,7 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 	}
 	ticket_id, err := models.CreateDirectLinkTicket(user, dlink)
 	if err != nil {
-		c.Logger().Errorf("ticket creation error: %v", err)
+		l(c, ORDER, ERR, "ticket creation error: %v (%v)", dlink, err)
 		return err
 	}
 	progress := models.NewProgress(dlink.ID, "ordered")
@@ -317,11 +319,11 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 	dlink.Status = "ordered"
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
 	if err != nil {
-		c.Logger().Errorf("database error: %v", err)
+		l(c, SYS, ERR, "database error: %v (%v)", dlink, err)
 		return err
 	}
 	if verrs.HasAny() {
-		c.Logger().Errorf("validation error: %v", verrs)
+		l(c, SYS, ERR, "validation error: %v (%v)", dlink, err)
 		return verrs
 	}
 	s, err := models.FindSingle(dlink.SingleID)
@@ -329,6 +331,7 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 		single.AdminMail(*dlink, "DLink Ordered", s.Mail(), "admin", "exman")
 	}
 
+	l(c, ORDER, INFO, "order upgrade to 'ordered': %v", dlink)
 	c.Flash().Add("success", "DirectLink was ordered successfully")
 	return c.Redirect(302, "/directlinks/%s", dlink.ID)
 }
@@ -372,9 +375,9 @@ func (v DirectLinksResource) Proceed(c buffalo.Context) error {
 			return c.Error(412, errors.New("Associated Ticket Not Found"))
 		}
 		u, err := ticket.AddUpdate(user, reply.Reply)
-		c.Logger().Infof("new update %v on %v created!", u.ID, u.TicketId)
+		l(c, API, INFO, "new update %v on %v created!", u.ID, u.TicketId)
 		if err != nil {
-			c.Logger().Errorf("cannot add an update: %v", err)
+			l(c, API, ERR, "cannot add an update: %v", err)
 			return err
 		}
 	} else {

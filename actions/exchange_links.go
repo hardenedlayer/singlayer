@@ -94,29 +94,31 @@ func ExchangeLinksConfirm(c buffalo.Context) error {
 	dlink.Status = "confirmed" // update directlink status first
 	verrs, err := c.Value("tx").(*pop.Connection).ValidateAndUpdate(dlink)
 	if err != nil {
-		c.Logger().Errorf("database error: %v", err)
+		l(c, SYS, ERR, "database error: %v (%v)", dlink, err)
 		return err
 	}
 	if verrs.HasAny() {
-		c.Logger().Errorf("validation error: %v", verrs)
+		l(c, SYS, ERR, "validation error: %v (%v)", dlink, err)
 		return verrs
 	}
 
 	user, err := models.FindUser(dlink.UserId) // ticket update. so long...
 	if err != nil {
+		l(c, SYS, ERR, "actor/user not found")
 		return c.Error(412, errors.New("Actor/User Not Found"))
 	}
 	ticket := dlink.Ticket()
 	if ticket == nil {
+		l(c, SYS, ERR, "associated ticket not found")
 		return c.Error(412, errors.New("Associated Ticket Not Found"))
 	}
 	u, err := ticket.AddUpdate(user, `Automated Update:
 Connection configured and confirmed by network engineer.`)
 	if err != nil {
-		c.Logger().Errorf("cannot add an update: %v", err)
+		l(c, API, ERR, "cannot add an update: %v", err)
 		return err
 	}
-	c.Logger().Infof("new update %v on %v created!", u.ID, u.TicketId)
+	l(c, API, INFO, "new update %v on %v created!", u.ID, u.TicketId)
 
 	single := getCurrentSingle(c)
 	progress := models.NewProgress(dlink.ID, "confirmed") // add a progress
@@ -124,7 +126,8 @@ Connection configured and confirmed by network engineer.`)
 	//progress.UpdateId = u.ID
 	progress.Note = "The link was configured and confirmed by network engineer."
 	progress.Save()
-	c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)
+
+	l(c, ORDER, INFO, "order upgraded to 'confirmed': %v", dlink)
 
 	s, err := models.FindSingle(dlink.SingleID) // finally shot a mail
 	if err == nil {
