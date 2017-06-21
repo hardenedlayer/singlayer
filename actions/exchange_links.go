@@ -36,7 +36,7 @@ func ExchangeLinksList(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(*dlinks) == 0 && page > 1{
+	if len(*dlinks) == 0 && page > 1 {
 		return c.Redirect(302, "/exchange/links")
 	}
 

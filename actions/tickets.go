@@ -68,7 +68,7 @@ func (v TicketsResource) List(c buffalo.Context) error {
 			tickets = ticks
 		}
 	}
-	if len(*tickets) == 0 && page > 1{
+	if len(*tickets) == 0 && page > 1 {
 		return c.Redirect(302, "/tickets")
 	}
 

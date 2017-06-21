@@ -36,7 +36,7 @@ func (v SinglesResource) List(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(*singles) == 0 && page > 1{
+	if len(*singles) == 0 && page > 1 {
 		return c.Redirect(302, "/singles")
 	}
 

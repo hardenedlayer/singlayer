@@ -39,7 +39,7 @@ func (v UsersResource) List(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(*users) == 0 && page > 1{
+	if len(*users) == 0 && page > 1 {
 		return c.Redirect(302, "/users")
 	}
 

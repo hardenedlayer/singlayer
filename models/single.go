@@ -93,9 +93,9 @@ func (s Single) NotifyTo() (messangers *Messangers) {
 		Where("level = ? AND method = ?", "notification", "mail").First(m)
 	if err != nil {
 		m = &Messanger{
-			Level: "Notification",
+			Level:  "Notification",
 			Method: "Mail",
-			Value: s.Email,
+			Value:  s.Email,
 		}
 		*messangers = append(*messangers, *m)
 	}

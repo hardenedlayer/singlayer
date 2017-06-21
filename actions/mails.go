@@ -35,7 +35,7 @@ func (v MailsResource) List(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(*mails) == 0 && page > 1{
+	if len(*mails) == 0 && page > 1 {
 		return c.Redirect(302, "/mails")
 	}
 

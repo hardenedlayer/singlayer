@@ -64,7 +64,7 @@ func (v DirectLinksResource) List(c buffalo.Context) error {
 			dlinks = dls
 		}
 	}
-	if len(*dlinks) == 0 && page > 1{
+	if len(*dlinks) == 0 && page > 1 {
 		return c.Redirect(302, "/directlinks")
 	}
 

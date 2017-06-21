@@ -37,7 +37,7 @@ func (v AccountsResource) List(c buffalo.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(*accounts) == 0 && page > 1{
+	if len(*accounts) == 0 && page > 1 {
 		return c.Redirect(302, "/accounts")
 	}
 
