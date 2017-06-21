@@ -74,10 +74,9 @@ func (d *Doc) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 
 func DocCategories() interface{} {
 	cats := &Categories{}
-	DB.RawQuery(`SELECT DISTINCT category
-		FROM docs
-		ORDER BY category`).
-		All(cats)
+	DB.RawQuery(`SELECT DISTINCT category FROM docs
+WHERE published = true
+ORDER BY category`).All(cats)
 	inspect("categories", cats)
 	return cats
 }
@@ -86,11 +85,12 @@ func DocSubjects(is_admin bool) interface{} {
 	subjects := &Subjects{}
 	if is_admin {
 		DB.RawQuery(`SELECT DISTINCT category, subject FROM docs
-			ORDER BY category, subject`).All(subjects)
+WHERE published = true
+ORDER BY category, subject`).All(subjects)
 	} else {
 		DB.RawQuery(`SELECT DISTINCT category, subject FROM docs
-			WHERE subject != 'Administration'
-			ORDER BY category, subject`).All(subjects)
+WHERE published = true AND subject != 'Administration'
+ORDER BY category, subject`).All(subjects)
 	}
 	inspect("subjects", subjects)
 	return subjects
