@@ -82,12 +82,16 @@ func DocCategories() interface{} {
 	return cats
 }
 
-func DocSubjects() interface{} {
+func DocSubjects(is_admin bool) interface{} {
 	subjects := &Subjects{}
-	DB.RawQuery(`SELECT DISTINCT category, subject
-		FROM docs
-		ORDER BY category, subject`).
-		All(subjects)
+	if is_admin {
+		DB.RawQuery(`SELECT DISTINCT category, subject FROM docs
+			ORDER BY category, subject`).All(subjects)
+	} else {
+		DB.RawQuery(`SELECT DISTINCT category, subject FROM docs
+			WHERE subject != 'Administration'
+			ORDER BY category, subject`).All(subjects)
+	}
 	inspect("subjects", subjects)
 	return subjects
 }

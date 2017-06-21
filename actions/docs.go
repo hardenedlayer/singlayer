@@ -26,7 +26,7 @@ func (v DocsResource) List(c buffalo.Context) error {
 	}
 	c.Set("docs", docs)
 	c.Set("categories", models.DocCategories())
-	c.Set("subjects", models.DocSubjects())
+	c.Set("subjects", models.DocSubjects(c.Session().Get("is_manager").(bool)))
 	return c.Render(200, r.HTML("docs/index.html"))
 }
 
