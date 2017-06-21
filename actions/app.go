@@ -23,6 +23,20 @@ var SESS_NAME = envy.Get("SESSION_NAME", "_singlayer_session")
 var app *buffalo.App
 var T *i18n.Translator
 
+const (
+	FATAL = "fatal"
+	ERROR = "error"
+	WARN  = "warn"
+	INFO  = "info"
+
+	LOGIN    = "login"
+	LOGOUT   = "logout"
+	USER     = "user"
+	SECURITY = "security"
+	ORDER    = "order"
+	SYNC     = "sync"
+)
+
 // App is where all routes and middleware for buffalo
 // should be defined. This is the nerve center of your
 // application.
@@ -106,6 +120,11 @@ func App() *buffalo.App {
 		r = &MailsResource{&buffalo.BaseResource{}}
 		g = app.Resource("/mails", r)
 		g.Use(AdminPageKeeper)
+
+		r = &LogsResource{&buffalo.BaseResource{}}
+		g = app.Resource("/logs", r)
+		//g.Use(AdminPageKeeper)
+		//g.Middleware.Skip(AdminPageKeeper, r.Update, r.Destroy)
 
 		//// services below:
 

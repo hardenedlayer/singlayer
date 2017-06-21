@@ -14,7 +14,7 @@
 - id: "massenger"
   translation: "메신저"
 - id: "level"
-  translation: "알림수준"
+  translation: "수준"
 - id: "current_notifications"
   translation: "현 알림 설정"
 - id: "general_notification"
@@ -50,4 +50,9 @@
   translation: "제한 사항"
 - id: "term_of_service"
   translation: "서비스 약관"
+
+- id: "logs"
+  translation: "로그"
+- id: "service_logs"
+  translation: "서비스 로그"
 

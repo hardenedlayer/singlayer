@@ -1,0 +1,6 @@
+- id: "applogs.created.success"
+  translation: "Applog was successfully created."
+- id: "applogs.updated.success"
+  translation: "Applog was successfully updated."
+- id: "applogs.destroyed.success"
+  translation: "Applog was successfully destroyed."

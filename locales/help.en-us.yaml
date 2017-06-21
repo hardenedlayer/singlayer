@@ -27,3 +27,6 @@
 - id: "help.page.step_3_client_side_setup_is_required"
   translation: "Step 3: Client side setup is required after IP assignment.  In case of Cloud Exchange, IP information will be sent to Exchange service engineer automatically. If your service type is NSP, you need to inform your network administrator."
 
+- id: "help.page.logs"
+  translation: "This page lists logs of singlayer service. you can dismiss read logs to hide from here."
+

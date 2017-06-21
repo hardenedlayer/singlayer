@@ -1,0 +1,10 @@
+create_table("logs", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("single_id", "uuid", {})
+	t.Column("category", "string", {})
+	t.Column("level", "string", {})
+	t.Column("message", "string", {})
+	t.Column("is_read", "bool", {"default": false})
+})
+add_index("logs", "single_id", {})
+add_index("logs", "is_read", {})

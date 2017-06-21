@@ -51,3 +51,8 @@
 - id: "term_of_service"
   translation: "Term of Service"
 
+- id: "logs"
+  translation: "Logs"
+- id: "service_logs"
+  translation: "Service Logs"
+

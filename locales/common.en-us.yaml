@@ -127,3 +127,13 @@
   translation: "Tips"
 - id: "warning"
   translation: "Warning"
+
+- id: "category"
+  translation: "Category"
+- id: "date"
+  translation: "Date"
+- id: "dismiss"
+  translation: "Dismiss"
+- id: "message"
+  translation: "Message"
+

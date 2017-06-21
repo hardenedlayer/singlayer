@@ -128,3 +128,12 @@
 - id: "warning"
   translation: "주의"
 
+- id: "category"
+  translation: "영역"
+- id: "date"
+  translation: "날짜"
+- id: "dismiss"
+  translation: "읽었음"
+- id: "message"
+  translation: "메시지"
+

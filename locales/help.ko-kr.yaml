@@ -27,3 +27,6 @@
 - id: "help.page.step_3_client_side_setup_is_required"
   translation: "단계 3: IP 할당이 완료되면 사용자측 작업이 필요합니다. Exchange 서비스의 경우, 자동으로 관리자에게 IP 정보가 전달되어 설정이 진행되며, NSP 서비스의 경우, 귀사의 네트워크 관리자에게 설정을 요청하시기 바랍니다."
 
+- id: "help.page.logs"
+  translation: "이 페이지는 서비스 로그를 표시합니다. 목록에서 감추기 위해서 읽음으로 표시할 수 있습니다."
+
