@@ -162,6 +162,9 @@ html, body, .container {
 	}
 }
 
+.on-air {
+	font-weight: bold;
+}
 .not-released {
 	color: lighten($color-default, 40%);
 }

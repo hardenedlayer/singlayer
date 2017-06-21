@@ -37,7 +37,8 @@
 				%>"><%= dlink %></a></td>
 			<td>XCR<%= dlink.Router %>.v<%= dlink.VlanId %></td>
 			<td><%= dlink.CERIP %></td>
-			<td><%= capitalize(dlink.Status) %></td>
+			<td class="<%= if (dlink.Status != "configured") { %>on-air<%
+				} %>"><%= capitalize(dlink.Status) %></td>
 			<td class="unclickable">
 				<div class="pull-right">
 					<%= if (dlink.Status != "draft") { %>
