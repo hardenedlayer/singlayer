@@ -134,16 +134,32 @@ func pagerHelper(pos, pp, end int) template.HTML {
 		str += fmt.Sprintf(`<li><a href="?page=%v&pp=%v">%v</a></li>`,
 			end, pp, end)
 	}
+
+	prev := pos - 1
+	next := pos + 1
+	prev_href := fmt.Sprintf(`?page=%v&pp=%v`, prev, pp)
+	next_href := fmt.Sprintf(`?page=%v&pp=%v`, next, pp)
+	prev_class := ""
+	next_class := ""
+	if next > end {
+		next_class = "disabled"
+		next_href = ""
+	}
+	if prev == 0 {
+		prev_class = "disabled"
+		prev_href = ""
+	}
+
 	return template.HTML(`<nav aria-label="Page navigation" class="text-center">
 	<ul class="pagination">
-		<li>
-			<a href="#" aria-label="Previous">
+		<li class="` + prev_class + `">
+			<a href="` + prev_href + `" aria-label="Previous">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
 ` + str +
-		`		<li>
-			<a href="#" aria-label="Next">
+		`		<li class="` + next_class + `">
+			<a href="` + next_href + `" aria-label="Next">
 				<span aria-hidden="true">&raquo;</span>
 			</a>
 		</li>

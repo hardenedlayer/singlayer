@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type ComputesResource struct {
@@ -18,11 +19,11 @@ func (v ComputesResource) List(c buffalo.Context) error {
 
 	pager := &pop.Paginator{}
 	page, err := strconv.Atoi(c.Param("page"))
-	if err != nil {
+	if err != nil || page < 1 {
 		page = 1
 	}
 	pp, err := strconv.Atoi(c.Param("pp"))
-	if err != nil {
+	if err != nil || pp < 5 {
 		pp = 20
 	}
 	if pp > 100 {

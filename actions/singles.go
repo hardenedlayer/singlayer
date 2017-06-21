@@ -1,9 +1,12 @@
 package actions
 
 import (
+	"strconv"
+
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type SinglesResource struct {
@@ -12,12 +15,32 @@ type SinglesResource struct {
 
 // ADMIN PROTECTED
 func (v SinglesResource) List(c buffalo.Context) error {
-	tx := c.Value("tx").(*pop.Connection)
 	singles := &models.Singles{}
-	err := tx.All(singles)
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil || pp < 5 {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	q := tx.Paginate(page, pp)
+	err = q.Order("permissions").All(singles)
+	pager = q.Paginator
 	if err != nil {
 		return err
 	}
+	if len(*singles) == 0 && page > 1{
+		return c.Redirect(302, "/singles")
+	}
+
+	c.Set("pager", pager)
 	c.Set("singles", singles)
 	return c.Render(200, r.HTML("singles/index.html"))
 }

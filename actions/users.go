@@ -2,12 +2,14 @@ package actions
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
 	"github.com/satori/go.uuid"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type UsersResource struct {
@@ -16,12 +18,32 @@ type UsersResource struct {
 
 // ADMIN PROTECTED
 func (v UsersResource) List(c buffalo.Context) error {
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil || pp < 5 {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
 	tx := c.Value("tx").(*pop.Connection)
 	users := &models.Users{}
-	err := tx.Order("username asc").All(users)
+	q := tx.Paginate(page, pp)
+	err = q.Order("username asc").All(users)
+	pager = q.Paginator
 	if err != nil {
 		return err
 	}
+	if len(*users) == 0 && page > 1{
+		return c.Redirect(302, "/users")
+	}
+
+	c.Set("pager", pager)
 	c.Set("users", users)
 	return c.Render(200, r.HTML("users/index.html"))
 }

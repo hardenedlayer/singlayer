@@ -21,11 +21,11 @@ func (v TicketsResource) List(c buffalo.Context) error {
 
 	pager := &pop.Paginator{}
 	page, err := strconv.Atoi(c.Param("page"))
-	if err != nil {
+	if err != nil || page < 1 {
 		page = 1
 	}
 	pp, err := strconv.Atoi(c.Param("pp"))
-	if err != nil {
+	if err != nil || pp < 5 {
 		pp = 20
 	}
 	if pp > 100 {
@@ -68,6 +68,10 @@ func (v TicketsResource) List(c buffalo.Context) error {
 			tickets = ticks
 		}
 	}
+	if len(*tickets) == 0 && page > 1{
+		return c.Redirect(302, "/tickets")
+	}
+
 	addTicketHelpers(c)
 	c.Set("pager", pager)
 	c.Set("tickets", tickets)

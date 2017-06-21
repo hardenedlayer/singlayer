@@ -145,15 +145,16 @@ func (u *User) Tickets(page, pp int) (*Tickets, *pop.Paginator) {
 }
 
 // DirectLinks() returns all directlinks from the user's account.
-func (u *User) DirectLinks() (dlinks *DirectLinks) {
-	dlinks = &DirectLinks{}
-	err := DB.Where("account_id = ?", u.AccountId).
+func (u *User) DirectLinks(page, pp int) (*DirectLinks, *pop.Paginator) {
+	dlinks := &DirectLinks{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.Where("account_id = ?", u.AccountId).
 		Order("direct_links.created_at desc").
 		All(dlinks)
 	if err != nil {
-		return nil
+		return nil, nil
 	}
-	return
+	return dlinks, q.Paginator
 }
 
 // Computes() returns all compute instances from user's account.

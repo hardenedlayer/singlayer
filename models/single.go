@@ -264,13 +264,15 @@ func (s *Single) DirectLinks() *DirectLinks {
 }
 
 // MyDirectLinks() returns all directlinks associated to the single directly.
-func (s *Single) MyDirectLinks() (dlinks *DirectLinks) {
-	dlinks = &DirectLinks{}
-	err := DB.BelongsTo(s).Order("account_id, line_number").All(dlinks)
+func (s *Single) MyDirectLinks(page, pp int) (*DirectLinks, *pop.Paginator) {
+	dlinks := &DirectLinks{}
+	q := pop.Q(DB).Paginate(page, pp)
+	err := q.BelongsTo(s).Order("account_id, line_number").All(dlinks)
 	if err != nil {
-		return nil
+		log.Errorf("Err: %v", err)
+		return nil, nil
 	}
-	return
+	return dlinks, q.Paginator
 }
 
 // Computes() returns all compute instances associated with this single.

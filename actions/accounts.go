@@ -2,10 +2,12 @@ package actions
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type AccountsResource struct {
@@ -14,12 +16,32 @@ type AccountsResource struct {
 
 // ADMIN PROTECTED
 func (v AccountsResource) List(c buffalo.Context) error {
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil || pp < 5 {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
 	tx := c.Value("tx").(*pop.Connection)
 	accounts := &models.Accounts{}
-	err := tx.All(accounts)
+	q := tx.Paginate(page, pp)
+	err = q.Order("id").All(accounts)
+	pager = q.Paginator
 	if err != nil {
 		return err
 	}
+	if len(*accounts) == 0 && page > 1{
+		return c.Redirect(302, "/accounts")
+	}
+
+	c.Set("pager", pager)
 	c.Set("accounts", accounts)
 	return c.Render(200, r.HTML("accounts/index.html"))
 }

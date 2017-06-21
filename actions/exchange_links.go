@@ -2,24 +2,45 @@ package actions
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 // PROTECTED BY GROUP PROTECTOR
 func ExchangeLinksList(c buffalo.Context) error {
 	dlinks := &models.DirectLinks{}
-	q := pop.Q(c.Value("tx").(*pop.Connection)).Where("type = 'cloud'")
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil || pp < 5 {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
+	q := pop.Q(c.Value("tx").(*pop.Connection)).Paginate(page, pp)
 	for_all := c.Param("all") == "true"
 	if !for_all {
 		q = q.Where("status = 'configured'")
 	}
-	err := q.Order("created_at desc").All(dlinks)
+	err = q.Where("type = 'cloud'").Order("created_at desc").All(dlinks)
+	pager = q.Paginator
 	if err != nil {
 		return err
 	}
+	if len(*dlinks) == 0 && page > 1{
+		return c.Redirect(302, "/exchange/links")
+	}
+
+	c.Set("pager", pager)
 	c.Set("dlinks", dlinks)
 	c.Set("theme", "dark")
 	return c.Render(200, r.HTML("exchange_links/index.html"))

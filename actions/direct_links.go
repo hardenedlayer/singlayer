@@ -2,10 +2,12 @@ package actions
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type DirectLinksResource struct {
@@ -18,19 +20,34 @@ type Reply struct {
 
 func (v DirectLinksResource) List(c buffalo.Context) error {
 	dlinks := &models.DirectLinks{}
+	pager := &pop.Paginator{}
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	pp, err := strconv.Atoi(c.Param("pp"))
+	if err != nil || pp < 5 {
+		pp = 20
+	}
+	if pp > 100 {
+		pp = 100
+	}
+
 	if c.Session().Get("is_admin").(bool) {
 		tx := c.Value("tx").(*pop.Connection)
-		err := tx.Order("created_at desc").All(dlinks)
+		q := tx.Paginate(page, pp)
+		err := q.Order("created_at desc").All(dlinks)
+		pager = q.Paginator
 		if err != nil {
 			return err
 		}
 	} else {
-		ticks := &models.DirectLinks{}
+		dls := &models.DirectLinks{}
 		single := getCurrentSingle(c)
 		actor := c.Value("actor").(string)
 		if actor == "All" {
 			c.Logger().Debugf("multi mode for single!")
-			ticks = single.MyDirectLinks()
+			dls, pager = single.MyDirectLinks(page, pp)
 		} else {
 			user := single.UserByUsername(c.Value("actor"))
 			if user == nil {
@@ -38,15 +55,20 @@ func (v DirectLinksResource) List(c buffalo.Context) error {
 				c.Flash().Add("warning", "Oops! Who are you?")
 			} else {
 				c.Logger().Debugf("single mode for %v.", actor)
-				ticks = user.DirectLinks()
+				dls, pager = user.DirectLinks(page, pp)
 			}
 		}
-		if ticks == nil {
+		if dls == nil {
 			c.Flash().Add("danger", "Oops! cannot search on directlinks!")
 		} else {
-			dlinks = ticks
+			dlinks = dls
 		}
 	}
+	if len(*dlinks) == 0 && page > 1{
+		return c.Redirect(302, "/directlinks")
+	}
+
+	c.Set("pager", pager)
 	c.Set("dlinks", dlinks)
 	return c.Render(200, r.HTML("direct_links/index.html"))
 }

@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/hardenedlayer/singlayer/models"
 	"github.com/markbates/pop"
+
+	"github.com/hardenedlayer/singlayer/models"
 )
 
 type MessangersResource struct {
@@ -17,11 +18,11 @@ type MessangersResource struct {
 func (v MessangersResource) List(c buffalo.Context) error {
 	pager := &pop.Paginator{}
 	page, err := strconv.Atoi(c.Param("page"))
-	if err != nil {
+	if err != nil || page < 1 {
 		page = 1
 	}
 	pp, err := strconv.Atoi(c.Param("pp"))
-	if err != nil {
+	if err != nil || pp < 5 {
 		pp = 20
 	}
 	if pp > 100 {
@@ -32,10 +33,13 @@ func (v MessangersResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	q := tx.Paginate(page, pp)
 	err = q.Order("single_id, method").All(messangers)
+	pager = q.Paginator
 	if err != nil {
 		return err
 	}
-	pager = q.Paginator
+	if len(*messangers) == 0 && page > 1{
+		return c.Redirect(302, "/messangers")
+	}
 
 	c.Set("pager", pager)
 	c.Set("messangers", messangers)
