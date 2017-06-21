@@ -126,8 +126,7 @@ func App() *buffalo.App {
 
 		r = &LogsResource{&buffalo.BaseResource{}}
 		g = app.Resource("/logs", r)
-		//g.Use(AdminPageKeeper)
-		//g.Middleware.Skip(AdminPageKeeper, r.Update, r.Destroy)
+		g.Use(AdminPageKeeper)
 
 		//// services below:
 
