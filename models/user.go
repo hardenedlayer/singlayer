@@ -170,6 +170,21 @@ func (u User) Computes(page, pp int) (*Computes, *pop.Paginator) {
 	return comps, q.Paginator
 }
 
+func (u User) CountTickets() (count int) {
+	count, _ = DB.Where("assigned_user_id = ?", u.ID).Count(&Ticket{})
+	return
+}
+
+func (u User) CountAccountTickets() (count int) {
+	count, _ = DB.Where("account_id = ?", u.AccountId).Count(&Ticket{})
+	return
+}
+
+func (u User) CountComputes() (count int) {
+	count, _ = DB.BelongsTo(&u).Count(&CompUserMap{})
+	return
+}
+
 // lastSyncTimeCompute() returns last sync time of model Compute.
 func (u *User) lastSyncTimeCompute() time.Time {
 	m := &CompUserMap{}

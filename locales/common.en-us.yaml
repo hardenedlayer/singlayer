@@ -9,6 +9,9 @@
   translation: "Edit"
 - id: "save"
   translation: "Save"
+- id: "back_to_list"
+  translation: "Back to List"
+
 - id: "accept"
   translation: "Accept"
 - id: "accept_and_save"
@@ -136,4 +139,17 @@
   translation: "Dismiss"
 - id: "message"
   translation: "Message"
+
+- id: "brand_id"
+  translation: "Brand ID"
+- id: "company_name"
+  translation: "Company Name"
+- id: "contact"
+  translation: "Contact"
+- id: "last_batch"
+  translation: "Last Batch"
+- id: "master_user"
+  translation: "Master User"
+- id: "username"
+  translation: "Username"
 

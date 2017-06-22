@@ -25,27 +25,25 @@ All registered messangers for all singlers.
 		</tr>
 	</thead>
 	<tbody>
-		<%= for (messanger) in messangers { %>
-			<tr class="clickable">
-				<td class="unclickable"><a href="<%=
-					singlePath({ single_id: messanger.SingleID })
-					%>"><%= messanger.Single() %></a></td>
-				<td><a id="link" href="<%= messangerPath({ messanger_id: messanger.ID })
-					%>"><%= messanger.Name %></a></td>
-				<td><%= messanger.Level %></td>
-				<td><%= messanger.Method %></td>
-				<td><%= messanger.Value %></td>
-				<td class="unclickable">
-					<div class="pull-right btn-group">
-						<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
-							%>" class="btn btn-xs btn-warning">Edit</a>
-						<a href="<%= messangerPath({ messanger_id: messanger.ID })
-							%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
-							class="btn btn-xs btn-danger"><%=t("delete")%></a>
-					</div>
-				</td>
-			</tr>
-		<% } %>
+		<%= for (messanger) in messangers { %><tr class="clickable">
+			<td class="unclickable"><a href="<%=
+				singlePath({ single_id: messanger.SingleID })
+				%>"><%= messanger.Single() %></a></td>
+			<td><a id="link" href="<%= messangerPath({ messanger_id: messanger.ID })
+				%>"><%= messanger.Name %></a></td>
+			<td><%= messanger.Level %></td>
+			<td><%= messanger.Method %></td>
+			<td><%= messanger.Value %></td>
+			<td class="unclickable">
+				<div class="pull-right btn-group">
+					<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
+						%>" class="btn btn-xs btn-warning"><%=t("edit")%></a>
+					<a href="<%= messangerPath({ messanger_id: messanger.ID })
+						%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
+						class="btn btn-xs btn-danger"><%=t("delete")%></a>
+				</div>
+			</td>
+		</tr><% } %>
 	</tbody>
 </table>
 

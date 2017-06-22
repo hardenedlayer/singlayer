@@ -18,7 +18,7 @@
 
 <div class="row">
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed table-hover">
   <thead>
     <th>&nbsp;</th>
     <th>Name</th>
@@ -31,19 +31,23 @@
   </thead>
   <tbody>
     <%= for (single) in singles { %>
-      <tr>
+      <tr class="clickable">
 				<td><img class="icon24" src="<%= single.AvatarUrl %>"></td>
-				<td><a href="<%= singlePath({ single_id: single.ID }) %>"><%= single %></a></td>
+				<td><a id="link" href="<%= singlePath({ single_id: single.ID })
+						%>"><%= single %></a></td>
         <td><%= single.Email %></td>
-				<td><span data-toggle="tooltip" data-placement="top" title="<%= single.UserID %>"><%= single.Provider %></span></td>
+				<td><span data-toggle="tooltip" data-placement="top" title="<%=
+						single.UserID %>"><%= single.Provider %></span></td>
         <td><%= single.Organization %></td>
         <td><%= single.AccountCount() %></td>
         <td><%= single.Permissions %></td>
-        <td>
-          <div class="pull-right">
-            <a href="<%= singlePath({ single_id: single.ID }) %>" class="btn btn-sm btn-info">View</a>
-            <a href="<%= editSinglePath({ single_id: single.ID }) %>" class="btn btn-sm btn-warning">Edit</a>
-						<a href="<%= singlePath({ single_id: single.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-sm btn-danger"><%=t("delete")%></a>
+        <td class="unclickable">
+          <div class="pull-right btn-group">
+            <a href="<%= editSinglePath({ single_id: single.ID })
+							%>" class="btn btn-sm btn-warning"><%=t("edit")%></a>
+						<a href="<%= singlePath({ single_id: single.ID })
+							%>" data-method="DELETE" data-confirm="<%=t("sure")
+							%>" class="btn btn-sm btn-danger"><%=t("delete")%></a>
           </div>
         </td>
       </tr>

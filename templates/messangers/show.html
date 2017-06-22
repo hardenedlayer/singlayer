@@ -8,14 +8,18 @@
 </div>
 
 <div class="row">
+<p class="btn-group pull-right">
+	<a class="btn btn-default" href="<%= messangersPath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("list")%></a>
+	<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
+	%>" class="btn btn-default"><i class="fa fa-edit"></i> <%=t("edit")%></a>
+	<a href="<%= messangerPath({ messanger_id: messanger.ID })
+		%>" data-method="DELETE" data-confirm="<%=t("sure")
+		%>" class="btn btn-default"><i class="fa fa-trash"></i> <%=t("delete")%></a>
+</p>
+</div>
 
-<%= if (user_is_admin) { %>
-<ul class="list-unstyled list-inline">
-  <li><a href="<%= messangersPath() %>" class="btn btn-info">Back to all Messangers</a></li>
-  <li><a href="<%= editMessangerPath({ messanger_id: messanger.ID })%>" class="btn btn-warning">Edit</a></li>
-	<li><a href="<%= messangerPath({ messanger_id: messanger.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
-</ul>
-<% } %>
+<div class="row">
 
 <table class="table table-striped table-condensed table-hover">
 	<thead>
@@ -25,7 +29,6 @@
 			<th>Level</th>
 			<th>Method</th>
 			<th>Value</th>
-			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,19 +41,12 @@
 			<td><%= messanger.Level %></td>
 			<td><%= messanger.Method %></td>
 			<td><%= messanger.Value %></td>
-			<td class="unclickable">
-				<div class="pull-right btn-group">
-					<a href="<%= editMessangerPath({ messanger_id: messanger.ID })
-						%>" class="btn btn-xs btn-warning">Edit</a>
-					<a href="<%= messangerPath({ messanger_id: messanger.ID })
-						%>" data-method="DELETE" data-confirm="<%=t("sure")%>"
-						class="btn btn-xs btn-danger">Destroy</a>
-				</div>
-			</td>
 		</tr>
 	</tbody>
 </table>
 
-<div>Add Messaging History Here</div>
+<div class="col-md-12">
+	Add Messaging History Here
+</div>
 
 </div>

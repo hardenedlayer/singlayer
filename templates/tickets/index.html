@@ -1,5 +1,5 @@
 <div class="row page-header">
-	<h1>Tickets for <span class="sing-data"><%= actor %></span></h1>
+	<h1><%=t("tickets")%>: <span class="sing-data"><%= actor %></span></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
@@ -58,7 +58,9 @@ the user's account are shown after auto-sync. (tickets assiciated to the user)
 			<!-- sync time: <%= timeYYMDHM(ticket.LastSync) %> -->
 			<%= if (user_is_admin) { %><td>
 				<div class="pull-right">
-					<a href="<%= ticketPath({ ticket_id: ticket.ID }) %>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-xs btn-danger">De</a>
+					<a href="<%= ticketPath({ ticket_id: ticket.ID })
+						%>" data-method="DELETE" data-confirm="<%=t("sure")
+						%>" class="btn btn-xs btn-danger"><%=t("delete")%></a>
 				</div>
 			</td><% } %>
 		</tr><% } %>

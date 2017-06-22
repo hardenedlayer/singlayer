@@ -9,6 +9,9 @@
   translation: "수정"
 - id: "save"
   translation: "저장"
+- id: "back_to_list"
+  translation: "목록으로"
+
 - id: "accept"
   translation: "수락"
 - id: "accept_and_save"
@@ -136,4 +139,17 @@
   translation: "읽었음"
 - id: "message"
   translation: "메시지"
+
+- id: "brand_id"
+  translation: "Brand ID"
+- id: "company_name"
+  translation: "회사명"
+- id: "contact"
+  translation: "연락처"
+- id: "last_batch"
+  translation: "마지막 동기화"
+- id: "master_user"
+  translation: "대표 사용자"
+- id: "username"
+  translation: "사용자명"
 

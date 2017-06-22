@@ -1,39 +1,61 @@
 <div class="row page-header">
-	<h1>User <span class="sing-data"><%= user.Username %></span></h1>
+	<h1><%=t("user")%> <span class="sing-data"><%= user.Username %></span></h1>
 </div>
 
 <div class="row">
-<div class="col-md-12">
-
-<ul class="list-unstyled list-inline">
+<p class="btn-group pull-right">
 	<%= if (user_is_admin) { %>
-  <li><a href="<%= usersPath() %>" class="btn btn-info">Back to all Users</a></li>
+	<a class="btn btn-default" href="<%= usersPath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("list")%></a>
 	<% } else { %>
-  <li><a href="<%= mePath() %>" class="btn btn-info">My Page</a></li>
+	<a class="btn btn-default" href="<%= mePath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("me")%></a>
 	<% } %>
-  <li><a href="<%= editUserPath({ user_id: user.ID })%>" class="btn btn-warning">Edit</a></li>
-	<li><a href="<%= userPath({ user_id: user.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
-</ul>
-
-<table class="table table-striped">
-  <tbody>
-    <tr><td>ID</td><td><%= user.ID %></td></tr>
-    <tr><td>AccountId</td><td><%= user.AccountId %></td></tr>
-    <tr><td>ParentId</td><td><%= user.ParentId %></td></tr>
-    <tr><td>Username</td><td><%= user.Username %></td></tr>
-    <tr><td>APIKey</td><td><%= user.APIKey %></td></tr>
-    <tr><td>CompanyName</td><td><%= user.CompanyName %></td></tr>
-    <tr><td>Contact</td><td><%= user.Contact() %></td></tr>
-    <tr><td>OpenTicketCount</td><td><%= user.OpenTicketCount %></td></tr>
-    <tr><td>TicketCount</td><td><%= user.TicketCount %></td></tr>
-    <tr><td>VirtualGuestCount</td><td><%= user.VirtualGuestCount %></td></tr>
-    <tr><td>HardwareCount</td><td><%= user.HardwareCount %></td></tr>
-		<%= if (user_is_admin) { %>
-    <tr><td>Single</td><td><%= user.Single() %> (<%= user.SingleID %>)</td></tr>
-    <tr><td>LastBatch</td><td><%= user.LastBatch %></td></tr>
-		<% } %>
-  </tbody>
-</table>
-
+	<a href="<%= editUserPath({ user_id: user.ID })
+	%>" class="btn btn-default"><i class="fa fa-edit"></i> <%=t("edit")%></a>
+	<a href="<%= userPath({ user_id: user.ID })
+		%>" data-method="DELETE" data-confirm="<%=t("sure")
+		%>" class="btn btn-default"><i class="fa fa-trash"></i> <%=t("delete")%></a>
+</p>
 </div>
+
+<div class="row">
+<div class="col-md-6">
+	<table class="table table-striped">
+		<tbody>
+			<tr><td><%=t("username")%></td><td><%= user.Username %></td></tr>
+			<tr><td>ID</td><td><%= user.ID %></td></tr>
+			<tr><td>Parent ID</td><td><%= user.ParentId %></td></tr>
+			<tr><td><%=t("account")%></td><td><%= user.Account()
+					%> (<%= user.AccountId %>)</td></tr>
+			<tr><td><%=t("company_name")%></td><td><%= user.CompanyName %></td></tr>
+			<tr><td><%=t("contact")%></td><td><%= user.Contact() %></td></tr>
+			<%= if (user_is_admin) { %>
+			<tr class="admin-field"><td><%=t("single")%></td><td><%=
+					user.Single() %></td></tr>
+			<tr class="admin-field"><td><%=t("last_batch")%></td><td><%=
+					user.LastBatch %></td></tr>
+			<% } %>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-md-6">
+	<table class="table table-striped">
+		<tbody>
+			<tr><td><%=t("tickets")%></td><td><%=
+				user.TicketCount
+				%>, Synced: <%= user.CountTickets() %> (Account Total: <%=
+				user.CountAccountTickets() %>)</td></tr>
+			<tr><td><%=t("computes")%></td><td><%=
+				user.VirtualGuestCount + user.HardwareCount
+				%>, Synced: <%= user.CountComputes() %></td></tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-md-12">
+	API Key: <span class="text-muted"><%= user.APIKey %></span>
+</div>
+
 </div>

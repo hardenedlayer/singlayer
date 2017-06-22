@@ -10,12 +10,13 @@
 </div>
 
 <div class="row">
+<p class="btn-group pull-right">
+	<a class="btn btn-default" href="<%= ticketsPath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("list")%></a>
+</p>
+</div>
 
-<%= if (user_is_admin) { %>
-<ul class="list-unstyled list-inline">
-	<li><a href="<%= ticketsPath() %>" class="btn btn-info">Back to List</a></li>
-</ul>
-<% } %>
+<div class="row">
 
 <table class="table table-striped">
 	<thead>

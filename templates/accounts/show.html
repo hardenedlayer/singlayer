@@ -1,5 +1,5 @@
 <div class="row page-header">
-	<h1>Account <span class="sing-data"><%= account %></span></h1>
+	<h1><%=t("account")%> <span class="sing-data"><%= account %></span></h1>
 	<div class="page-help">
 		<a href="#" data-toggle="popover" data-placement="left"
 			data-content="
@@ -9,35 +9,39 @@
 </div>
 
 <div class="row">
-<div class="col-md-12">
+<p class="btn-group pull-right">
+	<%= if (user_is_admin) { %>
+	<a class="btn btn-default" href="<%= accountsPath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("list")%></a>
+	<% } else { %>
+	<a class="btn btn-default" href="<%= mePath()
+		%>"><i class="fa fa-arrow-left"></i> <%=t("me")%></a>
+	<% } %>
+	<a href="<%= editAccountPath({ account_id: account.ID })
+	%>" class="btn btn-default"><i class="fa fa-edit"></i> <%=t("edit")%></a>
+	<a href="<%= accountPath({ account_id: account.ID })
+		%>" data-method="DELETE" data-confirm="<%=t("sure")
+		%>" class="btn btn-default"><i class="fa fa-trash"></i> <%=t("delete")%></a>
+</p>
+</div>
 
-<%= if (user_is_admin) { %>
-<ul class="list-unstyled list-inline">
-  <li><a href="<%= accountsPath() %>" class="btn btn-info">Back to all Accounts</a></li>
-  <li><a href="<%= accountPath({ account_id: account.ID })%>" data-method="DELETE" data-confirm="<%=t("sure")%>" class="btn btn-danger"><%=t("delete")%></a>
-</ul>
-<% } %>
-
+<div class="row">
 <table class="table table-striped">
   <thead>
     <th>ID</th>
-    <th>Brand ID</th>
-    <th>Company Name</th>
-    <th>Master User</th>
-    <th>LastBatch</th>
-    <th></th>
+		<th><%=t("company_name")%></th>
+		<th><%=t("master_user")%></th>
+		<th><%=t("last_batch")%></th>
   </thead>
   <tbody>
     <tr>
       <td><%= account.ID %></td>
-      <td><%= account.BrandId %></td>
       <td><%= account.CompanyName %></td>
       <td><%= account.FirstName %> <%= account.LastName %>
 			&lt;<%= account.Email %>&gt;</td>
       <td><span data-toggle="tooltip" data-placement="top"
 					title="<%= account.LastBatch %>"><%=
 					timeYYMDHMS(account.LastBatch) %></td>
-			<td><a href="<%= editAccountPath({ account_id: account.ID })%>" class="btn btn-xs btn-warning">Edit</a></td>
     </tr>
   </tbody>
 </table>
@@ -60,10 +64,7 @@
 
 <div class="col-md-8 col-md-offset-2"><div class="panel panel-info">
 	<div class="panel-body">
-		<p><span class="label label-info">Tip</span>
-		Some tips here!</p>
 	</div>
 </div></div>
 
-</div>
 </div>

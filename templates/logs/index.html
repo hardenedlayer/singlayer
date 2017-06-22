@@ -27,7 +27,8 @@
 		<%= for (log) in logs { %>
 		<tr>
 			<td><%= timeYYMDHMS(log.CreatedAt) %></td>
-			<td><%= log.Single() %></td>
+			<td><a href="<%= singlePath({ single_id: log.SingleID })
+					%>"><%= log.Single() %></a></td>
 			<td><%= log.Category %></td>
 			<td><%= log.Level %></td>
 			<td><%= log.Message %></td>

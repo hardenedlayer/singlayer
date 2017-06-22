@@ -73,6 +73,17 @@ html, body, .container {
 
 //// my widgets
 
+tr.admin-field > td {
+	background: linear-gradient(to bottom, transparent 90%, #fb8 100%);
+	border-bottom: 1px solid #b85;
+	&:last-child {
+		//background-image: url(/assets/images/admin-field.png);
+		background-repeat: no-repeat;
+		background-position: right;
+		background-size: contain;
+	}
+}
+
 .icon96 {
 	width: 96px; height: 96px;
 	&.round { border-radius: 48px; }

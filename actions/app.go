@@ -107,7 +107,7 @@ func App() *buffalo.App {
 		g = app.Resource("/messangers", r)
 		g.Use(AdminPageKeeper)
 		g.Middleware.Skip(AdminPageKeeper,
-			r.Show, r.New, r.Create, r.Edit, r.Update, r.Destroy)
+			r.Create, r.Edit, r.Update, r.Destroy)
 
 		r = &UsersResource{&buffalo.BaseResource{}}
 		g = app.Resource("/users", r)
