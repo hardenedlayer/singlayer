@@ -132,7 +132,7 @@ func (s Single) Mail() (mail string) {
 // Users() returns instance of Users struct.
 func (s *Single) Users() (users *Users) {
 	users = &Users{}
-	err := DB.BelongsTo(s).All(users)
+	err := DB.BelongsTo(s).Order("username").All(users)
 	if err != nil {
 		return nil
 	}

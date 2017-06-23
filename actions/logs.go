@@ -69,15 +69,15 @@ func l(c buffalo.Context, cat, lev, format string, args ...interface{}) error {
 
 	switch lev {
 	case INFO:
-		c.Logger().Info(message)
+		c.Logger().Info("APPLOG: " + message)
 	case WARN:
-		c.Logger().Warn(message)
+		c.Logger().Warn("APPLOG: " + message)
 	case ERR:
-		c.Logger().Error(message)
+		c.Logger().Error("APPLOG: " + message)
 	case FATAL:
-		c.Logger().Error(message)
+		c.Logger().Error("APPLOG: " + message)
 	default:
-		c.Logger().Errorf("LEVEL NOT SET: %v", message)
+		c.Logger().Errorf("APPLOG, LEVEL_NOT_SET: %v", message)
 	}
 
 	log := &models.Log{

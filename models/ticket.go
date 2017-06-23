@@ -120,6 +120,11 @@ func (t *Ticket) AddUpdate(user *User, entry string) (*TicketUpdate, error) {
 	sl_update.Entry = sl.String(entry)
 	inspect("new update", sl_update)
 
+	if is_test {
+		log.Infof("XXXXXXXXXXXXXXXXXXXXXXX EVERYTHING IS GOOD! BUT TEST.")
+		return &TicketUpdate{}, nil
+	}
+
 	service := services.GetTicketService(sess)
 	upds, err := service.Id(t.ID).AddUpdate(&sl_update, nil)
 	if err != nil {
