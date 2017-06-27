@@ -6,6 +6,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/pop"
+	"github.com/satori/go.uuid"
 
 	"github.com/hardenedlayer/singlayer/models"
 )
@@ -80,8 +81,14 @@ func l(c buffalo.Context, cat, lev, format string, args ...interface{}) error {
 		c.Logger().Errorf("APPLOG, LEVEL_NOT_SET: %v", message)
 	}
 
+	single_id := uuid.UUID{}
+	single := getCurrentSingle(c)
+	if single != nil {
+		single_id = single.ID
+	}
+
 	log := &models.Log{
-		SingleID: getCurrentSingle(c).ID,
+		SingleID: single_id,
 		Category: cat,
 		Level:    lev,
 		Message:  message,

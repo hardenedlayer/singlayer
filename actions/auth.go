@@ -57,6 +57,11 @@ func AuthCallback(c buffalo.Context) error {
 				"Sorry but unacceptable account. (no email provided)")
 			return c.Redirect(307, "/login")
 		}
+		if user.Name == "" {
+			c.Flash().Add("danger",
+				"Sorry but unacceptable account. (no name provided)")
+			return c.Redirect(307, "/login")
+		}
 		single.Provider = user.Provider
 		single.Email = user.Email
 		single.Name = user.Name
@@ -72,10 +77,12 @@ func AuthCallback(c buffalo.Context) error {
 		}
 		verrs, err := tx.ValidateAndCreate(single)
 		if err != nil {
+			// FIXME
 			fmt.Printf("err: %v\n", err)
 			return c.Error(501, err)
 		}
 		if verrs.HasAny() {
+			// FIXME
 			fmt.Printf("verrs: %v\n", verrs)
 			return c.Error(501, verrs)
 		}
