@@ -56,3 +56,9 @@
 - id: "service_logs"
   translation: "서비스 로그"
 
+- id: "confirm_sure"
+  translation: "클라우드 제공자와 Exchange 제공자 간 연결이 되었음을 승인하시겠습니까?"
+
+- id: "new_mail"
+  translation: "새 메일"
+

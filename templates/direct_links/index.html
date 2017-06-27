@@ -68,9 +68,9 @@
 						editDirectlinkPath({ directlink_id: dlink.ID }) %>"><%=t("edit")
 						%></a>
 						<%= if (user_is_admin) {
-							%><a class="btn btn-xs btn-danger" href="<%=
+							%><a class="btn btn-xs btn-danger" data-method="DELETE" href="<%=
 							directlinkPath({ directlink_id: dlink.ID })
-							%>" data-method="DELETE" data-confirm="<%=t("sure")%>">De</a><%
+							%>" data-confirm="<%=t("sure")%>"><%=t("delete")%></a><%
 						} %>
 					</div>
 				</div>

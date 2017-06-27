@@ -36,7 +36,7 @@ func (v DirectLinksResource) List(c buffalo.Context) error {
 	if c.Session().Get("is_admin").(bool) {
 		tx := c.Value("tx").(*pop.Connection)
 		q := tx.Paginate(page, pp)
-		err := q.Order("created_at desc").All(dlinks)
+		err := q.Order("vlan_id desc, created_at desc").All(dlinks)
 		pager = q.Paginator
 		if err != nil {
 			return err

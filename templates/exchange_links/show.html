@@ -65,7 +65,7 @@
 					<%= if (dlink.Status == "configured") {
 						%><a class="btn btn-xs btn-success" href="<%=
 						linkExchangeConfirmPath({ directlink_id: dlink.ID })
-						%>">Confirm Connectivity</a><%
+						%>" data-confirm="<%=t("confirm_sure")%>">Confirm Connectivity</a><%
 					} %>
 					<div class="btn-group">
 					</div>

@@ -56,3 +56,9 @@
 - id: "service_logs"
   translation: "Service Logs"
 
+- id: "confirm_sure"
+  translation: "Are you sure to confirm the connectivity between cloud provider and exchange service?"
+
+- id: "new_mail"
+  translation: "New Mail"
+
