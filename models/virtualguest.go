@@ -66,8 +66,10 @@ func SyncVirtualGuests(user *User, since time.Time) (count int, err error) {
 		copier.Copy(comp, el)
 		comp.ID = *el.Id + 1000000000000
 		comp.OSName = *el.OperatingSystem.SoftwareLicense.SoftwareDescription.LongDescription
-		comp.ProvisionDate, _ = time.Parse(time.RFC3339,
-			el.ProvisionDate.String())
+		if el.ProvisionDate != nil {
+			comp.ProvisionDate, _ = time.Parse(time.RFC3339,
+				el.ProvisionDate.String())
+		}
 		if len(el.UserData) == 1 {
 			comp.CloudUserData = *el.UserData[0].Value
 		}

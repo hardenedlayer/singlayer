@@ -310,7 +310,10 @@ func (v DirectLinksResource) Order(c buffalo.Context) error {
 	progress := models.NewProgress(dlink.ID, "ordered")
 	progress.SingleID = getCurrentSingle(c).ID
 	if ticket, err := models.FindTicket(ticket_id); err == nil {
-		progress.UpdateId = ticket.FirstUpdate().ID
+		update := ticket.FirstUpdate()
+		if update != nil {
+			progress.UpdateId = update.ID
+		}
 	}
 	progress.Save()
 	c.Logger().Infof("add progress: %v %v", dlink.ID, progress.Action)

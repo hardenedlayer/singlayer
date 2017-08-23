@@ -104,6 +104,7 @@ func CreateDirectLinkTicket(user *User, dlink *DirectLink) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	log.Infof("ticket created successfully. ticket_id: %v", *tick.Id)
 	inspect("saved sl_ticket", tick)
 
 	SyncTickets(user)
@@ -174,7 +175,7 @@ func SyncTickets(user *User) (count int, err error) {
 		for _, elu := range el.Updates {
 			ticket_update := &TicketUpdate{}
 			copier.Copy(ticket_update, elu)
-			log.Debugf("--- %v ---", ticket_update)
+			log.Infof("--- %v ---", ticket_update)
 		}
 
 		err = ticket.Save()
